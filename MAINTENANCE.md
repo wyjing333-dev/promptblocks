@@ -1,6 +1,6 @@
 # PromptBlocks 每日维护清单
 
-## 每日5件事（约30分钟）
+## 每日6件事（约35分钟）
 
 ### 1. 查网站是否活着（2分钟）
 - 打开 https://wyjing333-dev.github.io/promptblocks/
@@ -24,6 +24,14 @@
 ### 5. 推广一条内容（8分钟）
 - 小红书/抖音/即刻/推特，挑一个平台发一条
 - 内容方向：产品更新、使用技巧、Prompt对比效果、新积木预告
+
+### 6. 定时检查GitHub Issue并由AMOO回复（5分钟）
+- 运行脚本：`$env:GH_TOKEN='token'; cd D:\jieyuexingchen\promptblocks; C:\Users\admin\AppData\Local\Programs\Python\Python311\python.exe scripts\check_github_issues.py`
+- 脚本自动拉取未关闭Issue列表和详情
+- AMOO用humanizer-zh技能写真人风格回复
+- 用 `gh issue comment <编号> --body "回复内容" --repo wyjing333-dev/promptblocks` 提交回复
+- 回复后用 `gh issue close <编号> --repo wyjing333-dev/promptblocks` 关闭已解决的Issue
+- 无Issue时输出"[OK] 当前没有未关闭的Issue，一切正常！"
 
 ---
 
@@ -55,6 +63,7 @@
 - 流量：14 visitors, 3 clones
 - 更新：新增"role-data-analyst"积木
 - 推广：小红书发了"30秒拼出专业Prompt"笔记
+- Issue检查：N条新Issue，已回复/无新Issue
 ```
 
 ---
