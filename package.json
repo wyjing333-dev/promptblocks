@@ -1,0 +1,9 @@
+{
+  "name": "promptblocks",
+  "version": "1.0.0",
+  "description": "像搭积木一样拼Prompt - 可视化Prompt组装工具",
+  "scripts": {
+    "dev": "npx vercel dev",
+    "deploy": "npx vercel --prod"
+  }
+}
