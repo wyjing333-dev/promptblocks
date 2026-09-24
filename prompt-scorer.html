@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt 质量评分器 - PromptBlocks</title>
+<style>
+  :root {
+    --bg-main: #0f0f1a;
+    --bg-card: #1a1a2e;
+    --bg-hover: #222240;
+    --text-main: #e0e0e8;
+    --text-muted: #8888a0;
+    --border: #2a2a3e;
+    --accent: #6366f1;
+    --accent-pink: #ec4899;
+    --good: #10b981;
+    --warn: #f59e0b;
+    --bad: #ef4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 16px 24px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .logo span { font-size: 13px; color: var(--text-muted); font-weight: 400; -webkit-text-fill-color: var(--text-muted); }
+  .back-link {
+    margin-left: auto;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .back-link:hover { border-color: var(--accent); color: #a5b4fc; }
+  .container { max-width: 900px; margin: 0 auto; padding: 24px; flex: 1; }
+  .section { margin-bottom: 24px; }
+  .section-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
+  .input-area {
+    width: 100%;
+    min-height: 180px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text-main);
+    font-size: 14px;
+    line-height: 1.6;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-area:focus { border-color: var(--accent); }
+  .input-area::placeholder { color: var(--text-muted); }
+  .btn-row { display: flex; gap: 12px; margin-top: 12px; }
+  .btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary { background: var(--bg-hover); color: var(--text-main); }
+  .btn-secondary:hover { background: #2d2d4d; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  /* Score Results */
+  .results { display: none; }
+  .results.show { display: block; }
+  .overall-score {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .overall-score .score-num {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .overall-score .score-label { font-size: 14px; color: var(--text-muted); margin-top: 8px; }
+  .overall-score .score-grade {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .grade-s { background: rgba(16,185,129,0.15); color: #10b981; }
+  .grade-a { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+  .grade-b { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .grade-c { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .dimensions { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+  .dim-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .dim-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .dim-icon { font-size: 20px; }
+  .dim-name { font-size: 15px; font-weight: 600; flex: 1; }
+  .dim-score { font-size: 18px; font-weight: 700; }
+  .dim-bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; margin-bottom: 8px; }
+  .dim-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+  .dim-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .suggestions {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .suggestions-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .suggestion-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-main);
+  }
+  .suggestion-item .sug-icon { flex-shrink: 0; margin-top: 1px; }
+  .suggestion-item .sug-text { flex: 1; }
+  .examples {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  .examples-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .example-item {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .example-item:hover { border-color: var(--accent); color: var(--text-main); }
+  .empty-hint {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  @media (max-width: 768px) {
+    .container { padding: 16px; }
+    .overall-score .score-num { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">PromptBlocks <span>Prompt 质量评分器</span></div>
+  <a class="back-link" href="index.html">← 返回积木库</a>
+</header>
+
+<div class="container">
+  <div class="section">
+    <div class="section-title">输入你的 Prompt</div>
+    <textarea class="input-area" id="promptInput" placeholder="在这里粘贴你的 Prompt，点击下方按钮进行评分...&#10;&#10;例如：你是一位营销专家，请为以下产品写一套小红书种草文案，包含标题和卖点提炼，输出控制在300字以内。"></textarea>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="scoreBtn" onclick="scorePrompt()">🔍 开始评分</button>
+      <button class="btn btn-secondary" onclick="clearInput()">清空</button>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="overall-score" id="overallScore"></div>
+    <div class="dimensions" id="dimensions"></div>
+    <div class="suggestions" id="suggestions"></div>
+  </div>
+
+  <div class="examples" id="examples">
+    <div class="examples-title">不知道怎么写？试试这些示例</div>
+    <div class="example-item" onclick="loadExample(0)">你是一位有10年经验的数字营销专家。请为一款新上市的气泡水写一套小红书种草文案，包含标题、3个卖点提炼和场景化描述。目标受众是18-35岁年轻女性，使用轻松活泼的风格，输出控制在300字以内，用列表格式。</div>
+    <div class="example-item" onclick="loadExample(1)">写文章</div>
+    <div class="example-item" onclick="loadExample(2)">你是一位全栈工程师，精通Python。请根据以下需求编写代码：实现一个简单的REST API，要求代码干净、有注释、可直接运行，并附上使用说明。用Markdown格式输出。</div>
+  </div>
+</div>
+
+<script>
+var EXAMPLES = [
+  '你是一位有10年经验的数字营销专家。请为一款新上市的气泡水写一套小红书种草文案，包含标题、3个卖点提炼和场景化描述。目标受众是18-35岁年轻女性，使用轻松活泼的风格，输出控制在300字以内，用列表格式。',
+  '写文章',
+  '你是一位全栈工程师，精通Python。请根据以下需求编写代码：实现一个简单的REST API，要求代码干净、有注释、可直接运行，并附上使用说明。用Markdown格式输出。'
+];
+
+function loadExample(idx) {
+  document.getElementById('promptInput').value = EXAMPLES[idx];
+  document.getElementById('results').classList.remove('show');
+}
+
+function clearInput() {
+  document.getElementById('promptInput').value = '';
+  document.getElementById('results').classList.remove('show');
+}
+
+function scorePrompt() {
+  var text = document.getElementById('promptInput').value.trim();
+  if (!text) { alert('请先输入 Prompt 文本'); return; }
+
+  var scores = {
+    clarity: scoreClarity(text),
+    completeness: scoreCompleteness(text),
+    actionability: scoreActionability(text),
+    conciseness: scoreConciseness(text),
+    specificity: scoreSpecificity(text)
+  };
+  var suggestions = generateSuggestions(text, scores);
+  var overall = Math.round((scores.clarity + scores.completeness + scores.actionability + scores.conciseness + scores.specificity) / 5);
+
+  renderResults(overall, scores, suggestions);
+}
+
+function scoreClarity(text) {
+  var score = 50;
+  var actionVerbs = ['请', '写', '分析', '总结', '翻译', '生成', '创建', '设计', '制定', '编写', '提炼', '比较', '评估', '规划', '整理', '描述', '解释', '推荐', '优化', '修改'];
+  for (var i = 0; i < actionVerbs.length; i++) {
+    if (text.indexOf(actionVerbs[i]) !== -1) { score += 20; break; }
+  }
+  if (text.length > 20) score += 10;
+  if (/[。.!！?？]/.test(text)) score += 5;
+  if (text.indexOf('你') !== -1 || text.indexOf('请') !== -1) score += 10;
+  if (text.split('，').length > 1 || text.split('。').length > 1) score += 5;
+  return Math.min(score, 100);
+}
+
+function scoreCompleteness(text) {
+  var score = 0;
+  var hasRole = /你是一|你是|作为一名|作为一位|你扮演/.test(text);
+  var hasTask = /请写|请分析|请总结|请翻译|请生成|请创建|请设计|请制定|请编写|请提炼|请比较|请评估|请规划|请整理|请描述|请解释|请推荐|请优化|写一|分析一下|总结一下/.test(text);
+  var hasContext = /目标受众|用户|背景|场景|平台|目前|当前|以下|这是/.test(text);
+  var hasFormat = /格式|Markdown|JSON|表格|列表|模板|对话|字数|字以内|不少于|控制在/.test(text);
+  var hasConstraint = /不要|避免|必须|确保|要求|控制|不超过|以内|风格|语气/.test(text);
+  if (hasRole) score += 25;
+  if (hasTask) score += 25;
+  if (hasContext) score += 20;
+  if (hasFormat) score += 15;
+  if (hasConstraint) score += 15;
+  return Math.min(score, 100);
+}
+
+function scoreActionability(text) {
+  var score = 40;
+  if (text.indexOf('请') !== -1) score += 20;
+  if (text.length > 50) score += 15;
+  if (text.indexOf('输出') !== -1 || text.indexOf('结果') !== -1 || text.indexOf('格式') !== -1) score += 15;
+  if (/^\s*$/.test(text)) return 0;
+  if (text.indexOf('：') !== -1 || text.indexOf('包括') !== -1 || text.indexOf('包含') !== -1) score += 10;
+  return Math.min(score, 100);
+}
+
+function scoreConciseness(text) {
+  var len = text.length;
+  if (len < 10) return 30;
+  if (len < 30) return 55;
+  if (len <= 200) return 100;
+  if (len <= 400) return 85;
+  if (len <= 600) return 70;
+  if (len <= 1000) return 55;
+  return 40;
+}
+
+function scoreSpecificity(text) {
+  var score = 40;
+  var specificPatterns = [
+    /数字|个|条|分钟|秒|字|百分|%|倍|年/,
+    /受众|用户|年龄|性别|人群/,
+    /平台|渠道|场景/,
+    /风格|语气|语调/,
+    {re: /[a-zA-Z]+/},
+    {re: /[""「].*[""」]/},
+  ];
+  var count = 0;
+  specificPatterns.forEach(function(p) {
+    if (p.test ? p.test(text) : p.re.test(text)) count++;
+  });
+  score += count * 12;
+  if (text.indexOf('具体') !== -1 || text.indexOf('详细') !== -1) score += 5;
+  if (text.indexOf('等') !== -1 && text.indexOf('等等') === -1) score -= 5;
+  return Math.min(score, 100);
+}
+
+function generateSuggestions(text, scores) {
+  var sugs = [];
+  if (scores.clarity < 70) {
+    sugs.push({ type: 'warn', text: '指令不够清晰。建议在开头明确写出"你是..."和"请..."，让 AI 一眼看出角色和任务。' });
+  }
+  if (scores.completeness < 70) {
+    var missing = [];
+    if (!/你是一|你是|作为一名/.test(text)) missing.push('角色定义');
+    if (!/格式|Markdown|JSON|表格|列表|字数/.test(text)) missing.push('输出格式');
+    if (!/不要|避免|必须|风格|语气/.test(text)) missing.push('约束条件');
+    if (missing.length > 0) sugs.push({ type: 'warn', text: '缺少关键要素：' + missing.join('、') + '。一个完整的 Prompt 应包含角色+任务+上下文+格式+约束。' });
+  }
+  if (scores.conciseness < 70) {
+    if (text.length < 30) sugs.push({ type: 'warn', text: 'Prompt 太短，AI 可能无法理解你的真实意图。建议补充上下文和具体要求。' });
+    else sugs.push({ type: 'info', text: 'Prompt 偏长，可以尝试精简。去掉重复的描述，保留核心指令即可。' });
+  }
+  if (scores.specificity < 70) {
+    sugs.push({ type: 'warn', text: '不够具体。建议加入数量、受众特征、平台名称、风格示例等细节，让 AI 的输出更精准。' });
+  }
+  if (scores.actionability < 70) {
+    sugs.push({ type: 'warn', text: '可执行性不足。确保 AI 看完就能直接干活——明确输出什么、什么格式、多少数量。' });
+  }
+  if (sugs.length === 0) {
+    sugs.push({ type: 'good', text: '这个 Prompt 结构完整、指令清晰，可以直接使用。你可以在 PromptBlocks 积木库中找到更多积木来进一步优化。' });
+  }
+  sugs.push({ type: 'info', text: '小贴士：用 PromptBlocks 的积木拼装功能，可以快速组合角色+任务+格式+约束，自动生成高质量 Prompt。' });
+  return sugs;
+}
+
+function renderResults(overall, scores, suggestions) {
+  var gradeClass = overall >= 85 ? 'grade-s' : overall >= 70 ? 'grade-a' : overall >= 50 ? 'grade-b' : 'grade-c';
+  var gradeText = overall >= 85 ? 'S 级' : overall >= 70 ? 'A 级' : overall >= 50 ? 'B 级' : 'C 级';
+  var overallEl = document.getElementById('overallScore');
+  overallEl.innerHTML =
+    '<div class="score-num">' + overall + '</div>' +
+    '<div class="score-label">综合评分（满分100）</div>' +
+    '<div class="score-grade ' + gradeClass + '">' + gradeText + '</div>';
+
+  var dims = [
+    { icon: '🎯', name: '清晰度', score: scores.clarity, desc: '指令是否清晰明确，AI 能否一眼看懂要做什么', color: '#6366f1' },
+    { icon: '🧩', name: '完整性', score: scores.completeness, desc: '是否包含角色、任务、上下文、格式、约束等关键要素', color: '#ec4899' },
+    { icon: '⚡', name: '可执行性', score: scores.actionability, desc: 'AI 看完能否直接干活，输出要求是否明确', color: '#10b981' },
+    { icon: '✂️', name: '简洁性', score: scores.conciseness, desc: '长度是否适中，没有冗余也没有过短', color: '#f59e0b' },
+    { icon: '🔬', name: '具体性', score: scores.specificity, desc: '是否有具体的数量、受众、平台、风格等细节', color: '#8b5cf6' },
+  ];
+
+  var dimsEl = document.getElementById('dimensions');
+  dimsEl.innerHTML = dims.map(function(d) {
+    var barColor = d.score >= 80 ? '#10b981' : d.score >= 60 ? '#f59e0b' : '#ef4444';
+    return '<div class="dim-card">' +
+      '<div class="dim-header">' +
+      '<span class="dim-icon">' + d.icon + '</span>' +
+      '<span class="dim-name">' + d.name + '</span>' +
+      '<span class="dim-score" style="color:' + barColor + '">' + d.score + '</span>' +
+      '</div>' +
+      '<div class="dim-bar"><div class="dim-bar-fill" style="width:' + d.score + '%;background:' + barColor + ';"></div></div>' +
+      '<div class="dim-desc">' + d.desc + '</div>' +
+      '</div>';
+  }).join('');
+
+  var sugsEl = document.getElementById('suggestions');
+  sugsEl.innerHTML = '<div class="suggestions-title">改进建议</div>' +
+    suggestions.map(function(s) {
+      var icon = s.type === 'good' ? '✅' : s.type === 'warn' ? '⚠️' : '💡';
+      return '<div class="suggestion-item"><span class="sug-icon">' + icon + '</span><span class="sug-text">' + s.text + '</span></div>';
+    }).join('');
+
+  document.getElementById('results').classList.add('show');
+}
+</script>
+</body>
+</html>
