@@ -12,12 +12,17 @@
     --color-constraints: #f59e0b;
     --color-format: #8b5cf6;
     --color-examples: #06b6d4;
+    --color-industry: #f97316;
     --bg-main: #0f0f1a;
     --bg-card: #1a1a2e;
     --bg-hover: #222240;
     --text-main: #e0e0e8;
     --text-muted: #8888a0;
     --border: #2a2a3e;
+    --warn: #ef4444;
+    --warn-bg: rgba(239,68,68,0.1);
+    --info: #3b82f6;
+    --info-bg: rgba(59,130,246,0.1);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -28,7 +33,6 @@
     display: flex;
     flex-direction: column;
   }
-  /* Header */
   header {
     padding: 16px 24px;
     background: var(--bg-card);
@@ -39,102 +43,64 @@
     flex-wrap: wrap;
   }
   .logo {
-    font-size: 22px;
-    font-weight: 800;
+    font-size: 22px; font-weight: 800;
     background: linear-gradient(135deg, #6366f1, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
   .logo span { font-size: 13px; color: var(--text-muted); font-weight: 400; -webkit-text-fill-color: var(--text-muted); }
   .header-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
   .presets { display: flex; gap: 8px; flex-wrap: wrap; }
   .preset-btn {
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
+    padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-size: 13px;
+    cursor: pointer; transition: all 0.2s;
   }
   .preset-btn:hover { border-color: #6366f1; color: #a5b4fc; background: rgba(99,102,241,0.1); }
   .submit-btn {
-    padding: 6px 16px;
-    border-radius: 20px;
-    border: 1px solid #10b981;
-    background: rgba(16,185,129,0.1);
-    color: #10b981;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    white-space: nowrap;
+    padding: 6px 16px; border-radius: 20px; border: 1px solid #10b981;
+    background: rgba(16,185,129,0.1); color: #10b981; font-size: 13px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
   }
   .submit-btn:hover { background: rgba(16,185,129,0.2); }
   .tool-link {
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    white-space: nowrap;
+    padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-size: 13px;
+    cursor: pointer; transition: all 0.2s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
   }
   .tool-link:hover { border-color: #8b5cf6; color: #c4b5fd; }
+  /* Mode Toggle */
+  .mode-toggle { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+  .mode-btn {
+    padding: 6px 16px; border: none; background: transparent; color: var(--text-muted);
+    font-size: 13px; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .mode-btn.active { background: rgba(99,102,241,0.15); color: #a5b4fc; font-weight: 600; }
   /* Platform Filter Bar */
   .platform-bar {
-    padding: 10px 24px;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    padding: 10px 24px; background: var(--bg-card); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   }
   .platform-bar .plabel { font-size: 12px; color: var(--text-muted); margin-right: 4px; white-space: nowrap; }
   .platform-filters { display: flex; gap: 6px; flex-wrap: wrap; }
   .platform-btn {
-    padding: 4px 12px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
+    padding: 4px 12px; border-radius: 16px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-size: 12px;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
   }
   .platform-btn:hover { border-color: #6366f1; color: #a5b4fc; }
   .platform-btn.active { background: rgba(99,102,241,0.15); border-color: #6366f1; color: #a5b4fc; font-weight: 600; }
   /* Data Dashboard */
   .dashboard {
-    padding: 10px 24px;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 28px;
-    flex-wrap: wrap;
-    align-items: center;
+    padding: 10px 24px; background: var(--bg-card); border-bottom: 1px solid var(--border);
+    display: flex; gap: 28px; flex-wrap: wrap; align-items: center;
   }
   .stat-item { display: flex; flex-direction: column; gap: 1px; }
   .stat-item .stat-value {
-    font-size: 20px;
-    font-weight: 800;
+    font-size: 20px; font-weight: 800;
     background: linear-gradient(135deg, #6366f1, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.2;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2;
   }
   .stat-item .stat-label { font-size: 11px; color: var(--text-muted); }
   .stat-divider { width: 1px; height: 28px; background: var(--border); }
@@ -144,44 +110,26 @@
   .main { display: flex; flex: 1; overflow: hidden; }
   .panel { display: flex; flex-direction: column; overflow: hidden; }
   .panel-header {
-    padding: 14px 16px;
-    font-size: 15px;
-    font-weight: 600;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    padding: 14px 16px; font-size: 15px; font-weight: 600;
+    border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;
     background: var(--bg-card);
   }
   .panel-header .count { font-size: 12px; color: var(--text-muted); font-weight: 400; }
-  /* Left - Block Library */
   .block-library { width: 280px; border-right: 1px solid var(--border); }
   .category-tabs { display: flex; flex-direction: column; }
   .category-tab {
-    padding: 10px 16px;
-    cursor: pointer;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    transition: all 0.2s;
+    padding: 10px 16px; cursor: pointer; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px; font-size: 14px; transition: all 0.2s;
   }
   .category-tab:hover { background: var(--bg-hover); }
   .category-tab.active { background: var(--bg-hover); border-left: 3px solid; }
   .category-tab .icon { font-size: 18px; }
   .category-tab .name { flex: 1; }
   .category-tab .num { font-size: 12px; color: var(--text-muted); }
-  /* Blocks list */
   .blocks-list { flex: 1; overflow-y: auto; padding: 8px; }
   .block-item {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    margin-bottom: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: var(--bg-card);
+    padding: 12px; border-radius: 8px; border: 1px solid var(--border);
+    margin-bottom: 6px; cursor: pointer; transition: all 0.2s; background: var(--bg-card);
   }
   .block-item:hover { border-color: var(--accent, #6366f1); transform: translateY(-1px); }
   .block-item .title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
@@ -190,143 +138,105 @@
   .block-item .tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text-muted); }
   .block-item .platforms { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
   .block-item .platform-tag { font-size: 9px; padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
-  /* Center - Assembly */
+  .block-item .verify-info { font-size: 9px; color: #4a4a5e; margin-top: 4px; }
+  /* Center - Assembly / Quick Input */
   .assembly { flex: 1; min-width: 320px; }
   .assembly-area { flex: 1; overflow-y: auto; padding: 16px; }
   .assembly-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: var(--text-muted);
-    gap: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; color: var(--text-muted); gap: 12px;
   }
   .assembly-empty .icon { font-size: 48px; opacity: 0.3; }
   .assembly-empty .text { font-size: 15px; }
   .assembly-empty .hint { font-size: 13px; opacity: 0.6; }
   .assembled-block {
-    padding: 14px 16px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    border-left: 4px solid var(--accent, #6366f1);
-    background: var(--bg-card);
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    cursor: move;
+    padding: 14px 16px; border-radius: 10px; margin-bottom: 10px;
+    border-left: 4px solid var(--accent, #6366f1); background: var(--bg-card);
+    display: flex; align-items: flex-start; gap: 12px; cursor: move;
   }
+  .assembled-block.conflict { border-left-color: var(--warn) !important; background: var(--warn-bg); }
   .assembled-block:hover .remove-btn { opacity: 1; }
   .assembled-block .order {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    flex-shrink: 0;
-    color: white;
+    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; color: white;
   }
   .assembled-block .body { flex: 1; }
   .assembled-block .label { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
   .assembled-block .content { font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
-  .assembled-block .move-btn {
-    width: 24px; height: 24px;
-    border-radius: 6px;
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 12px;
-    opacity: 0.4;
-    transition: opacity 0.2s;
-    flex-shrink: 0;
+  .assembled-block .conflict-tag {
+    display: inline-block; margin-top: 6px; padding: 3px 8px; border-radius: 4px;
+    background: var(--warn-bg); color: var(--warn); font-size: 11px; font-weight: 600;
+  }
+  .assembled-block .move-btn, .assembled-block .remove-btn {
+    width: 24px; height: 24px; border-radius: 6px; border: none; background: transparent;
+    color: var(--text-muted); cursor: pointer; font-size: 12px; opacity: 0.4;
+    transition: opacity 0.2s; flex-shrink: 0;
   }
   .assembled-block:hover .move-btn { opacity: 0.7; }
   .assembled-block .move-btn:hover { color: var(--text-main); opacity: 1; }
   .assembled-block .move-btn.disabled { opacity: 0.15; cursor: default; }
-  .assembled-block .remove-btn {
-    width: 24px; height: 24px;
-    border-radius: 6px;
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 16px;
-    opacity: 0;
-    transition: opacity 0.2s;
-    flex-shrink: 0;
-  }
+  .assembled-block .remove-btn { font-size: 16px; opacity: 0; }
   .assembled-block .remove-btn:hover { color: #ef4444; }
+  /* Conflict Warning Banner */
+  .conflict-banner {
+    padding: 10px 14px; background: var(--warn-bg); border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 8px; margin-bottom: 10px; font-size: 13px; color: #fca5a5; line-height: 1.4;
+  }
+  .redundancy-banner {
+    padding: 10px 14px; background: var(--info-bg); border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 8px; margin-bottom: 10px; font-size: 13px; color: #93c5fd; line-height: 1.4;
+  }
+  /* Quick Input Mode */
+  .quick-input-area {
+    width: 100%; min-height: 300px; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; color: var(--text-main); font-size: 14px; line-height: 1.6;
+    resize: vertical; font-family: inherit; outline: none; transition: border-color 0.2s;
+  }
+  .quick-input-area:focus { border-color: var(--color-role); }
+  .quick-input-area::placeholder { color: var(--text-muted); }
+  .quick-hint { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+  .quick-score-mini {
+    margin-top: 12px; padding: 12px 16px; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; font-size: 13px; color: var(--text-muted);
+  }
+  .quick-score-mini .qscore-bar { height: 4px; border-radius: 2px; background: var(--border); margin-top: 6px; overflow: hidden; }
+  .quick-score-mini .qscore-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
   /* Right - Output */
   .output-panel { width: 380px; border-left: 1px solid var(--border); }
   .output-area { flex: 1; overflow-y: auto; padding: 16px; }
   .prompt-preview {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    font-size: 14px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    word-break: break-word;
-    min-height: 200px;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; font-size: 14px; line-height: 1.6; white-space: pre-wrap;
+    word-break: break-word; min-height: 200px;
   }
   .prompt-preview.empty { color: var(--text-muted); font-style: italic; }
   .output-actions { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
   .btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    padding: 10px 20px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
   }
   .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; flex: 1; justify-content: center; }
   .btn-primary:hover { opacity: 0.85; }
   .btn-secondary { background: var(--bg-hover); color: var(--text-main); }
   .btn-secondary:hover { background: #2d2d4d; }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #3a3a5e; }
-  /* Toast */
   .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    padding: 12px 24px;
-    background: #10b981;
-    color: white;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    opacity: 0;
-    transition: all 0.3s;
-    z-index: 100;
-    pointer-events: none;
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+    padding: 12px 24px; background: #10b981; color: white; border-radius: 8px;
+    font-size: 14px; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 100; pointer-events: none;
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  /* Sponsor Section */
   .sponsors {
-    padding: 14px 24px;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-    text-align: center;
+    padding: 14px 24px; background: var(--bg-card); border-top: 1px solid var(--border); text-align: center;
   }
   .sponsors .sponsor-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 1px; }
   .sponsors .sponsor-content { font-size: 13px; color: var(--text-muted); }
   .sponsors .sponsor-content a { color: #6366f1; text-decoration: none; }
   .sponsors .sponsor-content a:hover { text-decoration: underline; }
-  /* Responsive */
   @media (max-width: 1024px) {
     .main { flex-direction: column; }
     .block-library { width: 100%; border-right: none; border-bottom: 1px solid var(--border); max-height: 350px; }
@@ -344,6 +254,10 @@
   <div class="logo">PromptBlocks <span>像搭积木一样拼Prompt</span></div>
   <div class="presets" id="presets"></div>
   <div class="header-right">
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="modeAssembly" onclick="setMode('assembly')">🧱 拼装</button>
+      <button class="mode-btn" id="modeQuick" onclick="setMode('quick')">⚡ 快捷</button>
+    </div>
     <a class="tool-link" href="prompt-scorer.html">🔍 评分器</a>
     <a class="submit-btn" href="https://github.com/wyjing333-dev/promptblocks/issues/new?labels=submit-block&template=submit-block.md&title=%E6%8F%90%E4%BA%A4%E6%96%B0%E7%A7%AF%E6%9C%A8" target="_blank">➕ 提交积木</a>
   </div>
@@ -357,31 +271,22 @@
 <div class="dashboard" id="dashboard"></div>
 
 <div class="main">
-  <!-- Left: Block Library -->
   <div class="panel block-library">
     <div class="panel-header">积木库</div>
     <div class="category-tabs" id="categoryTabs"></div>
     <div class="blocks-list" id="blocksList"></div>
   </div>
 
-  <!-- Center: Assembly Area -->
-  <div class="panel assembly">
+  <div class="panel assembly" id="assemblyPanel">
     <div class="panel-header">
-      拼装区 <span class="count" id="assemblyCount">0 个积木</span>
+      <span id="centerTitle">拼装区</span> <span class="count" id="assemblyCount">0 个积木</span>
       <span style="margin-left:auto">
-        <button class="btn btn-secondary" style="padding:4px 12px;font-size:12px" onclick="clearAssembly()">清空</button>
+        <button class="btn btn-secondary" style="padding:4px 12px;font-size:12px" onclick="clearAll()">清空</button>
       </span>
     </div>
-    <div class="assembly-area" id="assemblyArea">
-      <div class="assembly-empty">
-        <div class="icon">🧱</div>
-        <div class="text">从左侧选择积木开始拼装</div>
-        <div class="hint">或点击顶部预设模板一键加载</div>
-      </div>
-    </div>
+    <div class="assembly-area" id="assemblyArea"></div>
   </div>
 
-  <!-- Right: Output -->
   <div class="panel output-panel">
     <div class="panel-header">生成的Prompt</div>
     <div class="output-area">
@@ -405,7 +310,7 @@
 
 <script>
 // ===== Platform Definitions =====
-const PLATFORMS = [
+var PLATFORMS = [
   { id: 'all', name: '全平台', icon: '🌐', color: '#a5b4fc', bg: 'rgba(99,102,241,0.15)' },
   { id: 'chatgpt', name: 'ChatGPT', icon: '🟢', color: '#10a37f', bg: 'rgba(16,163,127,0.15)' },
   { id: 'claude', name: 'Claude', icon: '🟠', color: '#f0a868', bg: 'rgba(240,168,104,0.15)' },
@@ -415,92 +320,122 @@ const PLATFORMS = [
   { id: 'tongyi', name: '通义千问', icon: '🌀', color: '#a5b4fc', bg: 'rgba(165,180,252,0.15)' },
 ];
 
+// ===== Conflict Rules =====
+var CONFLICT_PAIRS = [
+  { a: 'con-short', b: 'con-long', reason: '字数矛盾：简洁300字 vs 深度长文1500字' },
+  { a: 'con-style-professional', b: 'con-style-casual', reason: '风格矛盾：专业风格 vs 轻松风格' },
+  { a: 'con-no-jargon', b: 'con-style-professional', reason: '矛盾：禁止术语 vs 专业风格（含行业术语）' },
+  { a: 'ctx-audience-general', b: 'ctx-audience-professional', reason: '受众矛盾：大众受众 vs 专业受众' },
+  { a: 'ctx-platform-xhs', b: 'ctx-platform-douyin', reason: '平台冲突：小红书 vs 抖音' },
+  { a: 'ctx-platform-xhs', b: 'ctx-platform-wechat', reason: '平台冲突：小红书 vs 公众号' },
+  { a: 'ctx-platform-douyin', b: 'ctx-platform-wechat', reason: '平台冲突：抖音 vs 公众号' },
+];
+var SOLO_CATEGORIES = ['format', 'examples']; // these categories: only pick one block
+
 // ===== Block Data =====
-const CATEGORIES = [
+var CATEGORIES = [
   {
     id: 'role', name: '角色', icon: '🎭', color: '#6366f1',
     blocks: [
-      { id: 'role-marketer', title: '营销专家', content: '你是一位有10年经验的数字营销专家，擅长小红书、抖音、公众号等平台的种草文案和增长策略。', tags: ['营销','文案','增长'], platforms: ['all'] },
-      { id: 'role-copywriter', title: '文案大师', content: '你是一位资深广告文案大师，曾服务多个一线品牌，擅长用情感化语言打动用户，写作风格简洁有力。', tags: ['文案','广告','品牌'], platforms: ['all'] },
-      { id: 'role-programmer', title: '程序员', content: '你是一位全栈工程师，精通Python、JavaScript、React，擅长写出干净、可维护、有注释的代码。', tags: ['编程','代码','全栈'], platforms: ['chatgpt','claude','stepfun'] },
-      { id: 'role-product-manager', title: '产品经理', content: '你是一位资深产品经理，擅长用户需求分析、竞品调研、产品规划和PRD撰写，思维逻辑严密。', tags: ['产品','需求','规划'], platforms: ['all'] },
-      { id: 'role-designer', title: '设计师', content: '你是一位UI/UX设计师，擅长用户界面设计、交互设计、设计系统搭建，注重用户体验和视觉美感。', tags: ['设计','UI','UX'], platforms: ['all'] },
-      { id: 'role-teacher', title: '教师', content: '你是一位耐心的教师，擅长用通俗易懂的语言解释复杂概念，喜欢用类比和案例辅助教学。', tags: ['教育','教学','科普'], platforms: ['all'] },
-      { id: 'role-consultant', title: '商业顾问', content: '你是一位商业战略顾问，擅长市场分析、商业模式设计、竞争策略制定，决策基于数据和逻辑。', tags: ['商业','战略','咨询'], platforms: ['all'] },
-      { id: 'role-writer', title: '作家', content: '你是一位畅销书作家，擅长叙事结构设计、人物塑造、情感表达，文字有画面感和感染力。', tags: ['写作','创意','叙事'], platforms: ['all'] },
-      { id: 'role-data-analyst', title: '数据分析师', content: '你是一位资深数据分析师，精通数据清洗、统计分析、数据可视化，擅长用数据讲故事，能从海量数据中提炼有商业价值的洞察。', tags: ['数据','分析','可视化'], platforms: ['chatgpt','claude','stepfun'] },
+      { id: 'role-marketer', title: '营销专家', content: '你是一位有10年经验的数字营销专家，擅长小红书、抖音、公众号等平台的种草文案和增长策略。', tags: ['营销','文案','增长'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-copywriter', title: '文案大师', content: '你是一位资深广告文案大师，曾服务多个一线品牌，擅长用情感化语言打动用户，写作风格简洁有力。', tags: ['文案','广告','品牌'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-programmer', title: '程序员', content: '你是一位全栈工程师，精通Python、JavaScript、React，擅长写出干净、可维护、有注释的代码。', tags: ['编程','代码','全栈'], platforms: ['chatgpt','claude','stepfun'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-product-manager', title: '产品经理', content: '你是一位资深产品经理，擅长用户需求分析、竞品调研、产品规划和PRD撰写，思维逻辑严密。', tags: ['产品','需求','规划'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-designer', title: '设计师', content: '你是一位UI/UX设计师，擅长用户界面设计、交互设计、设计系统搭建，注重用户体验和视觉美感。', tags: ['设计','UI','UX'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-teacher', title: '教师', content: '你是一位耐心的教师，擅长用通俗易懂的语言解释复杂概念，喜欢用类比和案例辅助教学。', tags: ['教育','教学','科普'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-consultant', title: '商业顾问', content: '你是一位商业战略顾问，擅长市场分析、商业模式设计、竞争策略制定，决策基于数据和逻辑。', tags: ['商业','战略','咨询'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-writer', title: '作家', content: '你是一位畅销书作家，擅长叙事结构设计、人物塑造、情感表达，文字有画面感和感染力。', tags: ['写作','创意','叙事'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-data-analyst', title: '数据分析师', content: '你是一位资深数据分析师，精通数据清洗、统计分析、数据可视化，擅长用数据讲故事，能从海量数据中提炼有商业价值的洞察。', tags: ['数据','分析','可视化'], platforms: ['chatgpt','claude','stepfun'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
     id: 'task', name: '任务', icon: '🎯', color: '#ec4899',
     blocks: [
-      { id: 'task-write-article', title: '写文章', content: '请根据以下主题写一篇文章，要求内容有深度、结构清晰、有观点输出。', tags: ['写作','文章'], platforms: ['all'] },
-      { id: 'task-write-copy', title: '写文案', content: '请为以下产品/服务写一套营销文案，包含标题、卖点提炼、场景化描述和行动号召。', tags: ['文案','营销'], platforms: ['all'] },
-      { id: 'task-summarize', title: '总结提炼', content: '请总结以下内容的核心观点，提炼出3-5个关键要点，每个要点用一句话概括。', tags: ['总结','提炼'], platforms: ['all'] },
-      { id: 'task-translate', title: '翻译', content: '请将以下内容翻译成目标语言，保持原文的语气和风格，确保翻译自然流畅。', tags: ['翻译','多语言'], platforms: ['all'] },
-      { id: 'task-analyze', title: '分析', content: '请对以下内容进行深度分析，从多个维度展开，给出有数据支撑的结论和建议。', tags: ['分析','研究'], platforms: ['all'] },
-      { id: 'task-code', title: '写代码', content: '请根据以下需求编写代码，要求代码干净、有注释、可直接运行，并附上使用说明。', tags: ['编程','代码'], platforms: ['chatgpt','claude','stepfun'] },
-      { id: 'task-brainstorm', title: '头脑风暴', content: '请围绕以下主题进行头脑风暴，给出10个创意方向，每个方向附简短说明。', tags: ['创意','发散'], platforms: ['all'] },
-      { id: 'task-plan', title: '制定计划', content: '请根据以下目标制定一份详细的执行计划，包含时间线、关键里程碑和资源需求。', tags: ['计划','执行'], platforms: ['all'] },
+      { id: 'task-write-article', title: '写文章', content: '请根据以下主题写一篇文章，要求内容有深度、结构清晰、有观点输出。', tags: ['写作','文章'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-write-copy', title: '写文案', content: '请为以下产品/服务写一套营销文案，包含标题、卖点提炼、场景化描述和行动号召。', tags: ['文案','营销'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-summarize', title: '总结提炼', content: '请总结以下内容的核心观点，提炼出3-5个关键要点，每个要点用一句话概括。', tags: ['总结','提炼'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-translate', title: '翻译', content: '请将以下内容翻译成目标语言，保持原文的语气和风格，确保翻译自然流畅。', tags: ['翻译','多语言'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-analyze', title: '分析', content: '请对以下内容进行深度分析，从多个维度展开，给出有数据支撑的结论和建议。', tags: ['分析','研究'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-code', title: '写代码', content: '请根据以下需求编写代码，要求代码干净、有注释、可直接运行，并附上使用说明。', tags: ['编程','代码'], platforms: ['chatgpt','claude','stepfun'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-brainstorm', title: '头脑风暴', content: '请围绕以下主题进行头脑风暴，给出10个创意方向，每个方向附简短说明。', tags: ['创意','发散'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-plan', title: '制定计划', content: '请根据以下目标制定一份详细的执行计划，包含时间线、关键里程碑和资源需求。', tags: ['计划','执行'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
     id: 'context', name: '上下文', icon: '📋', color: '#10b981',
     blocks: [
-      { id: 'ctx-audience-general', title: '大众受众', content: '目标受众是普通大众，年龄18-45岁，非专业背景，需要通俗易懂的内容。', tags: ['受众','大众'], platforms: ['all'] },
-      { id: 'ctx-audience-professional', title: '专业受众', content: '目标受众是该领域的专业人士，具备相关背景知识，可以接受专业术语和深度分析。', tags: ['受众','专业'], platforms: ['all'] },
-      { id: 'ctx-platform-xhs', title: '小红书平台', content: '内容将发布在小红书，受众为18-35岁女性用户，喜欢种草文风格，需要emoji和话题标签。', tags: ['小红书','种草'], platforms: ['all'] },
-      { id: 'ctx-platform-douyin', title: '抖音平台', content: '内容将用于抖音短视频脚本，时长控制在60秒内，需要开场hook、节奏紧凑、结尾互动引导。', tags: ['抖音','短视频'], platforms: ['all'] },
-      { id: 'ctx-platform-wechat', title: '公众号平台', content: '内容将发布在微信公众号，受众为25-40岁职场人群，偏好有深度、有观点的长文。', tags: ['公众号','长文'], platforms: ['all'] },
-      { id: 'ctx-business', title: '商业背景', content: '当前是一个创业团队，处于早期阶段，资源有限，需要快速验证和低成本试错。', tags: ['创业','商业'], platforms: ['all'] },
-      { id: 'ctx-education', title: '学习场景', content: '用户正在学习这个领域，是零基础新手，需要从最基础的概念开始，循序渐进。', tags: ['学习','新手'], platforms: ['all'] },
+      { id: 'ctx-audience-general', title: '大众受众', content: '目标受众是普通大众，年龄18-45岁，非专业背景，需要通俗易懂的内容。', tags: ['受众','大众'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ctx-audience-professional', title: '专业受众', content: '目标受众是该领域的专业人士，具备相关背景知识，可以接受专业术语和深度分析。', tags: ['受众','专业'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ctx-platform-xhs', title: '小红书平台', content: '内容将发布在小红书，受众为18-35岁女性用户，喜欢种草文风格，需要emoji和话题标签。', tags: ['小红书','种草'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ctx-platform-douyin', title: '抖音平台', content: '内容将用于抖音短视频脚本，时长控制在60秒内，需要开场hook、节奏紧凑、结尾互动引导。', tags: ['抖音','短视频'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ctx-platform-wechat', title: '公众号平台', content: '内容将发布在微信公众号，受众为25-40岁职场人群，偏好有深度、有观点的长文。', tags: ['公众号','长文'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ctx-business', title: '商业背景', content: '当前是一个创业团队，处于早期阶段，资源有限，需要快速验证和低成本试错。', tags: ['创业','商业'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ctx-education', title: '学习场景', content: '用户正在学习这个领域，是零基础新手，需要从最基础的概念开始，循序渐进。', tags: ['学习','新手'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
     id: 'constraints', name: '约束', icon: '⚙️', color: '#f59e0b',
     blocks: [
-      { id: 'con-short', title: '简洁要求', content: '输出控制在300字以内，直奔主题，不要铺垫和废话。', tags: ['简洁','字数'], platforms: ['all'] },
-      { id: 'con-long', title: '深度长文', content: '输出不少于1500字，内容需要有深度分析和案例支撑，结构完整。', tags: ['长文','深度'], platforms: ['all'] },
-      { id: 'con-style-professional', title: '专业风格', content: '使用正式、专业的语言风格，避免口语化表达，适当使用行业术语。', tags: ['风格','专业'], platforms: ['all'] },
-      { id: 'con-style-casual', title: '轻松风格', content: '使用轻松、活泼的语言风格，可以适当使用网络流行语和emoji，拉近距离。', tags: ['风格','轻松'], platforms: ['all'] },
-      { id: 'con-no-jargon', title: '禁止术语', content: '不要使用任何专业术语，用14岁孩子也能听懂的语言解释。', tags: ['约束','通俗'], platforms: ['all'] },
-      { id: 'con-step-by-step', title: '分步骤', content: '请分步骤回答，每个步骤编号并加粗标题，步骤之间用分隔线隔开。', tags: ['格式','步骤'], platforms: ['all'] },
-      { id: 'con-positive', title: '正面指令', content: '请直接告诉我要做什么，而不是告诉我不该做什么。', tags: ['约束','正面'], platforms: ['all'] },
+      { id: 'con-short', title: '简洁要求', content: '输出控制在300字以内，直奔主题，不要铺垫和废话。', tags: ['简洁','字数'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'con-long', title: '深度长文', content: '输出不少于1500字，内容需要有深度分析和案例支撑，结构完整。', tags: ['长文','深度'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'con-style-professional', title: '专业风格', content: '使用正式、专业的语言风格，避免口语化表达，适当使用行业术语。', tags: ['风格','专业'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'con-style-casual', title: '轻松风格', content: '使用轻松、活泼的语言风格，可以适当使用网络流行语和emoji，拉近距离。', tags: ['风格','轻松'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'con-no-jargon', title: '禁止术语', content: '不要使用任何专业术语，用14岁孩子也能听懂的语言解释。', tags: ['约束','通俗'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'con-step-by-step', title: '分步骤', content: '请分步骤回答，每个步骤编号并加粗标题，步骤之间用分隔线隔开。', tags: ['格式','步骤'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'con-positive', title: '正面指令', content: '请直接告诉我要做什么，而不是告诉我不该做什么。', tags: ['约束','正面'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
     id: 'format', name: '格式', icon: '📐', color: '#8b5cf6',
     blocks: [
-      { id: 'fmt-markdown', title: 'Markdown格式', content: '请用Markdown格式输出，包含标题、要点列表和总结。', tags: ['格式','Markdown'], platforms: ['all'] },
-      { id: 'fmt-table', title: '表格格式', content: '请用表格形式呈现对比结果，表头清晰，数据对齐。', tags: ['格式','表格'], platforms: ['all'] },
-      { id: 'fmt-json', title: 'JSON格式', content: '请用JSON格式输出，字段名用英文，值用中文，确保JSON合法可解析。', tags: ['格式','JSON'], platforms: ['chatgpt','claude','stepfun'] },
-      { id: 'fmt-list', title: '列表格式', content: '请用编号列表格式输出，每条不超过两句话。', tags: ['格式','列表'], platforms: ['all'] },
-      { id: 'fmt-dialogue', title: '对话格式', content: '请用问答对话形式输出，模拟用户和专家的交流场景。', tags: ['格式','对话'], platforms: ['all'] },
-      { id: 'fmt-template', title: '模板格式', content: '请输出一个可直接复制使用的模板，用{占位符}标记需要替换的部分。', tags: ['格式','模板'], platforms: ['all'] },
+      { id: 'fmt-markdown', title: 'Markdown格式', content: '请用Markdown格式输出，包含标题、要点列表和总结。', tags: ['格式','Markdown'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'fmt-table', title: '表格格式', content: '请用表格形式呈现对比结果，表头清晰，数据对齐。', tags: ['格式','表格'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'fmt-json', title: 'JSON格式', content: '请用JSON格式输出，字段名用英文，值用中文，确保JSON合法可解析。', tags: ['格式','JSON'], platforms: ['chatgpt','claude','stepfun'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'fmt-list', title: '列表格式', content: '请用编号列表格式输出，每条不超过两句话。', tags: ['格式','列表'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'fmt-dialogue', title: '对话格式', content: '请用问答对话形式输出，模拟用户和专家的交流场景。', tags: ['格式','对话'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'fmt-template', title: '模板格式', content: '请输出一个可直接复制使用的模板，用{占位符}标记需要替换的部分。', tags: ['格式','模板'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
     id: 'examples', name: '示例', icon: '💡', color: '#06b6d4',
     blocks: [
-      { id: 'ex-none', title: '不需要示例', content: '', tags: ['无示例'], platforms: ['all'] },
-      { id: 'ex-style', title: '风格示例', content: '参考以下风格：原句"天气很好" 改写为"阳光如同金色的液体倾洒而下"。现在请按此风格改写我的内容。', tags: ['示例','风格'], platforms: ['all'] },
-      { id: 'ex-structure', title: '结构示例', content: '请按以下结构输出：\n1. 核心观点（1句话）\n2. 详细分析（3-5句话）\n3. 行动建议（2-3条）', tags: ['示例','结构'], platforms: ['all'] },
-      { id: 'ex-tone', title: '语气示例', content: '请参考以下语气写作：示例"嘿，朋友们！今天分享一个超实用的技巧..." 保持这种亲切、对话式的语气。', tags: ['示例','语气'], platforms: ['all'] },
+      { id: 'ex-none', title: '不需要示例', content: '', tags: ['无示例'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ex-style', title: '风格示例', content: '参考以下风格：原句"天气很好" 改写为"阳光如同金色的液体倾洒而下"。现在请按此风格改写我的内容。', tags: ['示例','风格'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ex-structure', title: '结构示例', content: '请按以下结构输出：\n1. 核心观点（1句话）\n2. 详细分析（3-5句话）\n3. 行动建议（2-3条）', tags: ['示例','结构'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ex-tone', title: '语气示例', content: '请参考以下语气写作：示例"嘿，朋友们！今天分享一个超实用的技巧..." 保持这种亲切、对话式的语气。', tags: ['示例','语气'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+    ]
+  },
+  {
+    id: 'industry', name: '行业', icon: '🏢', color: '#f97316',
+    blocks: [
+      { id: 'ind-lawyer', title: '合同审查律师', content: '你是一位有15年执业经验的合同审查律师，精通中国合同法、公司法，擅长识别合同中的风险条款、不利条款和遗漏条款，能给出具体的修改建议和法律依据。', tags: ['法律','合同','风险审查'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-doctor', title: '全科医生', content: '你是一位有三甲医院临床经验的全科医生，擅长根据患者描述的症状进行初步分析，给出可能的诊断方向、建议检查项目和就医建议。注意：你不能替代面诊，必须提醒患者及时就医。', tags: ['医疗','问诊','健康'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-cpa', title: '注册会计师', content: '你是一位注册会计师（CPA），精通企业财务报表分析、税务筹划、审计流程，能从资产负债表、利润表、现金流量表中识别财务风险和经营问题，给出专业解读。', tags: ['财务','会计','审计'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-ecommerce', title: '电商运营专家', content: '你是一位有8年经验的电商运营专家，精通淘宝、天猫、京东、拼多多等平台的运营规则，擅长选品策略、爆款打造、店铺流量优化、活动策划和数据分析。', tags: ['电商','运营','选品'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-hr', title: 'HR总监', content: '你是一位资深HR总监，擅长招聘体系搭建、面试技巧、薪酬设计、绩效管理和员工关系处理，能从用人方和求职者双重视角给出建议。', tags: ['HR','招聘','绩效'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-course-designer', title: '课程设计师', content: '你是一位专业的课程设计师，擅长教学目标分析、课程结构设计、教学活动策划、学习效果评估，能根据不同受众和场景设计循序渐进的教学方案。', tags: ['教育','课程','教学设计'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-seo', title: 'SEO专家', content: '你是一位SEO/ASO优化专家，精通搜索引擎排名机制、关键词策略、站内优化、外链建设、内容策略，能针对Google、百度等搜索引擎给出可执行的优化方案。', tags: ['SEO','搜索','优化'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-therapist', title: '心理咨询师', content: '你是一位有国家二级心理咨询师资质的治疗师，擅长认知行为疗法（CBT）、情绪聚焦疗法，能倾听、共情并给出专业建议。注意：你不能替代正式心理咨询或药物治疗。', tags: ['心理','咨询','情绪'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-pm-construction', title: '项目经理（工程）', content: '你是一位一级建造师资质的项目经理，精通工程招投标、施工组织设计、进度控制、质量安全管理和成本管控，熟悉FIDIC条款和国内工程规范。', tags: ['工程','项目','建造'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ind-legal-compliance', title: '合规专员', content: '你是一位企业合规专员，熟悉数据安全法、个人信息保护法、网络安全法等法规，擅长企业合规体系建设、数据分类分级、隐私影响评估和合规审计。', tags: ['合规','法务','数据安全'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
 ];
 
-const PRESETS = [
+var PRESETS = [
   { id: 'preset-xhs', name: '小红书种草', blocks: ['role-marketer','task-write-copy','ctx-platform-xhs','con-style-casual','fmt-list','ex-tone'] },
   { id: 'preset-code', name: '代码评审', blocks: ['role-programmer','task-analyze','ctx-audience-professional','con-step-by-step','fmt-markdown','ex-none'] },
   { id: 'preset-video', name: '短视频脚本', blocks: ['role-marketer','task-write-article','ctx-platform-douyin','con-short','fmt-template','ex-structure'] },
   { id: 'preset-learn', name: '学习新知识', blocks: ['role-teacher','task-analyze','ctx-education','con-no-jargon','fmt-markdown','ex-structure'] },
+  { id: 'preset-contract', name: '合同审查', blocks: ['ind-lawyer','task-analyze','ctx-audience-professional','con-step-by-step','fmt-table','ex-none'] },
 ];
 
 // ===== State =====
-let activeCategory = 'role';
-let activePlatform = 'all';
-let assembled = [];
+var activeCategory = 'role';
+var activePlatform = 'all';
+var assembled = [];
+var currentMode = 'assembly'; // 'assembly' or 'quick'
+var quickText = '';
 
 // ===== Init =====
 function init() {
@@ -509,10 +444,11 @@ function init() {
   renderCategoryTabs();
   renderBlocks();
   renderPresets();
+  renderCenterPanel();
 }
 
 function renderPresets() {
-  const el = document.getElementById('presets');
+  var el = document.getElementById('presets');
   el.innerHTML = PRESETS.map(function(p) {
     return '<button class="preset-btn" onclick="loadPreset(\'' + p.id + '\')">' + p.name + '</button>';
   }).join('');
@@ -521,18 +457,15 @@ function renderPresets() {
 function renderDashboard() {
   var totalBlocks = 0;
   CATEGORIES.forEach(function(c) { totalBlocks += c.blocks.length; });
-  var totalCats = CATEGORIES.length;
-  var totalPlatforms = PLATFORMS.length - 1;
-  var totalPresets = PRESETS.length;
   var el = document.getElementById('dashboard');
   el.innerHTML =
     '<div class="stat-item"><div class="stat-value">' + totalBlocks + '</div><div class="stat-label">积木总数</div></div>' +
     '<div class="stat-divider"></div>' +
-    '<div class="stat-item"><div class="stat-value">' + totalCats + '</div><div class="stat-label">分类</div></div>' +
+    '<div class="stat-item"><div class="stat-value">' + CATEGORIES.length + '</div><div class="stat-label">分类</div></div>' +
     '<div class="stat-divider"></div>' +
-    '<div class="stat-item"><div class="stat-value">' + totalPlatforms + '</div><div class="stat-label">适配平台</div></div>' +
+    '<div class="stat-item"><div class="stat-value">' + (PLATFORMS.length - 1) + '</div><div class="stat-label">适配平台</div></div>' +
     '<div class="stat-divider"></div>' +
-    '<div class="stat-item"><div class="stat-value">' + totalPresets + '</div><div class="stat-label">预设模板</div></div>' +
+    '<div class="stat-item"><div class="stat-value">' + PRESETS.length + '</div><div class="stat-label">预设模板</div></div>' +
     '<div class="stat-divider"></div>' +
     '<div class="stat-item"><div class="stat-value" style="font-size:14px">开源</div><div class="stat-label"><a class="stat-link" href="https://github.com/wyjing333-dev/promptblocks" target="_blank">GitHub 项目</a></div></div>';
 }
@@ -558,10 +491,7 @@ function renderCategoryTabs() {
       ? c.blocks.length
       : c.blocks.filter(function(b) { return b.platforms.indexOf('all') !== -1 || b.platforms.indexOf(activePlatform) !== -1; }).length;
     return '<div class="category-tab' + (c.id === activeCategory ? ' active' : '') + '" style="' + (c.id === activeCategory ? 'border-left-color:' + c.color : '') + '" onclick="switchCategory(\'' + c.id + '\')">' +
-      '<span class="icon">' + c.icon + '</span>' +
-      '<span class="name">' + c.name + '</span>' +
-      '<span class="num">' + count + '</span>' +
-      '</div>';
+      '<span class="icon">' + c.icon + '</span><span class="name">' + c.name + '</span><span class="num">' + count + '</span></div>';
   }).join('');
 }
 
@@ -599,24 +529,131 @@ function renderBlocks() {
       '<div class="desc">' + (b.content || '(无内容)') + '</div>' +
       '<div class="tags">' + b.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('') + '</div>' +
       '<div class="platforms">' + renderPlatformTags(b.platforms) + '</div>' +
+      '<div class="verify-info">✓ ' + b.verified + ' · ' + b.model + '</div>' +
       '</div>';
   }).join('');
 }
 
 function findBlock(blockId) {
   for (var i = 0; i < CATEGORIES.length; i++) {
-    var cat = CATEGORIES[i];
-    var b = cat.blocks.find(function(x) { return x.id === blockId; });
-    if (b) return { block: b, category: cat };
+    var b = CATEGORIES[i].blocks.find(function(x) { return x.id === blockId; });
+    if (b) return { block: b, category: CATEGORIES[i] };
   }
   return null;
 }
 
+// ===== Mode Toggle =====
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('modeAssembly').classList.toggle('active', mode === 'assembly');
+  document.getElementById('modeQuick').classList.toggle('active', mode === 'quick');
+  renderCenterPanel();
+  renderPrompt();
+}
+
+function renderCenterPanel() {
+  var titleEl = document.getElementById('centerTitle');
+  var areaEl = document.getElementById('assemblyArea');
+  var countEl = document.getElementById('assemblyCount');
+  if (currentMode === 'quick') {
+    titleEl.textContent = '快捷输入';
+    countEl.textContent = quickText.length + ' 字';
+    areaEl.innerHTML =
+      '<textarea class="quick-input-area" id="quickInput" placeholder="直接输入你的 Prompt...&#10;&#10;简单提问直接打字即可，无需拼装积木。&#10;点击左侧积木可追加到末尾。&#10;&#10;例如：请帮我写一封求职信，应聘互联网产品经理岗位，突出我的数据分析能力和用户洞察力。" oninput="onQuickInput()">' + escapeHtml(quickText) + '</textarea>' +
+      '<div class="quick-hint">💡 简单提问直接打字即可。需要结构化 Prompt 时，点左侧积木追加。</div>' +
+      '<div class="quick-score-mini" id="quickScoreMini" style="display:none;"></div>';
+    var qi = document.getElementById('quickInput');
+    if (qi) { qi.focus(); updateQuickScore(); }
+  } else {
+    titleEl.textContent = '拼装区';
+    countEl.textContent = assembled.length + ' 个积木';
+    renderAssembly();
+  }
+}
+
+function onQuickInput() {
+  var qi = document.getElementById('quickInput');
+  if (!qi) return;
+  quickText = qi.value;
+  document.getElementById('assemblyCount').textContent = quickText.length + ' 字';
+  updateQuickScore();
+  renderPrompt();
+}
+
+function updateQuickScore() {
+  var el = document.getElementById('quickScoreMini');
+  if (!el) return;
+  if (!quickText.trim()) { el.style.display = 'none'; return; }
+  var score = quickScorePrompt(quickText);
+  var color = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
+  el.style.display = 'block';
+  el.innerHTML = '实时评分：<strong style="color:' + color + '">' + score + '</strong>/100' +
+    '<div class="qscore-bar"><div class="qscore-fill" style="width:' + score + '%;background:' + color + ';"></div></div>';
+  if (score < 70) {
+    el.innerHTML += '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);">建议补充角色定义、输出格式、字数约束等要素。可点击左侧积木快速追加。</div>';
+  }
+}
+
+function quickScorePrompt(text) {
+  var score = 0;
+  if (/你是一|你是|作为一名/.test(text)) score += 25;
+  if (/请写|请分析|请总结|请翻译|请生成|请创建|请设计|请制定|请编写|写一|分析一下/.test(text)) score += 25;
+  if (/格式|Markdown|JSON|表格|列表|字数|字以内|控制在/.test(text)) score += 20;
+  if (/不要|避免|必须|确保|要求|风格|语气/.test(text)) score += 15;
+  if (/目标受众|用户|背景|场景|平台|以下/.test(text)) score += 15;
+  return Math.min(score, 100);
+}
+
+// ===== Conflict Detection =====
+function checkConflicts() {
+  var conflicts = [];
+  var ids = assembled.map(function(a) { return a.blockId; });
+  // Check pairs
+  CONFLICT_PAIRS.forEach(function(cp) {
+    if (ids.indexOf(cp.a) !== -1 && ids.indexOf(cp.b) !== -1) {
+      conflicts.push({ a: cp.a, b: cp.b, reason: cp.reason });
+    }
+  });
+  // Check solo categories (only one block per category)
+  SOLO_CATEGORIES.forEach(function(catId) {
+    var catBlocks = assembled.filter(function(a) { return a.categoryId === catId; });
+    if (catBlocks.length > 1) {
+      conflicts.push({
+        a: catBlocks[0].blockId, b: catBlocks[1].blockId,
+        reason: catId === 'format' ? '格式冲突：建议只选一种输出格式' : '示例冲突：建议只选一种示例'
+      });
+    }
+  });
+  return conflicts;
+}
+
+function getConflictForBlock(blockId) {
+  var conflicts = checkConflicts();
+  for (var i = 0; i < conflicts.length; i++) {
+    if (conflicts[i].a === blockId || conflicts[i].b === blockId) return conflicts[i];
+  }
+  return null;
+}
+
+// ===== Block Add / Remove =====
 function addBlock(catId, blockId) {
   var cat = CATEGORIES.find(function(c) { return c.id === catId; });
   if (!cat) return;
   var block = cat.blocks.find(function(b) { return b.id === blockId; });
   if (!block) return;
+  if (currentMode === 'quick') {
+    // Append block content to quick input
+    var content = block.content || '';
+    if (content) {
+      quickText = quickText ? quickText + '\n\n' + content : content;
+      var qi = document.getElementById('quickInput');
+      if (qi) qi.value = quickText;
+      document.getElementById('assemblyCount').textContent = quickText.length + ' 字';
+      updateQuickScore();
+      renderPrompt();
+    }
+    return;
+  }
   assembled.push({ blockId: blockId, categoryId: catId, block: block });
   renderAssembly();
   renderPrompt();
@@ -631,21 +668,27 @@ function removeBlock(index) {
 function moveBlock(index, dir) {
   var ni = index + dir;
   if (ni < 0 || ni >= assembled.length) return;
-  var tmp = assembled[index];
-  assembled[index] = assembled[ni];
-  assembled[ni] = tmp;
-  renderAssembly();
-  renderPrompt();
+  var tmp = assembled[index]; assembled[index] = assembled[ni]; assembled[ni] = tmp;
+  renderAssembly(); renderPrompt();
 }
 
-function clearAssembly() {
-  assembled = [];
-  renderAssembly();
-  renderPrompt();
+function clearAll() {
+  if (currentMode === 'quick') {
+    quickText = '';
+    var qi = document.getElementById('quickInput');
+    if (qi) qi.value = '';
+    document.getElementById('assemblyCount').textContent = '0 字';
+    updateQuickScore();
+    renderPrompt();
+  } else {
+    assembled = [];
+    renderAssembly();
+    renderPrompt();
+  }
 }
 
 function resetAll() {
-  clearAssembly();
+  clearAll();
   document.getElementById('promptPreview').className = 'prompt-preview empty';
   document.getElementById('promptPreview').textContent = '从左侧选择积木，你的Prompt会在这里实时生成...';
   document.getElementById('copyBtn').disabled = true;
@@ -654,62 +697,92 @@ function resetAll() {
 function loadPreset(presetId) {
   var preset = PRESETS.find(function(p) { return p.id === presetId; });
   if (!preset) return;
-  assembled = [];
-  for (var i = 0; i < preset.blocks.length; i++) {
-    var found = findBlock(preset.blocks[i]);
-    if (found) assembled.push({ blockId: preset.blocks[i], categoryId: found.category.id, block: found.block });
+  if (currentMode === 'quick') {
+    // Load preset as text into quick input
+    var parts = [];
+    for (var i = 0; i < preset.blocks.length; i++) {
+      var found = findBlock(preset.blocks[i]);
+      if (found && found.block.content) parts.push(found.block.content);
+    }
+    quickText = parts.join('\n\n');
+    var qi = document.getElementById('quickInput');
+    if (qi) qi.value = quickText;
+    document.getElementById('assemblyCount').textContent = quickText.length + ' 字';
+    updateQuickScore();
+    renderPrompt();
+  } else {
+    assembled = [];
+    for (var i = 0; i < preset.blocks.length; i++) {
+      var found = findBlock(preset.blocks[i]);
+      if (found) assembled.push({ blockId: preset.blocks[i], categoryId: found.category.id, block: found.block });
+    }
+    renderAssembly();
+    renderPrompt();
   }
-  renderAssembly();
-  renderPrompt();
 }
 
 function renderAssembly() {
   var el = document.getElementById('assemblyArea');
   var countEl = document.getElementById('assemblyCount');
+  if (currentMode === 'quick') { renderCenterPanel(); return; }
   countEl.textContent = assembled.length + ' 个积木';
   if (assembled.length === 0) {
-    el.innerHTML = '<div class="assembly-empty"><div class="icon">🧱</div><div class="text">从左侧选择积木开始拼装</div><div class="hint">或点击顶部预设模板一键加载</div></div>';
+    el.innerHTML = '<div class="assembly-empty"><div class="icon">🧱</div><div class="text">从左侧选择积木开始拼装</div><div class="hint">或点击顶部预设模板一键加载</div><div class="hint" style="margin-top:8px;color:#6366f1;">⚡ 简单提问？点右上角切换"快捷模式"直接打字</div></div>';
     return;
   }
-  el.innerHTML = assembled.map(function(item, i) {
+  var conflicts = checkConflicts();
+  var html = '';
+  // Conflict banners
+  if (conflicts.length > 0) {
+    conflicts.forEach(function(c) {
+      html += '<div class="conflict-banner">⚠️ ' + c.reason + '</div>';
+    });
+  }
+  // Redundancy warning
+  if (assembled.length > 6) {
+    html += '<div class="redundancy-banner">💡 已选 ' + assembled.length + ' 个积木，积木过多可能导致提示词冗余、AI注意力分散。建议精简到4-6个核心积木。</div>';
+  }
+  // Assembled blocks
+  assembled.forEach(function(item, i) {
     var cat = CATEGORIES.find(function(c) { return c.id === item.categoryId; });
     var color = cat ? cat.color : '#6366f1';
     var icon = cat ? cat.icon : '🔧';
-    return '<div class="assembled-block" style="--accent:' + color + '">' +
+    var conflict = getConflictForBlock(item.blockId);
+    html += '<div class="assembled-block' + (conflict ? ' conflict' : '') + '" style="--accent:' + color + '">' +
       '<div class="order" style="background:' + color + '">' + (i + 1) + '</div>' +
       '<div class="body">' +
       '<div class="label">' + icon + ' ' + (cat ? cat.name : '') + ' - ' + item.block.title + '</div>' +
       '<div class="content">' + (item.block.content || '(无内容，仅作占位)') + '</div>' +
+      (conflict ? '<div class="conflict-tag">⚠️ ' + conflict.reason + '</div>' : '') +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:2px">' +
       '<button class="move-btn' + (i === 0 ? ' disabled' : '') + '" onclick="moveBlock(' + i + ',-1)" title="上移">▲</button>' +
       '<button class="move-btn' + (i === assembled.length - 1 ? ' disabled' : '') + '" onclick="moveBlock(' + i + ',1)" title="下移">▼</button>' +
       '<button class="remove-btn" onclick="removeBlock(' + i + ')" title="删除">✕</button>' +
-      '</div>' +
-      '</div>';
-  }).join('');
+      '</div></div>';
+  });
+  el.innerHTML = html;
 }
 
 function renderPrompt() {
   var el = document.getElementById('promptPreview');
   var copyBtn = document.getElementById('copyBtn');
-  if (assembled.length === 0) {
+  var text = '';
+  if (currentMode === 'quick') {
+    text = quickText.trim();
+  } else {
+    var parts = assembled.map(function(item) { return item.block.content; }).filter(function(c) { return c && c.trim(); });
+    text = parts.join('\n\n');
+  }
+  if (!text) {
     el.className = 'prompt-preview empty';
-    el.textContent = '从左侧选择积木，你的Prompt会在这里实时生成...';
+    el.textContent = currentMode === 'quick' ? '在中间输入框打字，你的Prompt会在这里实时生成...' : '从左侧选择积木，你的Prompt会在这里实时生成...';
     copyBtn.disabled = true;
     return;
   }
-  var parts = assembled.map(function(item) { return item.block.content; }).filter(function(c) { return c && c.trim(); });
-  if (parts.length === 0) {
-    el.className = 'prompt-preview empty';
-    el.textContent = '当前所有积木内容为空，请添加有内容的积木...';
-    copyBtn.disabled = true;
-    return;
-  }
-  var prompt = parts.join('\n\n');
   el.className = 'prompt-preview';
-  el.textContent = prompt;
-  copyBtn.disabled = !prompt;
+  el.textContent = text;
+  copyBtn.disabled = false;
 }
 
 function copyPrompt() {
@@ -719,9 +792,7 @@ function copyPrompt() {
     showToast('已复制到剪贴板！');
   }).catch(function() {
     var ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
+    ta.value = text; document.body.appendChild(ta); ta.select();
     try { document.execCommand('copy'); showToast('已复制到剪贴板！'); } catch(e) { showToast('复制失败，请手动复制'); }
     document.body.removeChild(ta);
   });
@@ -732,6 +803,10 @@ function showToast(msg) {
   el.textContent = msg;
   el.classList.add('show');
   setTimeout(function() { el.classList.remove('show'); }, 2000);
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 init();
