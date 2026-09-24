@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>积木推荐器 - PromptBlocks</title>
+<style>
+  :root {
+    --bg-main: #0f0f1a;
+    --bg-card: #1a1a2e;
+    --bg-hover: #222240;
+    --text-main: #e0e0e8;
+    --text-muted: #8888a0;
+    --border: #2a2a3e;
+    --accent: #6366f1;
+    --accent-pink: #ec4899;
+    --good: #10b981;
+    --warn: #f59e0b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+  }
+  header {
+    padding: 16px 24px; background: var(--bg-card); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .logo span { font-size: 13px; color: var(--text-muted); font-weight: 400; -webkit-text-fill-color: var(--text-muted); }
+  .back-link { margin-left: auto; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); color: var(--text-muted); font-size: 13px; text-decoration: none; cursor: pointer; transition: all 0.2s; }
+  .back-link:hover { border-color: var(--accent); color: #a5b4fc; }
+  .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+  .section { margin-bottom: 24px; }
+  .section-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+  .input-area { width: 100%; min-height: 100px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text-main); font-size: 14px; line-height: 1.6; resize: vertical; font-family: inherit; outline: none; transition: border-color 0.2s; }
+  .input-area:focus { border-color: var(--accent); }
+  .input-area::placeholder { color: var(--text-muted); }
+  .btn-row { display: flex; gap: 12px; margin-top: 12px; }
+  .btn { padding: 12px 28px; border-radius: 10px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary { background: var(--bg-hover); color: var(--text-main); }
+  .btn-secondary:hover { background: #2d2d4d; }
+  .results { display: none; }
+  .results.show { display: block; }
+  .rec-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .rec-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+    display: flex; align-items: flex-start; gap: 12px; transition: border-color 0.2s;
+  }
+  .rec-card:hover { border-color: var(--accent); }
+  .rec-rank { font-size: 20px; font-weight: 800; color: var(--accent); min-width: 28px; text-align: center; }
+  .rec-info { flex: 1; }
+  .rec-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .rec-cat { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .rec-reason { font-size: 13px; color: #a5b4fc; }
+  .rec-content { font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; max-height: 60px; overflow: hidden; }
+  .rec-tags { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .rec-tag { font-size: 11px; padding: 2px 8px; border-radius: 8px; background: rgba(99,102,241,0.1); color: #818cf8; }
+  .rec-score { font-size: 13px; font-weight: 700; color: var(--good); min-width: 40px; text-align: right; }
+  .prompt-output {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+    font-size: 14px; line-height: 1.7; white-space: pre-wrap; word-break: break-word;
+    max-height: 400px; overflow-y: auto; margin-bottom: 12px;
+  }
+  .copy-btn { padding: 10px 24px; border-radius: 10px; border: 1px solid var(--accent); background: transparent; color: #a5b4fc; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .copy-btn:hover { background: rgba(99,102,241,0.1); }
+  .copy-btn.copied { background: var(--good); color: white; border-color: var(--good); }
+  .empty-hint { text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
+  .examples { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 20px; }
+  .examples-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .example-item { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+  .example-item:hover { border-color: var(--accent); color: var(--text-main); }
+  @media (max-width: 768px) { .container { padding: 16px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">PromptBlocks <span>积木推荐器</span></div>
+  <a class="back-link" href="index.html">← 返回积木库</a>
+</header>
+
+<div class="container">
+  <div class="section">
+    <div class="section-title">描述你的任务，AI 帮你选积木</div>
+    <textarea class="input-area" id="taskInput" placeholder="用一句话描述你想让 AI 做什么...&#10;&#10;例如：帮我写一篇小红书种草文案，推荐一款气泡水，目标受众是年轻女性"></textarea>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="recommend()">🧩 推荐积木组合</button>
+      <button class="btn btn-secondary" onclick="clearAll()">清空</button>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="rec-grid" id="recGrid"></div>
+    <div class="section-title">拼装结果</div>
+    <div class="prompt-output" id="promptOutput"></div>
+    <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">📋 复制 Prompt</button>
+  </div>
+
+  <div class="examples" id="examples">
+    <div class="examples-title">不知道怎么描述？试试这些</div>
+    <div class="example-item" onclick="loadExample(0)">帮我写一篇小红书种草文案，推荐一款气泡水，目标受众是年轻女性</div>
+    <div class="example-item" onclick="loadExample(1)">分析一份合同的风险条款，用表格列出风险点和修改建议</div>
+    <div class="example-item" onclick="loadExample(2)">给700个销售线索按意向度打分排序，帮我筛选高价值客户</div>
+    <div class="example-item" onclick="loadExample(3)">写一段Python代码，实现REST API，要干净有注释</div>
+    <div class="example-item" onclick="loadExample(4)">审查一段AI生成内容的质量，从准确性、完整性、简洁性打分</div>
+  </div>
+</div>
+
+<script>
+var BLOCKS = [
+  { id:'role-marketer', cat:'角色', title:'营销专家', tags:['营销','推广','文案','品牌','广告','市场'], content:'你是一位有10年经验的数字营销专家，精通品牌策划、内容营销和增长黑客。' },
+  { id:'role-copywriter', cat:'角色', title:'文案大师', tags:['文案','写作','标题','卖点','种草','宣传'], content:'你是一位顶尖文案大师，擅长用文字打动人心，精通各种文风和平台调性。' },
+  { id:'role-programmer', cat:'角色', title:'程序员', tags:['代码','编程','Python','Java','API','程序','开发','REST'], content:'你是一位资深全栈工程师，精通多种编程语言和框架，代码干净、注释清晰。' },
+  { id:'role-product-manager', cat:'角色', title:'产品经理', tags:['产品','需求','功能','用户','迭代','PRD'], content:'你是一位经验丰富的产品经理，擅长需求分析、用户研究和产品规划。' },
+  { id:'role-designer', cat:'角色', title:'设计师', tags:['设计','UI','UX','界面','视觉','排版'], content:'你是一位资深设计师，精通视觉设计和交互设计，追求美学与可用性的平衡。' },
+  { id:'role-teacher', cat:'角色', title:'教师', tags:['教学','课程','讲解','知识','教育','学习'], content:'你是一位耐心细致的教师，擅长将复杂概念用简单易懂的方式讲解清楚。' },
+  { id:'role-consultant', cat:'角色', title:'商业顾问', tags:['商业','战略','咨询','分析','决策','规划'], content:'你是一位资深商业顾问，擅长战略分析、市场洞察和商业模式设计。' },
+  { id:'role-writer', cat:'角色', title:'作家', tags:['写作','故事','小说','创意','文学','散文'], content:'你是一位才华横溢的作家，文笔优美，擅长叙事结构和情感表达。' },
+  { id:'role-data-analyst', cat:'角色', title:'数据分析师', tags:['数据','分析','统计','报表','图表','洞察'], content:'你是一位专业数据分析师，擅长从数据中发现洞察，用图表讲好故事。' },
+  { id:'task-write-article', cat:'任务', title:'写文章', tags:['文章','写','内容','博客','推文'], content:'请撰写一篇文章，确保结构清晰、论点有力、语言流畅。' },
+  { id:'task-write-copy', cat:'任务', title:'写文案', tags:['文案','种草','标题','卖点','宣传','推广'], content:'请撰写一套营销文案，包含标题、卖点提炼和场景化描述。' },
+  { id:'task-summarize', cat:'任务', title:'总结提炼', tags:['总结','提炼','摘要','概括','压缩'], content:'请将以下内容提炼为核心要点，保留关键信息，去除冗余。' },
+  { id:'task-translate', cat:'任务', title:'翻译', tags:['翻译','英文','中文','日文','语言'], content:'请将以下内容翻译为目标语言，保持原意和语气，确保自然流畅。' },
+  { id:'task-analyze', cat:'任务', title:'分析', tags:['分析','评估','审查','诊断','拆解','风险'], content:'请对以下内容进行深度分析，识别关键问题、风险点和改进机会。' },
+  { id:'task-code', cat:'任务', title:'写代码', tags:['代码','编程','Python','Java','API','程序','开发','REST'], content:'请根据以下需求编写代码，确保代码干净、有注释、可直接运行。' },
+  { id:'task-brainstorm', cat:'任务', title:'头脑风暴', tags:['创意','想法','头脑风暴','灵感','点子'], content:'请围绕以下主题进行头脑风暴，给出至少10个创意方向，不设限。' },
+  { id:'task-plan', cat:'任务', title:'制定计划', tags:['计划','规划','方案','步骤','排期','策略'], content:'请制定一份详细的执行计划，包含目标、步骤、时间线和风险预案。' },
+  { id:'ctx-audience-general', cat:'上下文', title:'大众受众', tags:['大众','普通人','消费者','用户','受众','女性','年轻'], content:'目标受众：大众消费者，18-45岁，非专业背景。' },
+  { id:'ctx-audience-professional', cat:'上下文', title:'专业受众', tags:['专业','行业','专家','B端','企业'], content:'目标受众：行业专业人士，需要深度和专业性。' },
+  { id:'ctx-platform-xhs', cat:'上下文', title:'小红书平台', tags:['小红书','种草','笔记','xhs','红书'], content:'发布平台：小红书。风格：真实、生活化、有emoji、口语化。' },
+  { id:'ctx-platform-douyin', cat:'上下文', title:'抖音平台', tags:['抖音','短视频','tiktok','视频'], content:'发布平台：抖音。风格：节奏快、钩子强、口语化、适合短视频。' },
+  { id:'ctx-platform-wechat', cat:'上下文', title:'公众号平台', tags:['公众号','微信','文章','推文'], content:'发布平台：微信公众号。风格：深度、有理有据、适合长文阅读。' },
+  { id:'ctx-business', cat:'上下文', title:'商业背景', tags:['商业','公司','企业','B端','市场','竞争'], content:'业务背景：处于竞争激烈的市场环境中，需要差异化策略。' },
+  { id:'ctx-education', cat:'上下文', title:'学习场景', tags:['学习','教学','课程','知识','教育','考试'], content:'使用场景：教学/学习场景，需要循序渐进、由浅入深。' },
+  { id:'con-short', cat:'约束', title:'简洁要求', tags:['简洁','精简','短','控制字数','300字'], content:'输出控制在300字以内，言简意赅，不啰嗦。' },
+  { id:'con-long', cat:'约束', title:'深度长文', tags:['深度','长文','详细','展开','全面'], content:'需要深度分析，展开论述，不少于1000字。' },
+  { id:'con-style-professional', cat:'约束', title:'专业风格', tags:['专业','正式','严谨','商务'], content:'风格：专业、严谨、客观，使用行业术语。' },
+  { id:'con-style-casual', cat:'约束', title:'轻松风格', tags:['轻松','活泼','口语','有趣','日常'], content:'风格：轻松、活泼、口语化，像和朋友聊天。' },
+  { id:'con-no-jargon', cat:'约束', title:'禁止术语', tags:['通俗','易懂','大白话','不要术语'], content:'禁止使用专业术语，用大白话解释，确保普通人能看懂。' },
+  { id:'con-step-by-step', cat:'约束', title:'分步骤', tags:['步骤','分步','流程','清单','逐条','表格','风险点','修改'], content:'请分步骤/逐条列出，用编号标注，清晰易跟。' },
+  { id:'con-positive', cat:'约束', title:'正面指令', tags:['正面','积极','应该','建议'], content:'用正面指令（"做什么"而非"不做什么"），避免否定句式。' },
+  { id:'fmt-markdown', cat:'格式', title:'Markdown格式', tags:['Markdown','格式','标题','加粗'], content:'输出格式：Markdown，使用标题、列表和加粗。' },
+  { id:'fmt-table', cat:'格式', title:'表格格式', tags:['表格','表','列','行','风险点','排序'], content:'输出格式：用表格呈现，列清晰。' },
+  { id:'fmt-json', cat:'格式', title:'JSON格式', tags:['JSON','数据','接口','程序'], content:'输出格式：JSON，字段名用英文，确保可解析。' },
+  { id:'fmt-list', cat:'格式', title:'列表格式', tags:['列表','清单','条目','要点'], content:'输出格式：无序列表，每条一句话。' },
+  { id:'fmt-dialogue', cat:'格式', title:'对话格式', tags:['对话','聊天','问答','角色扮演'], content:'输出格式：对话体，A/B角色交替发言。' },
+  { id:'fmt-template', cat:'格式', title:'模板格式', tags:['模板','填空','框架','结构'], content:'输出格式：模板填空式，用[占位符]标注可替换部分。' },
+  { id:'ex-none', cat:'示例', title:'不需要示例', tags:['无需','不需要','示例'], content:'' },
+  { id:'ex-style', cat:'示例', title:'风格示例', tags:['风格','语气','参考','模仿'], content:'参考风格：口语化、有温度、像朋友推荐。' },
+  { id:'ex-structure', cat:'示例', title:'结构示例', tags:['结构','框架','模板','参考'], content:'参考结构：标题→引子→3个卖点→场景→CTA。' },
+  { id:'ex-tone', cat:'示例', title:'语气示例', tags:['语气','语调','口吻'], content:'参考语气：热情但不夸张,真诚推荐。' },
+  { id:'ind-lawyer', cat:'行业', title:'合同审查律师', tags:['合同','法律','律师','条款','风险','合规','审查'], content:'你是一位资深合同审查律师，精通合同法，擅长识别风险条款和谈判修改。' },
+  { id:'ind-doctor', cat:'行业', title:'全科医生', tags:['医疗','健康','医生','症状','诊断','疾病'], content:'你是一位全科医生，擅长常见病诊断、健康咨询和就医建议。' },
+  { id:'ind-cpa', cat:'行业', title:'注册会计师', tags:['会计','财务','审计','税务','报表','注会'], content:'你是一位注册会计师，精通财务报表分析、税务筹划和审计。' },
+  { id:'ind-ecommerce', cat:'行业', title:'电商运营专家', tags:['电商','淘宝','店铺','运营','商品','转化'], content:'你是一位电商运营专家，精通店铺运营、选品策略和转化率优化。' },
+  { id:'ind-hr', cat:'行业', title:'HR总监', tags:['HR','人力','招聘','绩效','员工','简历'], content:'你是一位资深HR总监，擅长招聘面试、绩效管理和组织发展。' },
+  { id:'ind-course-designer', cat:'行业', title:'课程设计师', tags:['课程','教学设计','教育','培训','学习'], content:'你是一位课程设计师，擅长教学设计、课程开发和学习路径规划。' },
+  { id:'ind-seo', cat:'行业', title:'SEO专家', tags:['SEO','搜索引擎','优化','关键词','排名','流量'], content:'你是一位SEO专家，精通搜索引擎优化、关键词策略和内容结构。' },
+  { id:'ind-therapist', cat:'行业', title:'心理咨询师', tags:['心理','咨询','情绪','压力','心理健康'], content:'你是一位心理咨询师，擅长倾听、情绪疏导和心理健康指导。' },
+  { id:'ind-pm-construction', cat:'行业', title:'项目经理（工程）', tags:['工程','项目','施工','建筑','项目经理'], content:'你是一位工程项目经理，精通施工管理、进度控制和成本控制。' },
+  { id:'ind-legal-compliance', cat:'行业', title:'合规专员', tags:['合规','法务','数据安全','隐私','审计'], content:'你是一位企业合规专员，熟悉数据安全法、个人信息保护法等法规。' },
+  { id:'dec-route', cat:'决策', title:'工具路由决策', tags:['路由','决策','工具选择','调用','分流','选择'], content:'根据以下用户输入，判断应该调用哪个工具：1）知识库检索 2）代码执行 3）数据库查询 4）网络搜索 5）直接回答。给出选择结果和置信度。' },
+  { id:'dec-priority', cat:'决策', title:'优先级评分', tags:['优先级','评分','排序','紧急','线索','客户','筛选','打分','意向'], content:'对以下每条任务或消息，按紧急程度评分（1-5级），给出评分和处置建议。' },
+  { id:'dec-safety', cat:'决策', title:'安全护栏判断', tags:['安全','护栏','风险','审核','拦截','检测'], content:'判断以下内容是否包含风险：敏感信息、有害指令、越权请求、注入攻击。' },
+  { id:'dec-quality', cat:'决策', title:'输出质量验收', tags:['质量','验收','评分','准确性','完整性','审查','质检'], content:'对以下AI生成内容，从5个维度评分（各0-100）：准确性、完整性、相关性、简洁性、可执行性。' },
+  { id:'dec-compress', cat:'决策', title:'上下文压缩决策', tags:['压缩','上下文','裁剪','精简','丢弃'], content:'分析以下对话或文档，判断哪些信息可以丢弃，哪些必须保留。' },
+  { id:'dec-content-score', cat:'决策', title:'内容质量评分', tags:['内容','评分','质量','hook','病毒','原创'], content:'对以下内容，从8个维度评分（各1-5分）：hook吸引力、信息密度、结构清晰度等。' },
+  { id:'dec-fraud', cat:'决策', title:'风险判断', tags:['风险','欺诈','风控','交易','安全','检测'], content:'分析以下交易或行为，判断风险等级（低/中/高/极高），识别风险点。' },
+];
+
+var EXAMPLES = [
+  '帮我写一篇小红书种草文案，推荐一款气泡水，目标受众是年轻女性',
+  '分析一份合同的风险条款，用表格列出风险点和修改建议',
+  '给700个销售线索按意向度打分排序，帮我筛选高价值客户',
+  '写一段Python代码，实现REST API，要干净有注释',
+  '审查一段AI生成内容的质量，从准确性、完整性、简洁性打分',
+];
+
+function loadExample(idx) {
+  document.getElementById('taskInput').value = EXAMPLES[idx];
+  document.getElementById('results').classList.remove('show');
+}
+
+function clearAll() {
+  document.getElementById('taskInput').value = '';
+  document.getElementById('results').classList.remove('show');
+}
+
+function scoreBlock(block, input) {
+  var score = 0;
+  var reasons = [];
+  var inputLower = input.toLowerCase();
+
+  // Check tag matches
+  block.tags.forEach(function(tag) {
+    if (input.indexOf(tag) !== -1 || inputLower.indexOf(tag.toLowerCase()) !== -1) {
+      score += 15;
+      reasons.push('关键词匹配: ' + tag);
+    }
+  });
+
+  // Check title matches
+  var titleChars = block.title.split('');
+  var titleMatchCount = 0;
+  titleChars.forEach(function(ch) {
+    if (ch.length > 1 && input.indexOf(ch) !== -1) titleMatchCount++;
+  });
+  if (titleMatchCount > 0) {
+    score += titleMatchCount * 8;
+    if (titleMatchCount >= 2) reasons.push('标题相关');
+  }
+
+  // Category priority: always try to have one role + one task
+  if (block.cat === '角色' && score > 0) score += 5;
+  if (block.cat === '任务' && score > 0) score += 5;
+
+  // Special: if no role matched but task matched, give a default role a small score
+  if (block.cat === '角色' && score === 0 && /写|做|帮我|请|分析|总结/.test(input)) {
+    score += 3;
+  }
+
+  return { score: score, reasons: reasons };
+}
+
+function recommend() {
+  var input = document.getElementById('taskInput').value.trim();
+  if (!input) { alert('请先描述你的任务'); return; }
+
+  // Score all blocks
+  var scored = BLOCKS.map(function(b) {
+    var result = scoreBlock(b, input);
+    return { block: b, score: result.score, reasons: result.reasons };
+  }).filter(function(s) { return s.score > 0; });
+
+  // Sort by score descending
+  scored.sort(function(a, b) { return b.score - a.score; });
+
+  // Ensure category diversity: pick top from each category, then fill
+  var selected = [];
+  var usedCats = {};
+  var usedIds = {};
+
+  // First pass: top block per category
+  scored.forEach(function(s) {
+    if (!usedCats[s.block.cat] && selected.length < 6) {
+      selected.push(s);
+      usedCats[s.block.cat] = true;
+      usedIds[s.block.id] = true;
+    }
+  });
+
+  // Second pass: fill remaining slots
+  scored.forEach(function(s) {
+    if (!usedIds[s.block.id] && selected.length < 6) {
+      selected.push(s);
+      usedIds[s.block.id] = true;
+    }
+  });
+
+  // If we still don't have 6, add default blocks
+  if (selected.length < 3) {
+    // Add a default role + task + format
+    var defaults = [
+      BLOCKS.find(function(b) { return b.id === 'role-marketer'; }),
+      BLOCKS.find(function(b) { return b.id === 'task-write-article'; }),
+      BLOCKS.find(function(b) { return b.id === 'fmt-markdown'; }),
+      BLOCKS.find(function(b) { return b.id === 'con-step-by-step'; }),
+    ];
+    defaults.forEach(function(b) {
+      if (b && !usedIds[b.id] && selected.length < 6) {
+        selected.push({ block: b, score: 0, reasons: ['默认推荐'] });
+        usedIds[b.id] = true;
+      }
+    });
+  }
+
+  // Render
+  var grid = document.getElementById('recGrid');
+  grid.innerHTML = selected.map(function(s, i) {
+    var b = s.block;
+    var reasonText = s.reasons.length > 0 ? s.reasons.join('、') : '综合匹配';
+    var tags = b.tags.slice(0, 4).map(function(t) { return '<span class="rec-tag">' + t + '</span>'; }).join('');
+    return '<div class="rec-card">' +
+      '<div class="rec-rank">' + (i+1) + '</div>' +
+      '<div class="rec-info">' +
+      '<div class="rec-title">' + b.title + '</div>' +
+      '<div class="rec-cat">' + b.cat + '</div>' +
+      '<div class="rec-reason">匹配理由：' + reasonText + '</div>' +
+      '<div class="rec-content">' + (b.content || '（无固定内容）') + '</div>' +
+      '<div class="rec-tags">' + tags + '</div>' +
+      '</div>' +
+      '<div class="rec-score">' + s.score + '分</div>' +
+      '</div>';
+  }).join('');
+
+  // Assemble prompt
+  var promptParts = selected.filter(function(s) { return s.block.content; }).map(function(s) { return s.block.content; });
+  var promptText = promptParts.join('\n\n');
+  document.getElementById('promptOutput').textContent = promptText;
+
+  document.getElementById('results').classList.add('show');
+}
+
+function copyPrompt() {
+  var text = document.getElementById('promptOutput').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ 已复制';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = '📋 复制 Prompt'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

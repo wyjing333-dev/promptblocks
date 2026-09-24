@@ -142,6 +142,16 @@
   .dim-bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; margin-bottom: 8px; }
   .dim-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
   .dim-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .dim-confidence { font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 600; margin-left: auto; }
+  .conf-high { background: rgba(16,185,129,0.15); color: #10b981; }
+  .conf-mid { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .conf-low { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .dim-card.low-score { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.05); }
+  .block-rec { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .block-rec-label { font-size: 12px; color: var(--text-muted); width: 100%; margin-bottom: 2px; }
+  .block-chip { font-size: 12px; padding: 3px 10px; border-radius: 12px; background: rgba(99,102,241,0.12); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.25); cursor: default; }
+  .block-chip a { color: #a5b4fc; text-decoration: none; }
+  .block-chip:hover { background: rgba(99,102,241,0.2); }
   .suggestions {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -349,10 +359,39 @@ function generateSuggestions(text, scores) {
     sugs.push({ type: 'warn', text: '可执行性不足。确保 AI 看完就能直接干活——明确输出什么、什么格式、多少数量。' });
   }
   if (sugs.length === 0) {
-    sugs.push({ type: 'good', text: '这个 Prompt 结构完整、指令清晰，可以直接使用。你可以在 PromptBlocks 积木库中找到更多积木来进一步优化。' });
+    sugs.push({ type: 'good', text: '✅ 这个 Prompt 结构完整、指令清晰，可以直接使用！' });
   }
-  sugs.push({ type: 'info', text: '小贴士：用 PromptBlocks 的积木拼装功能，可以快速组合角色+任务+格式+约束，自动生成高质量 Prompt。' });
+  sugs.push({ type: 'info', text: '💡 用 PromptBlocks 积木拼装功能，可以快速组合角色+任务+格式+约束，自动生成高质量 Prompt。低分维度上方已标注推荐积木，点击即可跳转。' });
   return sugs;
+}
+
+function getBlockRecommendation(dimKey, score) {
+  if (score >= 70) return null;
+  var recs = {
+    clarity: { label: '建议添加', blocks: [
+      { name: '分步骤 (con-step-by-step)', url: 'index.html' },
+      { name: '正面指令 (con-positive)', url: 'index.html' }
+    ]},
+    completeness: { label: '你的 Prompt 缺少以下要素，建议添加', blocks: [
+      { name: '角色定义 (role-*)', url: 'index.html' },
+      { name: '格式约束 (fmt-*)', url: 'index.html' },
+      { name: '风格约束 (con-style-*)', url: 'index.html' }
+    ]},
+    actionability: { label: '可执行性不足，建议添加', blocks: [
+      { name: '任务指令 (task-*)', url: 'index.html' },
+      { name: '输出格式 (fmt-*)', url: 'index.html' }
+    ]},
+    conciseness: { label: '简洁性待优化，建议添加', blocks: [
+      { name: '简洁要求 (con-short)', url: 'index.html' },
+      { name: '上下文压缩 (dec-compress)', url: 'index.html' }
+    ]},
+    specificity: { label: '不够具体，建议添加', blocks: [
+      { name: '受众定位 (ctx-audience-*)', url: 'index.html' },
+      { name: '平台适配 (ctx-platform-*)', url: 'index.html' },
+      { name: '风格示例 (ex-style)', url: 'index.html' }
+    ]}
+  };
+  return recs[dimKey] || null;
 }
 
 function renderResults(overall, scores, suggestions) {
@@ -365,24 +404,37 @@ function renderResults(overall, scores, suggestions) {
     '<div class="score-grade ' + gradeClass + '">' + gradeText + '</div>';
 
   var dims = [
-    { icon: '🎯', name: '清晰度', score: scores.clarity, desc: '指令是否清晰明确，AI 能否一眼看懂要做什么', color: '#6366f1' },
-    { icon: '🧩', name: '完整性', score: scores.completeness, desc: '是否包含角色、任务、上下文、格式、约束等关键要素', color: '#ec4899' },
-    { icon: '⚡', name: '可执行性', score: scores.actionability, desc: 'AI 看完能否直接干活，输出要求是否明确', color: '#10b981' },
-    { icon: '✂️', name: '简洁性', score: scores.conciseness, desc: '长度是否适中，没有冗余也没有过短', color: '#f59e0b' },
-    { icon: '🔬', name: '具体性', score: scores.specificity, desc: '是否有具体的数量、受众、平台、风格等细节', color: '#8b5cf6' },
+    { key: 'clarity', icon: '🎯', name: '清晰度', score: scores.clarity, desc: '指令是否清晰明确，AI 能否一眼看懂要做什么', color: '#6366f1' },
+    { key: 'completeness', icon: '🧩', name: '完整性', score: scores.completeness, desc: '是否包含角色、任务、上下文、格式、约束等关键要素', color: '#ec4899' },
+    { key: 'actionability', icon: '⚡', name: '可执行性', score: scores.actionability, desc: 'AI 看完能否直接干活，输出要求是否明确', color: '#10b981' },
+    { key: 'conciseness', icon: '✂️', name: '简洁性', score: scores.conciseness, desc: '长度是否适中，没有冗余也没有过短', color: '#f59e0b' },
+    { key: 'specificity', icon: '🔬', name: '具体性', score: scores.specificity, desc: '是否有具体的数量、受众、平台、风格等细节', color: '#8b5cf6' },
   ];
 
   var dimsEl = document.getElementById('dimensions');
   dimsEl.innerHTML = dims.map(function(d) {
     var barColor = d.score >= 80 ? '#10b981' : d.score >= 60 ? '#f59e0b' : '#ef4444';
-    return '<div class="dim-card">' +
+    var confClass = d.score >= 80 ? 'conf-high' : d.score >= 60 ? 'conf-mid' : 'conf-low';
+    var confText = d.score >= 80 ? '高置信' : d.score >= 60 ? '中置信' : '低置信';
+    var lowClass = d.score < 60 ? ' low-score' : '';
+    var rec = getBlockRecommendation(d.key, d.score);
+    var recHtml = '';
+    if (rec) {
+      var chips = rec.blocks.map(function(b) {
+        return '<span class="block-chip"><a href="' + b.url + '">' + b.name + '</a></span>';
+      }).join('');
+      recHtml = '<div class="block-rec"><div class="block-rec-label">💡 ' + rec.label + '</div>' + chips + '</div>';
+    }
+    return '<div class="dim-card' + lowClass + '">' +
       '<div class="dim-header">' +
       '<span class="dim-icon">' + d.icon + '</span>' +
       '<span class="dim-name">' + d.name + '</span>' +
+      '<span class="dim-confidence ' + confClass + '">' + confText + '</span>' +
       '<span class="dim-score" style="color:' + barColor + '">' + d.score + '</span>' +
       '</div>' +
       '<div class="dim-bar"><div class="dim-bar-fill" style="width:' + d.score + '%;background:' + barColor + ';"></div></div>' +
       '<div class="dim-desc">' + d.desc + '</div>' +
+      recHtml +
       '</div>';
   }).join('');
 

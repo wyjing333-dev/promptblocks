@@ -201,6 +201,14 @@
   }
   .quick-score-mini .qscore-bar { height: 4px; border-radius: 2px; background: var(--border); margin-top: 6px; overflow: hidden; }
   .quick-score-mini .qscore-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .quick-recs { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .quick-rec-label { font-size: 12px; color: var(--text-muted); }
+  .quick-rec-chip {
+    font-size: 12px; padding: 3px 10px; border-radius: 12px;
+    background: rgba(99,102,241,0.12); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.25);
+    cursor: pointer; transition: all 0.2s; user-select: none;
+  }
+  .quick-rec-chip:hover { background: rgba(99,102,241,0.25); }
   /* Right - Output */
   .output-panel { width: 380px; border-left: 1px solid var(--border); }
   .output-area { flex: 1; overflow-y: auto; padding: 16px; }
@@ -258,6 +266,7 @@
       <button class="mode-btn active" id="modeAssembly" onclick="setMode('assembly')">🧱 拼装</button>
       <button class="mode-btn" id="modeQuick" onclick="setMode('quick')">⚡ 快捷</button>
     </div>
+    <a class="tool-link" href="block-recommender.html">🧩 推荐器</a>
     <a class="tool-link" href="prompt-scorer.html">🔍 评分器</a>
     <a class="submit-btn" href="https://github.com/wyjing333-dev/promptblocks/issues/new?labels=submit-block&template=submit-block.md&title=%E6%8F%90%E4%BA%A4%E6%96%B0%E7%A7%AF%E6%9C%A8" target="_blank">➕ 提交积木</a>
   </div>
@@ -600,24 +609,53 @@ function updateQuickScore() {
   var el = document.getElementById('quickScoreMini');
   if (!el) return;
   if (!quickText.trim()) { el.style.display = 'none'; return; }
-  var score = quickScorePrompt(quickText);
+  var parts = quickScoreParts(quickText);
+  var score = parts.total;
   var color = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
   el.style.display = 'block';
   el.innerHTML = '实时评分：<strong style="color:' + color + '">' + score + '</strong>/100' +
     '<div class="qscore-bar"><div class="qscore-fill" style="width:' + score + '%;background:' + color + ';"></div></div>';
-  if (score < 70) {
-    el.innerHTML += '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);">建议补充角色定义、输出格式、字数约束等要素。可点击左侧积木快速追加。</div>';
+  var recs = [];
+  if (!parts.hasRole) recs.push({ label: '角色', block: 'role-marketer', name: '营销专家', cat: 'role' });
+  if (!parts.hasTask) recs.push({ label: '任务', block: 'task-write-article', name: '写文章', cat: 'task' });
+  if (!parts.hasFormat) recs.push({ label: '格式', block: 'fmt-markdown', name: 'Markdown格式', cat: 'format' });
+  if (!parts.hasConstraint) recs.push({ label: '约束', block: 'con-step-by-step', name: '分步骤', cat: 'constraint' });
+  if (!parts.hasContext) recs.push({ label: '上下文', block: 'ctx-audience-general', name: '大众受众', cat: 'context' });
+  if (recs.length > 0) {
+    var chips = recs.map(function(r) {
+      return '<span class="quick-rec-chip" onclick="quickAddBlock(\'' + r.cat + '\',\'' + r.block + '\')">+ ' + r.label + ': ' + r.name + '</span>';
+    }).join('');
+    el.innerHTML += '<div class="quick-recs"><span class="quick-rec-label">建议补充：</span>' + chips + '</div>';
+  } else {
+    el.innerHTML += '<div style="margin-top:6px;font-size:12px;color:#10b981;">✅ Prompt 结构完整，可以直接使用！</div>';
   }
 }
 
-function quickScorePrompt(text) {
-  var score = 0;
-  if (/你是一|你是|作为一名/.test(text)) score += 25;
-  if (/请写|请分析|请总结|请翻译|请生成|请创建|请设计|请制定|请编写|写一|分析一下/.test(text)) score += 25;
-  if (/格式|Markdown|JSON|表格|列表|字数|字以内|控制在/.test(text)) score += 20;
-  if (/不要|避免|必须|确保|要求|风格|语气/.test(text)) score += 15;
-  if (/目标受众|用户|背景|场景|平台|以下/.test(text)) score += 15;
-  return Math.min(score, 100);
+function quickScoreParts(text) {
+  var hasRole = /你是一|你是|作为一名|作为一位|你扮演/.test(text);
+  var hasTask = /请写|请分析|请总结|请翻译|请生成|请创建|请设计|请制定|请编写|写一|分析一下|总结一下/.test(text);
+  var hasFormat = /格式|Markdown|JSON|表格|列表|字数|字以内|控制在|模板|对话/.test(text);
+  var hasConstraint = /不要|避免|必须|确保|要求|风格|语气|简洁|详细|分步/.test(text);
+  var hasContext = /目标受众|用户|背景|场景|平台|以下|当前|目前/.test(text);
+  var total = 0;
+  if (hasRole) total += 25;
+  if (hasTask) total += 25;
+  if (hasFormat) total += 20;
+  if (hasConstraint) total += 15;
+  if (hasContext) total += 15;
+  return { total: Math.min(total, 100), hasRole: hasRole, hasTask: hasTask, hasFormat: hasFormat, hasConstraint: hasConstraint, hasContext: hasContext };
+}
+
+function quickAddBlock(catId, blockId) {
+  var cat = CATEGORIES.find(function(c) { return c.id === catId; });
+  if (!cat) return;
+  var block = cat.blocks.find(function(b) { return b.id === blockId; });
+  if (!block) return;
+  assembled.push({ blockId: block.id, title: block.title, content: block.content, categoryId: cat.id, categoryName: cat.name });
+  quickText = quickText + '\n\n' + block.content;
+  document.getElementById('quickInput').value = quickText;
+  updateQuickScore();
+  renderPrompt();
 }
 
 // ===== Conflict Detection =====
