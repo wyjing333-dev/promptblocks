@@ -75,11 +75,11 @@
 - Issue检查：0条未关闭Issue，一切正常
 
 ## 2026-09-26
-- 网站：正常（58积木/8分类/6平台/9预设，内容完整加载）
-- GitHub：0 stars, 0 forks, 0 issues, 9 commits
-- 流量：无法获取（gh CLI未配置GH_TOKEN，GitHub Traffic页面需登录）
-- 更新：待新增积木
-- 推广：待发推广内容
+- 网站：正常（64积木/8分类/6平台/10预设，内容完整加载）
+- GitHub：0 stars, 0 forks, 0 issues, 10 commits
+- 流量：无法获取（gh CLI未配置GH_TOKEN）
+- 更新：新增6积木+1预设（DevOps工程师/研究员/写邮件/对比分析/预算约束/大纲格式 + 商务邮件预设），58→64
+- 推广：X（推特）发了64积木更新推广（内容保存在推广内容_20260926.md）
 - Issue检查：0条未关闭Issue，一切正常
 - 其他：桌面Hermes快捷方式已改为Web Dashboard入口
 
