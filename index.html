@@ -355,6 +355,8 @@ var CATEGORIES = [
       { id: 'role-consultant', title: '商业顾问', content: '你是一位商业战略顾问，擅长市场分析、商业模式设计、竞争策略制定，决策基于数据和逻辑。', tags: ['商业','战略','咨询'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
       { id: 'role-writer', title: '作家', content: '你是一位畅销书作家，擅长叙事结构设计、人物塑造、情感表达，文字有画面感和感染力。', tags: ['写作','创意','叙事'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
       { id: 'role-data-analyst', title: '数据分析师', content: '你是一位资深数据分析师，精通数据清洗、统计分析、数据可视化，擅长用数据讲故事，能从海量数据中提炼有商业价值的洞察。', tags: ['数据','分析','可视化'], platforms: ['chatgpt','claude','stepfun'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-devops', title: 'DevOps工程师', content: '你是一位资深DevOps工程师，精通CI/CD流水线搭建、容器编排（Docker/K8s）、云原生架构、监控告警和自动化运维，擅长用基础设施即代码（IaC）提升交付效率。', tags: ['DevOps','运维','云原生'], platforms: ['chatgpt','claude','stepfun'], verified: '2026-09-26', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'role-researcher', title: '研究员', content: '你是一位严谨的研究员，擅长文献检索、研究方法设计、数据采集与论证，能客观呈现多方观点并给出有证据支撑的结论。', tags: ['研究','调研','学术'], platforms: ['all'], verified: '2026-09-26', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
@@ -368,6 +370,8 @@ var CATEGORIES = [
       { id: 'task-code', title: '写代码', content: '请根据以下需求编写代码，要求代码干净、有注释、可直接运行，并附上使用说明。', tags: ['编程','代码'], platforms: ['chatgpt','claude','stepfun'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
       { id: 'task-brainstorm', title: '头脑风暴', content: '请围绕以下主题进行头脑风暴，给出10个创意方向，每个方向附简短说明。', tags: ['创意','发散'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
       { id: 'task-plan', title: '制定计划', content: '请根据以下目标制定一份详细的执行计划，包含时间线、关键里程碑和资源需求。', tags: ['计划','执行'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-email', title: '写邮件', content: '请根据以下信息撰写一封邮件，包含主题行、正文和落款，语气得体，要点清晰，控制在200字以内。', tags: ['邮件','职场'], platforms: ['all'], verified: '2026-09-26', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'task-comparison', title: '对比分析', content: '请对以下两个或多个选项进行对比分析，从关键维度逐一比较，给出优缺点总结和推荐选择。', tags: ['对比','分析'], platforms: ['all'], verified: '2026-09-26', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
@@ -380,6 +384,7 @@ var CATEGORIES = [
       { id: 'ctx-platform-wechat', title: '公众号平台', content: '内容将发布在微信公众号，受众为25-40岁职场人群，偏好有深度、有观点的长文。', tags: ['公众号','长文'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
       { id: 'ctx-business', title: '商业背景', content: '当前是一个创业团队，处于早期阶段，资源有限，需要快速验证和低成本试错。', tags: ['创业','商业'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
       { id: 'ctx-education', title: '学习场景', content: '用户正在学习这个领域，是零基础新手，需要从最基础的概念开始，循序渐进。', tags: ['学习','新手'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'ctx-budget', title: '预算约束', content: '当前预算有限，请优先推荐低成本或免费的解决方案，避免推荐付费工具或高成本方案。', tags: ['预算','成本','创业'], platforms: ['all'], verified: '2026-09-26', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
@@ -403,6 +408,7 @@ var CATEGORIES = [
       { id: 'fmt-list', title: '列表格式', content: '请用编号列表格式输出，每条不超过两句话。', tags: ['格式','列表'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
       { id: 'fmt-dialogue', title: '对话格式', content: '请用问答对话形式输出，模拟用户和专家的交流场景。', tags: ['格式','对话'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
       { id: 'fmt-template', title: '模板格式', content: '请输出一个可直接复制使用的模板，用{占位符}标记需要替换的部分。', tags: ['格式','模板'], platforms: ['all'], verified: '2026-09-24', model: 'GPT-4o+/Claude3.5/Step3+' },
+      { id: 'fmt-outline', title: '大纲格式', content: '请用大纲格式输出，使用层级编号（一、二、三；１、２、３），每条一到两句话，覆盖所有关键要点。', tags: ['格式','大纲'], platforms: ['all'], verified: '2026-09-26', model: 'GPT-4o+/Claude3.5/Step3+' },
     ]
   },
   {
@@ -453,6 +459,7 @@ var PRESETS = [
   { id: 'preset-quality', name: '内容质检', blocks: ['dec-content-score','dec-quality','con-step-by-step','fmt-markdown'] },
   { id: 'preset-safety', name: '安全护栏', blocks: ['dec-safety','dec-fraud','con-positive','fmt-list'] },
   { id: 'preset-agent', name: 'Agent决策', blocks: ['dec-route','dec-priority','dec-compress','dec-quality'] },
+  { id: 'preset-email', name: '商务邮件', blocks: ['role-consultant','task-email','ctx-audience-professional','con-style-professional','fmt-outline','ex-none'] },
 ];
 
 // ===== State =====
