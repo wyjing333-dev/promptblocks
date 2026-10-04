@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "PromptBlocks - Prompt积木拼装",
+  "version": "1.0.0",
+  "description": "像搭积木一样拼Prompt，72+积木模块，在ChatGPT/Claude页面直接插入专业Prompt",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*",
+        "https://platform.stepfun.com/*",
+        "https://chat.deepseek.com/*",
+        "https://yiyan.baidu.com/*",
+        "https://tongyi.aliyun.com/*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
