@@ -326,13 +326,17 @@
   <div class="presets" id="presets"></div>
   <div class="header-right">
     <div class="mode-toggle">
-      <button class="mode-btn active" id="modeAssembly" onclick="setMode('assembly')">🧱 拼装</button>
-      <button class="mode-btn" id="modeQuick" onclick="setMode('quick')">⚡ 快捷</button>
+      <button class="mode-btn active" id="modeAssembly" onclick="setMode('assembly')">🧱 <span data-i18n="modeAssembly">拼装</span></button>
+      <button class="mode-btn" id="modeQuick" onclick="setMode('quick')">⚡ <span data-i18n="modeQuick">快捷</span></button>
     </div>
-    <a class="tool-link" href="block-recommender.html">🧩 推荐器</a>
-    <a class="tool-link" href="prompt-scorer.html">🔍 评分器</a>
+    <a class="tool-link" href="block-recommender.html">🧩 <span data-i18n="recommender">推荐器</span></a>
+    <a class="tool-link" href="cases.html">📊 <span data-i18n="cases">效果案例</span></a>
+    <a class="tool-link" href="prompt-scorer.html">🔍 <span data-i18n="scorer">评分器</span></a>
+    <a class="tool-link" href="https://github.com/wyjing333-dev/promptblocks/tree/master/mcp-server" target="_blank">🔌 MCP</a>
     <a class="star-btn" href="https://github.com/wyjing333-dev/promptblocks" target="_blank">⭐ Star</a>
-    <a class="submit-btn" href="https://github.com/wyjing333-dev/promptblocks/issues/new?labels=submit-block&template=submit-block.md&title=%E6%8F%90%E4%BA%A4%E6%96%B0%E7%A7%AF%E6%9C%A8" target="_blank">➕ 提交积木</a>
+    <a class="tool-link" href="javascript:void(0)" onclick="startTutorial()">📖 <span data-i18n="tutorial">教程</span></a>
+    <a class="tool-link" id="langToggle" href="javascript:void(0)" onclick="toggleLang()">🌐 EN</a>
+    <a class="submit-btn" href="https://github.com/wyjing333-dev/promptblocks/issues/new?labels=submit-block&template=submit-block.md&title=%E6%8F%90%E4%BA%A4%E6%96%B0%E7%A7%AF%E6%9C%A8" target="_blank">➕ <span data-i18n="submitBlock">提交积木</span></a>
   </div>
 </header>
 
@@ -352,31 +356,31 @@
 
   <div class="panel assembly" id="assemblyPanel">
     <div class="panel-header">
-      <span id="centerTitle">拼装区</span> <span class="count" id="assemblyCount">0 个积木</span>
+      <span id="centerTitle" data-i18n="assemblyArea">拼装区</span> <span class="count" id="assemblyCount">0 <span data-i18n="blocks">个积木</span></span>
       <span style="margin-left:auto">
-        <button class="btn btn-secondary" style="padding:4px 12px;font-size:12px" onclick="clearAll()">清空</button>
+        <button class="btn btn-secondary" style="padding:4px 12px;font-size:12px" onclick="clearAll()" data-i18n="clear">清空</button>
       </span>
     </div>
     <div class="assembly-area" id="assemblyArea"></div>
   </div>
 
   <div class="panel output-panel">
-    <div class="panel-header">生成的Prompt</div>
+    <div class="panel-header" data-i18n="generatedPrompt">生成的Prompt</div>
     <div class="output-area">
-      <div class="prompt-preview empty" id="promptPreview">从左侧选择积木，你的Prompt会在这里实时生成...</div>
+      <div class="prompt-preview empty" id="promptPreview" data-i18n="promptPlaceholder">从左侧选择积木，你的Prompt会在这里实时生成...</div>
     </div>
     <div class="output-actions">
       <button class="btn btn-primary" id="copyBtn" onclick="copyPrompt()" disabled>
-        <span>📋</span> 复制Prompt
+        <span>📋</span> <span data-i18n="copyPrompt">复制Prompt</span>
       </button>
-      <button class="btn btn-secondary" onclick="resetAll()" style="padding:10px 14px">重置</button>
+      <button class="btn btn-secondary" onclick="resetAll()" style="padding:10px 14px" data-i18n="reset">重置</button>
     </div>
   </div>
 </div>
 
 <div class="sponsors">
-  <div class="sponsor-label">赞助商</div>
-  <div class="sponsor-content">成为首个赞助商，共建 Prompt 积木生态 &middot; <a href="https://github.com/wyjing333-dev/promptblocks" target="_blank">联系我们</a></div>
+  <div class="sponsor-label" data-i18n="sponsor">赞助商</div>
+  <div class="sponsor-content"><span data-i18n="sponsorContent">成为首个赞助商，共建 Prompt 积木生态</span> &middot; <a href="https://github.com/wyjing333-dev/promptblocks" target="_blank" data-i18n="contactUs">联系我们</a></div>
 </div>
 
 <div class="toast" id="toast" data-i18n="copied">已复制到剪贴板！</div>
@@ -385,11 +389,11 @@
   <div class="star-modal-content">
     <button class="star-close" onclick="closeStarModal()">&times;</button>
     <div class="star-icon">⭐</div>
-    <h3>觉得好用？给个Star吧！</h3>
-    <p>PromptBlocks 是开源免费项目，你的 Star 是小猫持续更新的最大动力~</p>
+    <h3 data-i18n="starTitle">觉得好用？给个Star吧！</h3>
+    <p data-i18n="starDesc">PromptBlocks 是开源免费项目，你的 Star 是小猫持续更新的最大动力~</p>
     <div class="star-actions">
-      <a class="star-go" href="https://github.com/wyjing333-dev/promptblocks" target="_blank" onclick="closeStarModal()">⭐ 去 Star</a>
-      <button class="star-later" onclick="closeStarModal()">下次再说</button>
+      <a class="star-go" href="https://github.com/wyjing333-dev/promptblocks" target="_blank" onclick="closeStarModal()">⭐ <span data-i18n="goStar">去 Star</span></a>
+      <button class="star-later" onclick="closeStarModal()" data-i18n="later">下次再说</button>
     </div>
   </div>
 </div>
