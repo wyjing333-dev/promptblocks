@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>效果案例 - PromptBlocks</title>
+<style>
+  :root { --bg-main: #0f0f1a; --bg-card: #1a1a2e; --text-main: #e0e0e8; --text-muted: #8888a0; --border: #2a2a3e; --accent: #6366f1; --accent-pink: #ec4899; --good: #10b981; --warn: #f59e0b; --bad: #ef4444; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg-main); color: var(--text-main); min-height: 100vh; }
+  header { padding: 16px 24px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .back-link { margin-left: auto; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 13px; text-decoration: none; }
+  .back-link:hover { border-color: var(--accent); color: #a5b4fc; }
+  .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+  .page-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .page-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+  .case-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 24px; overflow: hidden; }
+  .case-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .case-header .icon { font-size: 20px; }
+  .case-header .title { font-size: 16px; font-weight: 600; }
+  .case-header .scenario { color: var(--text-muted); font-size: 13px; margin-left: auto; }
+  .case-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+  @media (max-width: 768px) { .case-body { grid-template-columns: 1fr; } }
+  .case-side { padding: 20px; background: var(--bg-card); }
+  .case-side.before { background: rgba(239,68,68,0.03); }
+  .case-side.after { background: rgba(16,185,129,0.03); }
+  .side-label { font-size: 13px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .side-label.bad { color: var(--bad); }
+  .side-label.good { color: var(--good); }
+  .prompt-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap; word-break: break-word; }
+  .ai-response { font-size: 13px; line-height: 1.7; color: var(--text-main); }
+  .ai-response-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+  .problems { margin-top: 12px; }
+  .problems-title { font-size: 12px; color: var(--bad); font-weight: 600; margin-bottom: 6px; }
+  .problems ul { list-style: none; padding: 0; }
+  .problems li { font-size: 12px; color: var(--text-muted); padding: 2px 0; padding-left: 16px; position: relative; }
+  .problems li::before { content: '✕'; position: absolute; left: 0; color: var(--bad); font-size: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">PromptBlocks</div>
+  <a class="back-link" href="index.html">← 返回首页</a>
+</header>
+<div class="container">
+  <div class="page-title">真实效果对比案例</div>
+  <div class="page-desc">每个预设模板展示「普通用户写法 vs 积木拼装版」的Prompt和AI回复对比，证明搭积木的实际价值</div>
+  <div id="casesContainer"></div>
+</div>
+<script>
+var currentLang = localStorage.getItem('pb_lang') || 'zh';
+
+fetch('cases.json').then(function(r) { return r.json(); }).then(function(data) {
+  var el = document.getElementById('casesContainer');
+  el.innerHTML = data.cases.map(function(c) {
+    var beforePrompt = currentLang === 'en' ? (c.before.promptEn || c.before.prompt) : c.before.prompt;
+    var beforeResponse = currentLang === 'en' ? (c.before.aiResponseEn || c.before.aiResponse) : c.before.aiResponse;
+    var afterPrompt = currentLang === 'en' ? (c.after.promptEn || c.after.prompt) : c.after.prompt;
+    var afterResponse = currentLang === 'en' ? (c.after.aiResponseEn || c.after.aiResponse) : c.after.aiResponse;
+    var scenario = currentLang === 'en' ? (c.scenarioEn || c.scenario) : c.scenario;
+    var title = currentLang === 'en' ? (c.titleEn || c.title) : c.title;
+    return '<div class="case-card">' +
+      '<div class="case-header"><span class="icon">📊</span><span class="title">' + title + '</span><span class="scenario">' + scenario + '</span></div>' +
+      '<div class="case-body">' +
+        '<div class="case-side before">' +
+          '<div class="side-label bad">❌ ' + (currentLang === 'en' ? 'Without PromptBlocks' : '普通用户写法') + '</div>' +
+          '<div class="prompt-box">' + escapeHtml(beforePrompt) + '</div>' +
+          '<div class="ai-response-label">' + (currentLang === 'en' ? 'AI Response' : 'AI 回复') + '</div>' +
+          '<div class="ai-response">' + escapeHtml(beforeResponse) + '</div>' +
+          (c.before.problems ? '<div class="problems"><div class="problems-title">' + (currentLang === 'en' ? 'Problems' : '问题') + '</div><ul>' + c.before.problems.map(function(p) { return '<li>' + p + '</li>'; }).join('') + '</ul></div>' : '') +
+        '</div>' +
+        '<div class="case-side after">' +
+          '<div class="side-label good">✅ ' + (currentLang === 'en' ? 'With PromptBlocks' : '积木拼装版') + '</div>' +
+          '<div class="prompt-box">' + escapeHtml(afterPrompt) + '</div>' +
+          '<div class="ai-response-label">' + (currentLang === 'en' ? 'AI Response' : 'AI 回复') + '</div>' +
+          '<div class="ai-response">' + escapeHtml(afterResponse) + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}).catch(function(err) {
+  document.getElementById('casesContainer').innerHTML = '<p style="color:var(--text-muted)">Failed to load cases: ' + err.message + '</p>';
+});
+
+function escapeHtml(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+</script>
+</body>
+</html>
