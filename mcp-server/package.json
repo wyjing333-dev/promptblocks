@@ -1,0 +1,20 @@
+{
+  "name": "promptblocks-mcp",
+  "version": "1.0.0",
+  "description": "PromptBlocks MCP Server - Use PromptBlocks block library in any MCP-compatible client",
+  "type": "module",
+  "main": "server.mjs",
+  "bin": {
+    "promptblocks-mcp": "server.mjs"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "keywords": ["mcp", "prompt", "prompt-engineering", "ai", "llm"],
+  "license": "MIT"
+}
