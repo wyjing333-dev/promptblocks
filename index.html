@@ -363,7 +363,7 @@
     <a class="tool-link" href="block-recommender.html">🧩 <span data-i18n="recommender">推荐器</span></a>
     <a class="tool-link" href="cases.html">📊 <span data-i18n="cases">效果案例</span></a>
     <a class="tool-link" href="prompt-scorer.html">🔍 <span data-i18n="scorer">评分器</span></a>
-    <a class="tool-link" href="https://github.com/wyjing333-dev/promptblocks/tree/master/mcp-server" target="_blank">🔌 MCP</a>
+    <a class="tool-link" href="https://github.com/wyjing333-dev/promptblocks/blob/master/mcp_server.py" target="_blank">🔌 MCP</a>
     <a class="star-btn" href="https://github.com/wyjing333-dev/promptblocks" target="_blank">⭐ Star</a>
     <a class="tool-link" href="javascript:void(0)" onclick="startTutorial()">📖 <span data-i18n="tutorial">教程</span></a>
     <a class="tool-link" id="langToggle" href="javascript:void(0)" onclick="toggleLang()">🌐 EN</a>
@@ -465,7 +465,25 @@
 </div>
 <button id="historyToggle" onclick="toggleHistory()" style="position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(99,102,241,0.4);z-index:9998;display:flex;align-items:center;justify-content:center">📜</button>
 
-<div class="sponsors">
+    <!-- MCP Server Section -->
+    <div id="mcp-section" style="padding: 20px; margin: 20px 0; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+      <h2 style="margin: 0 0 12px 0; font-size: 18px;">🔌 MCP Server — 在 Claude Desktop / Cursor 中直接调用积木库</h2>
+      <p style="margin: 0 0 12px 0; color: var(--text-secondary); font-size: 14px;">配置后，AI 可以自动帮你选积木、拼 Prompt、检测冲突。提供 9 个工具：</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">get_categories</span>
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">get_blocks</span>
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">get_block</span>
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">search_blocks</span>
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">recommend_blocks</span>
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">assemble_prompt</span>
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">get_presets</span>
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">get_preset</span>
+        <span style="padding: 4px 10px; background: rgba(139,92,246,0.15); color: #a78bfa; border-radius: 6px; font-size: 12px;">check_conflicts</span>
+      </div>
+      <a href="https://github.com/wyjing333-dev/promptblocks/blob/master/mcp_server.py" target="_blank" style="display: inline-block; padding: 6px 14px; background: #8b5cf6; color: white; border-radius: 6px; text-decoration: none; font-size: 13px;">查看文档 →</a>
+    </div>
+    
+    <div class="sponsors">
   <div class="sponsor-label" data-i18n="sponsor">赞助商</div>
   <div class="sponsor-content"><span data-i18n="sponsorContent">成为首个赞助商，共建 Prompt 积木生态</span> &middot; <a href="https://github.com/wyjing333-dev/promptblocks" target="_blank" data-i18n="contactUs">联系我们</a></div>
 </div>

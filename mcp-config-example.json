@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "promptblocks": {
+      "command": "python",
+      "args": ["/path/to/promptblocks/mcp_server.py"]
+    }
+  }
+}

@@ -6,7 +6,7 @@
 [![Blocks](https://img.shields.io/badge/积木数-72+-ec4899)](https://wyjing333-dev.github.io/promptblocks/)
 [![平台](https://img.shields.io/badge/支持AI平台-6+-6366f1)](https://wyjing333-dev.github.io/promptblocks/)
 [![在线体验](https://img.shields.io/badge/在线体验-点击前往-10b981)](https://wyjing333-dev.github.io/promptblocks/)
-[![MCP](https://img.shields.io/badge/MCP-7工具-8b5cf6)](https://github.com/wyjing333-dev/promptblocks/tree/master/mcp-server)
+[![MCP](https://img.shields.io/badge/MCP-9工具-8b5cf6)](https://github.com/wyjing333-dev/promptblocks/blob/master/mcp_server.py)
 
 ## 👀 这是什么？
 
@@ -79,27 +79,62 @@ https://wyjing333-dev.github.io/promptblocks/?blocks=role-marketer,task-write-co
 
 ## 🔌 MCP Server
 
-在 Claude Desktop / Cursor / VS Code 等 MCP 客户端中直接调用 PromptBlocks 积木库：
+在 Claude Desktop / Cursor / VS Code 等 MCP 客户端中直接调用 PromptBlocks 积木库，让 AI 自动帮你选积木、拼 Prompt。
+
+### 安装
+
+```bash
+pip install mcp
+```
+
+### 配置
+
+将以下配置添加到 Claude Desktop 的 `claude_desktop_config.json` 中：
 
 ```json
 {
   "mcpServers": {
     "promptblocks": {
-      "command": "node",
-      "args": ["/path/to/promptblocks/mcp-server/server.mjs"]
+      "command": "python",
+      "args": ["/path/to/promptblocks/mcp_server.py"]
     }
   }
 }
 ```
 
-提供 7 个工具：`list_categories`、`list_blocks`、`search_blocks`、`get_block`、`assemble_prompt`、`list_presets`、`load_preset`。详见 [MCP Server 文档](mcp-server/README.md)。
+> Windows 用户请将 `python` 替换为完整路径，如 `C:\\Users\\你的用户名\\AppData\\Local\\Programs\\Python\\Python311\\python.exe`
+
+### 提供的 9 个工具
+
+| 工具 | 说明 |
+|------|------|
+| `get_categories` | 列出 8 个积木分类 |
+| `get_blocks` | 列出积木列表，支持按分类/平台过滤 |
+| `get_block` | 获取单个积木的完整内容 |
+| `search_blocks` | 按关键词搜索积木 |
+| `recommend_blocks` | 根据任务描述推荐积木组合 |
+| `assemble_prompt` | 将指定积木拼装成完整 Prompt |
+| `get_presets` | 列出 10 个预设模板 |
+| `get_preset` | 获取预设模板详情（含拼装好的 Prompt） |
+| `check_conflicts` | 检测积木组合是否存在冲突 |
+
+### 使用示例
+
+在 Claude Desktop 中配置后，你可以直接对 Claude 说：
+
+- "帮我用 PromptBlocks 的积木拼一个小红书种草文案的 Prompt"
+- "搜索跟营销相关的积木"
+- "推荐一些适合写代码审查的积木"
+- "检查 role-marketer 和 con-style-casual 有没有冲突"
+
+详见 [MCP Server 文档](mcp_server.py)。
 
 ## 🔧 技术栈
 
 - HTML5 + CSS3 + Vanilla JavaScript
 - 无框架依赖，无构建步骤
 - GitHub Pages 静态部署
-- MCP: @modelcontextprotocol/sdk + zod
+- MCP: Python MCP SDK (FastMCP, stdio 传输)
 
 ## 🤝 贡献
 
