@@ -152,6 +152,8 @@
   .block-chip { font-size: 12px; padding: 3px 10px; border-radius: 12px; background: rgba(99,102,241,0.12); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.25); cursor: default; }
   .block-chip a { color: #a5b4fc; text-decoration: none; }
   .block-chip:hover { background: rgba(99,102,241,0.2); }
+  .fix-btn { display: inline-block; margin-top: 8px; padding: 6px 16px; border-radius: 20px; background: linear-gradient(135deg, #6366f1, #ec4899); color: #fff !important; font-size: 13px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .fix-btn:hover { transform: scale(1.05); }
   .suggestions {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -368,28 +370,48 @@ function generateSuggestions(text, scores) {
 function getBlockRecommendation(dimKey, score) {
   if (score >= 70) return null;
   var recs = {
-    clarity: { label: '建议添加', blocks: [
-      { name: '分步骤 (con-step-by-step)', url: 'index.html' },
-      { name: '正面指令 (con-positive)', url: 'index.html' }
-    ]},
-    completeness: { label: '你的 Prompt 缺少以下要素，建议添加', blocks: [
-      { name: '角色定义 (role-*)', url: 'index.html' },
-      { name: '格式约束 (fmt-*)', url: 'index.html' },
-      { name: '风格约束 (con-style-*)', url: 'index.html' }
-    ]},
-    actionability: { label: '可执行性不足，建议添加', blocks: [
-      { name: '任务指令 (task-*)', url: 'index.html' },
-      { name: '输出格式 (fmt-*)', url: 'index.html' }
-    ]},
-    conciseness: { label: '简洁性待优化，建议添加', blocks: [
-      { name: '简洁要求 (con-short)', url: 'index.html' },
-      { name: '上下文压缩 (dec-compress)', url: 'index.html' }
-    ]},
-    specificity: { label: '不够具体，建议添加', blocks: [
-      { name: '受众定位 (ctx-audience-*)', url: 'index.html' },
-      { name: '平台适配 (ctx-platform-*)', url: 'index.html' },
-      { name: '风格示例 (ex-style)', url: 'index.html' }
-    ]}
+    clarity: {
+      label: '清晰度不足，建议添加',
+      fixKey: 'clarity',
+      blocks: [
+        { id: 'con-step-by-step', name: '分步骤 (con-step-by-step)', url: 'index.html?fix=con-step-by-step' },
+        { id: 'con-positive', name: '正面指令 (con-positive)', url: 'index.html?fix=con-positive' }
+      ]
+    },
+    completeness: {
+      label: '缺少关键要素，建议添加',
+      fixKey: 'completeness',
+      blocks: [
+        { id: 'role-marketer', name: '角色积木 (role-*)', url: 'index.html?fix=role-marketer' },
+        { id: 'fmt-markdown', name: '格式约束 (fmt-*)', url: 'index.html?fix=fmt-markdown' },
+        { id: 'con-style-professional', name: '风格约束 (con-style-*)', url: 'index.html?fix=con-style-professional' }
+      ]
+    },
+    actionability: {
+      label: '可执行性不足，建议添加',
+      fixKey: 'actionability',
+      blocks: [
+        { id: 'task-write-article', name: '任务积木 (task-*)', url: 'index.html?fix=task-write-article' },
+        { id: 'fmt-list', name: '输出格式 (fmt-*)', url: 'index.html?fix=fmt-list' }
+      ]
+    },
+    conciseness: {
+      label: '简洁性待优化，建议添加',
+      fixKey: 'conciseness',
+      blocks: [
+        { id: 'con-short', name: '简洁要求 (con-short)', url: 'index.html?fix=con-short' },
+        { id: 'dec-compress', name: '上下文压缩 (dec-compress)', url: 'index.html?fix=dec-compress' }
+      ]
+    },
+    specificity: {
+      label: '不够具体，建议添加',
+      fixKey: 'specificity',
+      blocks: [
+        { id: 'ctx-audience-professional', name: '受众定位 (ctx-audience-*)', url: 'index.html?fix=ctx-audience-professional' },
+        { id: 'ctx-platform-xhs', name: '平台适配 (ctx-platform-*)', url: 'index.html?fix=ctx-platform-xhs' },
+        { id: 'ex-style', name: '风格示例 (ex-style)', url: 'index.html?fix=ex-style' }
+      ]
+    }
   };
   return recs[dimKey] || null;
 }
@@ -423,7 +445,14 @@ function renderResults(overall, scores, suggestions) {
       var chips = rec.blocks.map(function(b) {
         return '<span class="block-chip"><a href="' + b.url + '">' + b.name + '</a></span>';
       }).join('');
-      recHtml = '<div class="block-rec"><div class="block-rec-label">💡 ' + rec.label + '</div>' + chips + '</div>';
+      // 生成一键修复URL：把所有推荐积木ID拼在一起
+      var fixIds = rec.blocks.map(function(b) { return b.id; }).join(',');
+      var fixUrl = 'index.html?fix=' + fixIds;
+      recHtml = '<div class="block-rec">' +
+        '<div class="block-rec-label">💡 ' + rec.label + '</div>' +
+        chips +
+        '<a class="fix-btn" href="' + fixUrl + '" target="_blank">🔧 一键修复 →</a>' +
+        '</div>';
     }
     return '<div class="dim-card' + lowClass + '">' +
       '<div class="dim-header">' +

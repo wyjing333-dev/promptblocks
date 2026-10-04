@@ -111,6 +111,21 @@
   }
   .star-modal-content .star-close:hover { color: var(--text-main); }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  /* 新手教程 */
+  .tutorial-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 10000; }
+  .tutorial-overlay.show { display: flex; }
+  .tutorial-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 36px 40px; max-width: 460px; text-align: center; position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .tutorial-card .step-icon { font-size: 56px; margin-bottom: 16px; }
+  .tutorial-card h3 { font-size: 18px; color: var(--text-main); margin-bottom: 12px; }
+  .tutorial-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
+  .tutorial-card .step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+  .tutorial-card .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.2s; }
+  .tutorial-card .dot.active { background: #6366f1; width: 24px; border-radius: 4px; }
+  .tutorial-card .btns { display: flex; gap: 12px; justify-content: center; }
+  .tutorial-card .t-next { padding: 10px 28px; border-radius: 24px; border: none; background: linear-gradient(135deg, #6366f1, #ec4899); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .tutorial-card .t-prev { padding: 10px 28px; border-radius: 24px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 14px; cursor: pointer; }
+  .tutorial-card .t-skip { position: absolute; top: 8px; right: 12px; background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; }
+  .tutorial-card .t-skip:hover { color: var(--text-main); }
   .tool-link {
     padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
     background: transparent; color: var(--text-muted); font-size: 13px;
