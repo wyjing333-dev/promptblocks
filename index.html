@@ -374,6 +374,9 @@
         <span>📋</span> <span data-i18n="copyPrompt">复制Prompt</span>
       </button>
       <button class="btn btn-secondary" onclick="resetAll()" style="padding:10px 14px" data-i18n="reset">重置</button>
+      <button class="btn btn-secondary" id="shareBtn" onclick="shareLink()" style="padding:10px 14px">
+        <span>🔗</span> <span data-i18n="share">分享</span>
+      </button>
     </div>
   </div>
 </div>
@@ -436,7 +439,7 @@ var I18N = {
     assemblyArea: '拼装区', blocks: '个积木', clear: '清空',
     generatedPrompt: '生成的Prompt',
     promptPlaceholder: '从左侧选择积木，你的Prompt会在这里实时生成...',
-    copyPrompt: '复制Prompt', reset: '重置',
+    copyPrompt: '复制Prompt', share: '分享', reset: '重置',
     sponsor: '赞助商', sponsorContent: '成为首个赞助商，共建 Prompt 积木生态', contactUs: '联系我们',
     copied: '已复制到剪贴板！',
     starTitle: '觉得好用？给个Star吧！',
@@ -458,7 +461,7 @@ var I18N = {
     assemblyArea: 'Assembly', blocks: ' blocks', clear: 'Clear',
     generatedPrompt: 'Generated Prompt',
     promptPlaceholder: 'Pick blocks from the left, your Prompt will appear here in real-time...',
-    copyPrompt: 'Copy Prompt', reset: 'Reset',
+    copyPrompt: 'Copy Prompt', share: 'Share', reset: 'Reset',
     sponsor: 'Sponsors', sponsorContent: 'Be the first sponsor, help build the Prompt block ecosystem', contactUs: 'Contact Us',
     copied: 'Copied to clipboard!',
     starTitle: 'Enjoying it? Give us a Star!',
@@ -522,7 +525,7 @@ function init() {
 }
 
 // Load data then init
-loadData(init);
+// loadData(fullInit) is called at the end of the script
 
 function renderPresets() {
   var el = document.getElementById('presets');
@@ -929,7 +932,103 @@ function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-init();
+// ===== Share Link Feature =====
+function loadFromURL() {
+  var params = new URLSearchParams(window.location.search);
+  var blockIds = params.get('blocks');
+  var presetId = params.get('preset');
+  var fixBlock = params.get('fix');
+  var quick = params.get('quick');
+
+  // If quick mode requested
+  if (quick === '1') {
+    setMode('quick');
+  }
+
+  // If preset specified
+  if (presetId) {
+    loadPreset(presetId);
+    return;
+  }
+
+  // If blocks specified
+  if (blockIds) {
+    var ids = blockIds.split(',').filter(function(id) { return id.trim(); });
+    assembled = [];
+    ids.forEach(function(bid) {
+      var found = findBlock(bid.trim());
+      if (found) {
+        assembled.push({ blockId: bid.trim(), categoryId: found.category.id, block: found.block });
+      }
+    });
+    if (assembled.length > 0) {
+      renderAssembly();
+      renderPrompt();
+    }
+  }
+
+  // If fix block specified (from scorer)
+  if (fixBlock) {
+    var found = findBlock(fixBlock.trim());
+    if (found) {
+      if (currentMode === 'quick') {
+        setMode('assembly');
+      }
+      var existing = assembled.find(function(a) { return a.blockId === fixBlock.trim(); });
+      if (!existing) {
+        assembled.push({ blockId: fixBlock.trim(), categoryId: found.category.id, block: found.block });
+        renderAssembly();
+        renderPrompt();
+      }
+      // Scroll to assembly area
+      setTimeout(function() {
+        var panel = document.getElementById('assemblyPanel');
+        if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+  }
+}
+
+function shareLink() {
+  var ids = [];
+  if (currentMode === 'quick') {
+    // For quick mode, share the text
+    var text = quickText || '';
+    if (!text) { showToast('拼装区为空，请先添加积木'); return; }
+    var base = window.location.origin + window.location.pathname;
+    var url = base + '?quick=1&text=' + encodeURIComponent(text.substring(0, 500));
+    navigator.clipboard.writeText(url).then(function() {
+      showToast('分享链接已复制！');
+    }).catch(function() {
+      var ta = document.createElement('textarea');
+      ta.value = url; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); showToast('分享链接已复制！'); } catch(e) { showToast('复制失败'); }
+      document.body.removeChild(ta);
+    });
+    return;
+  }
+  if (assembled.length === 0) { showToast('拼装区为空，请先添加积木'); return; }
+  assembled.forEach(function(a) { ids.push(a.blockId); });
+  var base = window.location.origin + window.location.pathname;
+  var url = base + '?blocks=' + ids.join(',');
+  navigator.clipboard.writeText(url).then(function() {
+    showToast('分享链接已复制！');
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('分享链接已复制！'); } catch(e) { showToast('复制失败'); }
+    document.body.removeChild(ta);
+  });
+}
+
+// Initialize - load data first, then init, then check URL params
+function fullInit() {
+  init();
+  loadFromURL();
+}
+
+// Override the init call
+loadData(fullInit);
 </script>
 </body>
 </html>
