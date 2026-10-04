@@ -1,0 +1,24 @@
+{
+  "name": "PromptBlocks - 像搭积木一样拼Prompt",
+  "short_name": "PromptBlocks",
+  "description": "开源免费的AI提示词拼装工具，72+积木模块，像搭积木一样拼出专业Prompt",
+  "start_url": "https://wyjing333-dev.github.io/promptblocks/",
+  "scope": "https://wyjing333-dev.github.io/promptblocks/",
+  "display": "standalone",
+  "background_color": "#0f0f1a",
+  "theme_color": "#6366f1",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧱</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧱</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["productivity", "developer", "education"]
+}
