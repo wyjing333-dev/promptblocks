@@ -322,7 +322,7 @@
 <body>
 
 <header>
-  <div class="logo">PromptBlocks <span>像搭积木一样拼Prompt</span></div>
+  <div class="logo">PromptBlocks <span data-i18n="tagline">像搭积木一样拼Prompt</span></div>
   <div class="presets" id="presets"></div>
   <div class="header-right">
     <div class="mode-toggle">
@@ -337,7 +337,7 @@
 </header>
 
 <div class="platform-bar">
-  <span class="plabel">AI 平台：</span>
+  <span class="plabel" data-i18n="aiPlatform">AI 平台：</span>
   <div class="platform-filters" id="platformFilters"></div>
 </div>
 
@@ -345,7 +345,7 @@
 
 <div class="main">
   <div class="panel block-library">
-    <div class="panel-header">积木库</div>
+    <div class="panel-header" data-i18n="blockLibrary">积木库</div>
     <div class="category-tabs" id="categoryTabs"></div>
     <div class="blocks-list" id="blocksList"></div>
   </div>
@@ -379,7 +379,7 @@
   <div class="sponsor-content">成为首个赞助商，共建 Prompt 积木生态 &middot; <a href="https://github.com/wyjing333-dev/promptblocks" target="_blank">联系我们</a></div>
 </div>
 
-<div class="toast" id="toast">已复制到剪贴板！</div>
+<div class="toast" id="toast" data-i18n="copied">已复制到剪贴板！</div>
 
 <div class="star-modal" id="starModal">
   <div class="star-modal-content">
@@ -419,7 +419,88 @@ function loadData(callback) {
     });
 }
 
-// ===== State =====
+// ===== i18n =====
+var currentLang = localStorage.getItem('pb_lang') || 'zh';
+var I18N = {
+  zh: {
+    tagline: '像搭积木一样拼Prompt',
+    modeAssembly: '拼装', modeQuick: '快捷',
+    recommender: '推荐器', scorer: '评分器',
+    submitBlock: '提交积木',
+    aiPlatform: 'AI 平台：',
+    blockLibrary: '积木库',
+    assemblyArea: '拼装区', blocks: '个积木', clear: '清空',
+    generatedPrompt: '生成的Prompt',
+    promptPlaceholder: '从左侧选择积木，你的Prompt会在这里实时生成...',
+    copyPrompt: '复制Prompt', reset: '重置',
+    sponsor: '赞助商', sponsorContent: '成为首个赞助商，共建 Prompt 积木生态', contactUs: '联系我们',
+    copied: '已复制到剪贴板！',
+    starTitle: '觉得好用？给个Star吧！',
+    starDesc: 'PromptBlocks 是开源免费项目，你的 Star 是小猫持续更新的最大动力~',
+    goStar: '去 Star', later: '下次再说',
+    langLabel: '🌐 EN',
+    conflict: '冲突', removeBlock: '删除', moveUp: '上移', moveDown: '下移',
+    quickPlaceholder: '输入你的想法或需求，AI 会实时评分并推荐积木...',
+    quickScore: '当前评分', quickRecommend: '推荐积木',
+    noConflict: '无冲突', addedBlocks: '个积木'
+  },
+  en: {
+    tagline: 'Build Prompts Like Lego',
+    modeAssembly: 'Build', modeQuick: 'Quick',
+    recommender: 'Recommender', scorer: 'Scorer',
+    submitBlock: 'Submit Block',
+    aiPlatform: 'AI Platform: ',
+    blockLibrary: 'Block Library',
+    assemblyArea: 'Assembly', blocks: ' blocks', clear: 'Clear',
+    generatedPrompt: 'Generated Prompt',
+    promptPlaceholder: 'Pick blocks from the left, your Prompt will appear here in real-time...',
+    copyPrompt: 'Copy Prompt', reset: 'Reset',
+    sponsor: 'Sponsors', sponsorContent: 'Be the first sponsor, help build the Prompt block ecosystem', contactUs: 'Contact Us',
+    copied: 'Copied to clipboard!',
+    starTitle: 'Enjoying it? Give us a Star!',
+    starDesc: 'PromptBlocks is a free open-source project. Your Star keeps us going!',
+    goStar: 'Star on GitHub', later: 'Maybe later',
+    langLabel: '🌐 中文',
+    conflict: 'Conflict', removeBlock: 'Remove', moveUp: 'Up', moveDown: 'Down',
+    quickPlaceholder: 'Type your idea or request, AI will score and recommend blocks in real-time...',
+    quickScore: 'Current Score', quickRecommend: 'Recommended Blocks',
+    noConflict: 'No conflict', addedBlocks: ' blocks'
+  }
+};
+
+function t(key) {
+  return (I18N[currentLang] && I18N[currentLang][key]) || key;
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('pb_lang', currentLang);
+  applyLang();
+  // Re-render dynamic content
+  renderDashboard();
+  renderCategoryTabs();
+  renderBlocks();
+  renderCenterPanel();
+  renderPrompt();
+}
+
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    var val = t(key);
+    if (el.tagName === 'INPUT') el.placeholder = val;
+    else el.textContent = val;
+  });
+  document.getElementById('langToggle').textContent = t('langLabel');
+}
+
+// Bilingual helpers - fall back to zh if en version not available
+function cName(c) { return currentLang === 'en' && c.nameEn ? c.nameEn : c.name; }
+function bTitle(b) { return currentLang === 'en' && b.titleEn ? b.titleEn : b.title; }
+function bContent(b) { return currentLang === 'en' && b.contentEn ? b.contentEn : b.content; }
+function pName(p) { return currentLang === 'en' && p.nameEn ? p.nameEn : p.name; }
+
+// ===== Data Loading =====
 var activeCategory = 'role';
 var activePlatform = 'all';
 var assembled = [];
@@ -442,7 +523,7 @@ loadData(init);
 function renderPresets() {
   var el = document.getElementById('presets');
   el.innerHTML = PRESETS.map(function(p) {
-    return '<button class="preset-btn" onclick="loadPreset(\'' + p.id + '\')">' + p.name + '</button>';
+    return '<button class="preset-btn" onclick="loadPreset(\'' + p.id + '\')">' + pName(p) + '</button>';
   }).join('');
 }
 
@@ -465,7 +546,7 @@ function renderDashboard() {
 function renderPlatformFilters() {
   var el = document.getElementById('platformFilters');
   el.innerHTML = PLATFORMS.map(function(p) {
-    return '<button class="platform-btn' + (p.id === activePlatform ? ' active' : '') + '" onclick="setPlatform(\'' + p.id + '\')">' + p.icon + ' ' + p.name + '</button>';
+    return '<button class="platform-btn' + (p.id === activePlatform ? ' active' : '') + '" onclick="setPlatform(\'' + p.id + '\')">' + p.icon + ' ' + platName(p) + '</button>';
   }).join('');
 }
 
@@ -483,7 +564,7 @@ function renderCategoryTabs() {
       ? c.blocks.length
       : c.blocks.filter(function(b) { return b.platforms.indexOf('all') !== -1 || b.platforms.indexOf(activePlatform) !== -1; }).length;
     return '<div class="category-tab' + (c.id === activeCategory ? ' active' : '') + '" style="' + (c.id === activeCategory ? 'border-left-color:' + c.color : '') + '" onclick="switchCategory(\'' + c.id + '\')">' +
-      '<span class="icon">' + c.icon + '</span><span class="name">' + c.name + '</span><span class="num">' + count + '</span></div>';
+      '<span class="icon">' + c.icon + '</span><span class="name">' + cName(c) + '</span><span class="num">' + count + '</span></div>';
   }).join('');
 }
 
@@ -500,7 +581,7 @@ function renderPlatformTags(platforms) {
   return platforms.map(function(pid) {
     var p = PLATFORMS.find(function(x) { return x.id === pid; });
     if (!p) return '';
-    return '<span class="platform-tag" style="background:' + p.bg + ';color:' + p.color + ';">' + p.icon + ' ' + p.name + '</span>';
+    return '<span class="platform-tag" style="background:' + p.bg + ';color:' + p.color + ';">' + p.icon + ' ' + platName(p) + '</span>';
   }).join('');
 }
 
@@ -517,7 +598,7 @@ function renderBlocks() {
   }
   el.innerHTML = filtered.map(function(b) {
     return '<div class="block-item" style="--accent:' + cat.color + '" onclick="addBlock(\'' + cat.id + '\',\'' + b.id + '\')">' +
-      '<div class="title">' + b.title + '</div>' +
+      '<div class="title">' + bTitle(b) + '</div>' +
       '<div class="desc">' + (b.content || '(无内容)') + '</div>' +
       '<div class="tags">' + b.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('') + '</div>' +
       '<div class="platforms">' + renderPlatformTags(b.platforms) + '</div>' +
@@ -618,7 +699,7 @@ function quickAddBlock(catId, blockId) {
   if (!cat) return;
   var block = cat.blocks.find(function(b) { return b.id === blockId; });
   if (!block) return;
-  assembled.push({ blockId: block.id, title: block.title, content: block.content, categoryId: cat.id, categoryName: cat.name });
+  assembled.push({ blockId: block.id, title: bTitle(block), content: bContent(block), categoryId: cat.id, categoryName: cName(cat) });
   quickText = quickText + '\n\n' + block.content;
   document.getElementById('quickInput').value = quickText;
   updateQuickScore();
@@ -641,7 +722,7 @@ function checkConflicts() {
     if (catBlocks.length > 1) {
       conflicts.push({
         a: catBlocks[0].blockId, b: catBlocks[1].blockId,
-        reason: catId === 'format' ? '格式冲突：建议只选一种输出格式' : '示例冲突：建议只选一种示例'
+        reason: catId === 'format' ? (currentLang === 'en' ? 'Format conflict: pick only one output format' : '格式冲突：建议只选一种输出格式') : (currentLang === 'en' ? 'Example conflict: pick only one example' : '示例冲突：建议只选一种示例')
       });
     }
   });
