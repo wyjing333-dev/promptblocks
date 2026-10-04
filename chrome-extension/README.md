@@ -30,7 +30,7 @@
 
 ## 数据
 
-积木数据从 blocks.json 自动生成，72+积木，8大分类。重新生成：
+积木数据从 blocks.json 自动生成，76+积木，8大分类。重新生成：
 
 ```bash
 python gen_ext_data.py

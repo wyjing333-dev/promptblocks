@@ -107,11 +107,12 @@
 - 推广：即刻/知乎想法发了70积木更新推广（内容保存在推广内容_20260929.md）
 - Issue检查：0条未关闭Issue，一切正常
 
-## 2026-10-04
-- 网站：正常（72积木/8分类/6平台/13预设，功能完整加载无异常）
+## 2026-10-04 (2)
+- 网站：正常（76积木/8分类/6平台/13预设，功能完整加载无异常）
 - GitHub：0 stars, 0 forks, 0 issues, 15 commits（+1 since 9/29）
 - 流量：1 view / 127 clones（59 unique），9/23-10/2期间持续有克隆，9/26首次页面访问1次
-- 更新：新增2积木（审阅Review task-review + 生成FAQ task-faq），70→72，回归测试0错误1警告通过
+- 更新：新增4积木（AI痕迹消除con-anti-ai-slop + 懒人阶梯决策dec-lazy-dev + 过度工程审计dec-over-engineer + 专业文案框架task-copywriting-framework），72→76
+- 来源：对标GitHub Trending热门项目marketingskills（53k stars）和ponytail（154k stars），提取精华融入积木
 - 推广：即刻发了72积木更新推广（内容保存在推广内容_20261004.md）
 - Issue检查：0条未关闭Issue，一切正常
 - 备注：上次维护9/29，间隔4天补维护；流量相比上次记录大幅增长（26→127 clones，15→59 unique）

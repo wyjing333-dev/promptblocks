@@ -3,7 +3,7 @@
 > 像搭积木一样拼 Prompt | 开源免费的 AI 提示词拼装工具
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Blocks](https://img.shields.io/badge/积木数-72+-ec4899)](https://wyjing333-dev.github.io/promptblocks/)
+[![Blocks](https://img.shields.io/badge/积木数-76+-ec4899)](https://wyjing333-dev.github.io/promptblocks/)
 [![平台](https://img.shields.io/badge/支持AI平台-6+-6366f1)](https://wyjing333-dev.github.io/promptblocks/)
 [![在线体验](https://img.shields.io/badge/在线体验-点击前往-10b981)](https://wyjing333-dev.github.io/promptblocks/)
 [![MCP](https://img.shields.io/badge/MCP-9工具-8b5cf6)](https://github.com/wyjing333-dev/promptblocks/blob/master/mcp_server.py)
@@ -24,7 +24,7 @@ PromptBlocks 是一个**零门槛**的 Prompt 拼装工具。
 
 ## ✨ 核心功能
 
-- **72+ 积木模块**：8 大分类（角色/任务/上下文/约束/格式/示例/行业/决策），覆盖主流使用场景
+- **76+ 积木模块**：8 大分类（角色/任务/上下文/约束/格式/示例/行业/决策），覆盖主流使用场景
 - **10+ 行业积木**：律师、医生、CPA、电商、HR、SEO、心理咨询师、金融分析师等专业方向
 - **⚡ 快捷模式**：不想拼积木？直接打字，AI 实时评分并推荐积木
 - **🧩 积木推荐器**：描述你的任务，自动推荐最合适的积木组合
@@ -32,7 +32,7 @@ PromptBlocks 是一个**零门槛**的 Prompt 拼装工具。
 - **📊 效果案例库**：10 个预设模板的"普通写法 vs 积木拼装"对比案例
 - **⚠️ 冲突检测**：积木之间有矛盾？自动提醒，避免冗余
 - **🔗 分享链接**：拼好的积木组合可生成 URL 分享给他人
-- **🌐 中英双语**：一键切换中英文界面，72 个积木全部双语
+- **🌐 中英双语**：一键切换中英文界面，76 个积木全部双语
 - **🔌 MCP Server**：在 Claude Desktop / Cursor / VS Code 中直接调用积木库
 - **📖 交互式教程**：5 步上手，首次访问自动弹出
 - **一键复制**：拼好直接复制到 ChatGPT / Claude / 阶跃星辰 / Gemini 等平台
@@ -61,11 +61,11 @@ https://wyjing333-dev.github.io/promptblocks/?blocks=role-marketer,task-write-co
 | 角色 | 🎭 | 设定 AI 身份、专业领域 | 13 |
 | 任务 | 🎯 | 明确要完成的具体动作 | 15 |
 | 上下文 | 📋 | 提供背景信息、受众和目的 | 8 |
-| 约束 | ⚙️ | 长度/风格/禁止项等限制 | 7 |
+| 约束 | ⚙️ | 长度/风格/禁止项等限制 | 8 |
 | 格式 | 📐 | 输出结构和形式要求 | 7 |
 | 示例 | 💡 | Few-shot 学习样例 | 4 |
 | 行业 | 🏢 | 专业领域的定制积木 | 11 |
-| 决策 | ⚡ | Agent 决策路由与判断 | 7 |
+| 决策 | ⚡ | Agent 决策路由与判断 | 9 |
 
 ## 🧩 使用方式
 

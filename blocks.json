@@ -587,6 +587,25 @@
           "model": "GPT-4o+/Claude3.5/Step3+",
           "titleEn": "Generate FAQ",
           "contentEn": "Please generate an FAQ based on the following content. Extract 10 to 15 high-frequency questions, each paired with a concise answer (no more than 3 sentences). Group them by topic and format them for a product help center or documentation site."
+        },
+        {
+          "id": "task-copywriting-framework",
+          "title": "专业文案框架",
+          "content": "按以下框架撰写营销文案。标题公式（选一）：实现{期望结果}无需{痛点} / {产品类型}for{目标受众} / 再也不{不愉快体验} / {痛点问题}？首屏结构：标题-副标题（1-2句扩展）.主CTA按钮（行动动词+获得物，如\"开始免费试用\"而非\"注册\"）。核心板块：社会证明-痛点共鸣-方案与利益（3-5个利益点）-工作原理（3-4步）-异议处理（FAQ/对比/保证）-最终CTA。写作原则：清晰>创意（清晰度与+81%转化率相关）、利益>功能、具体>模糊（\"4小时变15分钟\"而非\"节省时间\"）、客户语言>公司语言。CTA对比：弱（提交/注册/了解更多）vs强（开始免费试用/获取完整清单/查看产品演示）。",
+          "tags": [
+            "文案框架",
+            "标题公式",
+            "落地页",
+            "CTA",
+            "转化"
+          ],
+          "platforms": [
+            "all"
+          ],
+          "verified": "2026-10-04",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Professional Copywriting Framework",
+          "contentEn": "Write marketing copy using this framework. Headline formulas (pick one): {Achieve outcome} without {pain point} / {Product type} for {target audience} / Never {unpleasant event} again / {Question highlighting pain point}? Above the fold: Headline - Subheadline (1-2 sentences) - Primary CTA (action verb + what they get, e.g. Start Free Trial not Sign Up). Core sections: Social Proof - Problem/Pain - Solution/Benefits (3-5 points) - How It Works (3-4 steps) - Objection Handling (FAQ/comparison/guarantee) - Final CTA. Principles: Clarity over cleverness (clarity correlates with +81% conversions), Benefits over features, Specificity over vagueness (4 hours to 15 minutes not save time), Customer language over company language. CTA: Weak (Submit/Sign Up/Learn More) vs Strong (Start Free Trial/Get the Complete Checklist/See Product Demo)."
         }
       ],
       "nameEn": "Tasks"
@@ -846,6 +865,23 @@
           "model": "GPT-4o+/Claude3.5/Step3+",
           "titleEn": "Positive Instructions",
           "contentEn": "Tell me directly what to do, rather than what not to do. Frame all instructions positively."
+        },
+        {
+          "id": "con-anti-ai-slop",
+          "title": "AI痕迹消除",
+          "content": "写作时必须避免以下6类AI写作痕迹：1）对比揭示（\"不是X，而是Y\"）直接陈述Y；2）否定列举（\"没有X，没有Y，没有Z\"）改为描述实际发生的事；3）拖尾堆砌（一个完整观点后跟一串逗号附加项）在主观点处结束句子；4）自问自答（\"结果？3倍速度。\"）直接说出结果；5）万能开头（\"在这个快节奏的时代\"\"无论你是X还是Y\"）删除；6）短文案中的破折号在标题和广告中不用。交付前自检：搜索这些模式，朗读每句超过20字的句子，从事实出发修正而非替换同义词。",
+          "tags": [
+            "AI痕迹",
+            "文案",
+            "写作约束"
+          ],
+          "platforms": [
+            "all"
+          ],
+          "verified": "2026-10-04",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Anti-AI Slop",
+          "contentEn": "Writing must avoid these 6 categories of AI writing tells: 1) Contrast reveals ('It\\'s not X, it\\'s Y') - State Y directly; 2) Negation lists ('No X, no Y, no Z') - Describe what actually happens; 3) Trailing pile-ons (a complete claim followed by comma-separated add-ons) - End the sentence at the main claim; 4) Self-answered questions ('The result? 3x faster.') - Just say the result; 5) Stock openers ('In today\\'s fast-paced world,' 'Whether you\\'re X or Y') - Remove; 6) Em dashes in short copy - No dashes in headlines or ads. Before delivery, self-check: search for these patterns, read every sentence over 20 words aloud, and fix from facts, not synonym swaps."
         }
       ],
       "nameEn": "Constraints"
@@ -1371,6 +1407,46 @@
           "model": "GPT-4o+/Claude3.5/Step3+",
           "titleEn": "Risk Assessment",
           "contentEn": "Analyze the following transaction, behavior, or content and determine the risk level (Low / Medium / High / Critical). Identify specific risk points and provide a recommended action. High risk and above must be escalated for manual review. Output format: Risk level + List of risk points + Recommended action."
+        },
+        {
+          "id": "dec-lazy-dev",
+          "title": "懒人阶梯决策",
+          "content": "写代码前，按优先级逐级判断，只在前序层级都不满足时才进入下一级：1）这个功能需要实现吗？（YAGNI原则，不需要则跳过）2）当前代码库已有现成实现吗？（有则直接复用，不重写）3）标准库已支持吗？（是则用标准库）4）原生平台自带此能力吗？（是则用原生特性）5）已安装的依赖能解决吗？（是则用现有依赖）6）能否用1行代码实现？（可以则1行搞定）7）最后才写能运行的最小代码。不偷懒的部分：理解问题（完整阅读任务和代码再动手）、信任边界验证、错误处理、安全性、可访问性。用ponytail:注释标记已知上限的简化方案。",
+          "tags": [
+            "懒人阶梯",
+            "代码决策",
+            "YAGNI",
+            "最小代码"
+          ],
+          "platforms": [
+            "chatgpt",
+            "claude",
+            "stepfun"
+          ],
+          "verified": "2026-10-04",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Lazy Senior Dev Ladder",
+          "contentEn": "Before writing any code, climb the lazy ladder - only proceed to the next rung if all prior rungs fail: 1) Does this need to be built at all? (YAGNI) 2) Does it already exist in this codebase? (Reuse, do not rewrite) 3) Does the standard library do this? (Use it) 4) Does a native platform feature cover it? (Use it) 5) Does an already-installed dependency solve it? (Use it) 6) Can this be one line? (Make it one line) 7) Only then: write the minimum code that works. Not lazy about: understanding the problem (read fully before acting), input validation at trust boundaries, error handling, security, accessibility. Mark deliberate simplifications with a ponytail: comment naming the ceiling and upgrade path."
+        },
+        {
+          "id": "dec-over-engineer",
+          "title": "过度工程审计",
+          "content": "对以下代码进行过度工程审计，只找可以删除的部分，每条一行。格式：行号: 标签: 问题描述. 替代方案. 标签说明：delete=死代码/未使用的灵活性/投机功能，替代为无；stdlib=标准库已有此功能，写出函数名；native=依赖或代码做的事平台已内置，写出特性名；reuse=本仓库已有等价工具，写出路径；yagni=只有一个实现的抽象/无人修改的配置/只有一个调用者的层；shrink=同样逻辑更少行数，写出更短形式。审计结束给出唯一指标：net: 可减少N行。如果无可删减，回复\"已经足够精简，发布吧\"。",
+          "tags": [
+            "过度工程",
+            "代码审计",
+            "精简",
+            "删除"
+          ],
+          "platforms": [
+            "chatgpt",
+            "claude",
+            "stepfun"
+          ],
+          "verified": "2026-10-04",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Over-Engineering Audit",
+          "contentEn": "Audit the following code for over-engineering. Hunt only for things to delete, one line per finding. Format: L<line>: <tag>: <what>. <replacement>. Tags: delete (dead code / unused flexibility / speculative feature, replacement: nothing), stdlib (standard library already ships this, name the function), native (dependency or code doing what the platform already does, name the feature), reuse (equivalent helper/util already in this repo, name the path), yagni (abstraction with one implementation / config nobody sets / layer with one caller), shrink (same logic, fewer lines, show the shorter form). End with the only metric: net: -N lines possible. If nothing to cut, reply \"Lean already. Ship.\""
         }
       ],
       "nameEn": "Decision"
