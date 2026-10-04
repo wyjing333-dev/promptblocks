@@ -1,10 +1,8 @@
 // PromptBlocks Service Worker - PWA Offline Support
-const CACHE_NAME = 'promptblocks-v1';
+const CACHE_NAME = 'promptblocks-v2';
 const ASSETS = [
   './',
   './index.html',
-  './blocks.json',
-  './cases.json',
   './manifest.json'
 ];
 
