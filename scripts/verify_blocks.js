@@ -5,22 +5,18 @@
 const fs = require('fs');
 const path = require('path');
 
-// 读取 index.html 并提取 CATEGORIES 数据
-function loadBlocks() {
-  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf-8');
-  // 提取 CATEGORIES 到 PRESETS 之间的 JS 代码
-  const match = html.match(/var CATEGORIES = \[([\s\S]*?)\];\s*\n\s*var PRESETS/);
-  if (!match) {
-    console.error('[ERROR] 无法从 index.html 提取 CATEGORIES 数据');
-    process.exit(1);
-  }
-  // 用 eval 解析（本地脚本，安全可控）
-  const CATEGORIES = eval('[' + match[1] + ']');
-  return CATEGORIES;
+// 读取 blocks.json
+function loadData() {
+  const jsonPath = path.join(__dirname, '..', 'blocks.json');
+  const raw = fs.readFileSync(jsonPath, 'utf-8');
+  return JSON.parse(raw);
 }
 
 function runTests() {
-  const CATEGORIES = loadBlocks();
+  const data = loadData();
+  const CATEGORIES = data.categories;
+  const CONFLICT_PAIRS = data.conflictPairs;
+  const PRESETS = data.presets;
   let totalBlocks = 0;
   let totalErrors = 0;
   let totalWarnings = 0;
@@ -131,12 +127,8 @@ function runTests() {
     totalErrors += dupIds.length;
   }
 
-  // 10. 冲突规则检查（CONFLICT_PAIRS 引用积木是否存在）
-  var html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf-8');
-  var conflictMatch = html.match(/var CONFLICT_PAIRS = \[([\s\S]*?)\];/);
-  if (conflictMatch) {
-    var conflictPairs = eval('[' + conflictMatch[1] + ']');
-    conflictPairs.forEach(function(cp) {
+  // 10. 冲突规则检查（引用积木是否存在）
+  CONFLICT_PAIRS.forEach(function(cp) {
       if (allIds.indexOf(cp.a) === -1) {
         console.log('❌ 冲突规则引用了不存在的积木: ' + cp.a);
         totalErrors++;
@@ -146,13 +138,9 @@ function runTests() {
         totalErrors++;
       }
     });
-  }
 
   // 11. 预设模板引用积木检查
-  var presetMatch = html.match(/var PRESETS = \[([\s\S]*?)\];/);
-  if (presetMatch) {
-    var presets = eval('[' + presetMatch[1] + ']');
-    presets.forEach(function(p) {
+  PRESETS.forEach(function(p) {
       p.blocks.forEach(function(bid) {
         if (allIds.indexOf(bid) === -1) {
           console.log('❌ 预设模板 "' + p.name + '" 引用了不存在的积木: ' + bid);
@@ -160,7 +148,6 @@ function runTests() {
         }
       });
     });
-  }
 
   // 12. 验证日期过期检查（超过90天未验证）
   var today = new Date();
