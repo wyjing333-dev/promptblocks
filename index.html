@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PromptBlocks - 开源免费的AI提示词拼装工具，72+积木模块，像搭积木一样拼出专业Prompt，支持ChatGPT/Claude/阶跃星辰/Gemini/文心一言/通义千问，免登录直接使用">
+<meta name="keywords" content="Prompt,提示词,AI工具,ChatGPT,Claude,提示词模板,提示词生成器,拼装Prompt,AI效率工具,开源AI工具">
+<meta name="author" content="PromptBlocks">
+<meta property="og:title" content="PromptBlocks - 像搭积木一样拼Prompt">
+<meta property="og:description" content="开源免费的AI提示词拼装工具，72+积木模块，支持主流AI平台，免登录直接使用">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://wyjing333-dev.github.io/promptblocks/">
 <title>PromptBlocks - 像搭积木一样拼Prompt</title>
 <style>
   :root {
@@ -63,6 +70,47 @@
     display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
   }
   .submit-btn:hover { background: rgba(16,185,129,0.2); }
+  .star-btn {
+    padding: 6px 16px; border-radius: 20px; border: 1px solid #f59e0b;
+    background: rgba(245,158,11,0.15); color: #f59e0b; font-size: 13px;
+    font-weight: 700; cursor: pointer; transition: all 0.2s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+    animation: starPulse 2s ease-in-out infinite;
+  }
+  .star-btn:hover { background: rgba(245,158,11,0.3); transform: scale(1.05); }
+  @keyframes starPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); } 50% { box-shadow: 0 0 0 6px rgba(245,158,11,0); } }
+  /* Star引导弹窗 */
+  .star-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center;
+    z-index: 9999; animation: fadeIn 0.3s;
+  }
+  .star-modal.show { display: flex; }
+  .star-modal-content {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 32px 40px; text-align: center; max-width: 380px; position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .star-modal-content .star-icon { font-size: 48px; margin-bottom: 12px; }
+  .star-modal-content h3 { font-size: 18px; margin-bottom: 8px; color: var(--text-main); }
+  .star-modal-content p { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+  .star-modal-content .star-actions { display: flex; gap: 12px; justify-content: center; }
+  .star-modal-content .star-go {
+    padding: 10px 24px; border-radius: 24px; border: none; background: linear-gradient(135deg, #f59e0b, #ec4899);
+    color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none;
+  }
+  .star-modal-content .star-go:hover { transform: scale(1.05); }
+  .star-modal-content .star-later {
+    padding: 10px 24px; border-radius: 24px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .star-modal-content .star-later:hover { border-color: var(--text-muted); color: var(--text-main); }
+  .star-modal-content .star-close {
+    position: absolute; top: 8px; right: 12px; background: none; border: none; color: var(--text-muted);
+    font-size: 20px; cursor: pointer; padding: 4px;
+  }
+  .star-modal-content .star-close:hover { color: var(--text-main); }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   .tool-link {
     padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
     background: transparent; color: var(--text-muted); font-size: 13px;
@@ -268,6 +316,7 @@
     </div>
     <a class="tool-link" href="block-recommender.html">🧩 推荐器</a>
     <a class="tool-link" href="prompt-scorer.html">🔍 评分器</a>
+    <a class="star-btn" href="https://github.com/wyjing333-dev/promptblocks" target="_blank">⭐ Star</a>
     <a class="submit-btn" href="https://github.com/wyjing333-dev/promptblocks/issues/new?labels=submit-block&template=submit-block.md&title=%E6%8F%90%E4%BA%A4%E6%96%B0%E7%A7%AF%E6%9C%A8" target="_blank">➕ 提交积木</a>
   </div>
 </header>
@@ -316,6 +365,19 @@
 </div>
 
 <div class="toast" id="toast">已复制到剪贴板！</div>
+
+<div class="star-modal" id="starModal">
+  <div class="star-modal-content">
+    <button class="star-close" onclick="closeStarModal()">&times;</button>
+    <div class="star-icon">⭐</div>
+    <h3>觉得好用？给个Star吧！</h3>
+    <p>PromptBlocks 是开源免费项目，你的 Star 是小猫持续更新的最大动力~</p>
+    <div class="star-actions">
+      <a class="star-go" href="https://github.com/wyjing333-dev/promptblocks" target="_blank" onclick="closeStarModal()">⭐ 去 Star</a>
+      <button class="star-later" onclick="closeStarModal()">下次再说</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ===== Platform Definitions =====
@@ -859,12 +921,26 @@ function copyPrompt() {
   if (!text) return;
   navigator.clipboard.writeText(text).then(function() {
     showToast('已复制到剪贴板！');
+    showStarModal();
   }).catch(function() {
     var ta = document.createElement('textarea');
     ta.value = text; document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); showToast('已复制到剪贴板！'); } catch(e) { showToast('复制失败，请手动复制'); }
+    try { document.execCommand('copy'); showToast('已复制到剪贴板！'); showStarModal(); } catch(e) { showToast('复制失败，请手动复制'); }
     document.body.removeChild(ta);
   });
+}
+
+var starShownCount = 0;
+function showStarModal() {
+  starShownCount++;
+  if (starShownCount > 3) return;
+  var modal = document.getElementById('starModal');
+  if (modal) modal.classList.add('show');
+}
+
+function closeStarModal() {
+  var modal = document.getElementById('starModal');
+  if (modal) modal.classList.remove('show');
 }
 
 function showToast(msg) {

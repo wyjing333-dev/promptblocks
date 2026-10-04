@@ -1,48 +1,77 @@
 # PromptBlocks 🧱
 
-> 像搭积木一样拼Prompt | 可视化Prompt组装工具
+> 像搭积木一样拼 Prompt | 开源免费的 AI 提示词拼装工具
 
-## 这是什么？
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Blocks](https://img.shields.io/badge/积木数-72+-ec4899)](https://wyjing333-dev.github.io/promptblocks/)
+[![平台](https://img.shields.io/badge/支持AI平台-6+-6366f1)](https://wyjing333-dev.github.io/promptblocks/)
+[![在线体验](https://img.shields.io/badge/在线体验-点击前往-10b981)](https://wyjing333-dev.github.io/promptblocks/)
 
-PromptBlocks 是一个零门槛的 Prompt 拼装工具。不需要理解 Prompt Engineering，不需要背诵框架——像搭乐高一样，选几块积木拼在一起，就能生成专业级 Prompt。
+## 👀 这是什么？
 
-## 核心功能
+PromptBlocks 是一个**零门槛**的 Prompt 拼装工具。
 
-- **6大积木分类**：角色、任务、上下文、约束、格式、示例，共40个预制积木模块
-- **点击拼装**：点击左侧积木即添加到拼装区，支持上下排序和删除
-- **实时预览**：右侧实时显示拼接后的完整Prompt，一键复制
-- **一键预设**：4个常用场景预设模板（小红书种草、代码评审、短视频脚本、学习新知识）
-- **纯前端**：单HTML文件，无后端依赖，部署即用
+不需要理解 Prompt Engineering，不需要背诵框架——像搭乐高一样，选几块积木拼在一起，就能生成专业级 Prompt。
 
-## 快速开始
+🎯 **免登录、免安装、免费用**，打开网页直接用。
 
+## ✨ 核心功能
+
+- **72+ 积木模块**：8 大分类（角色/任务/上下文/约束/格式/示例/行业/决策），覆盖主流使用场景
+- **10+ 行业积木**：律师、医生、CPA、电商、HR、SEO、心理咨询师、金融分析师等专业方向
+- **⚡ 快捷模式**：不想拼积木？直接打字，AI 实时评分并推荐积木
+- **🧩 积木推荐器**：描述你的任务，自动推荐最合适的积木组合
+- **🔍 Prompt 评分器**：5 维度评估你的 Prompt 质量，低分维度标红
+- **⚠️ 冲突检测**：积木之间有矛盾？自动提醒，避免冗余
+- **一键复制**：拼好直接复制到 ChatGPT / Claude / 阶跃星辰 / Gemini 等平台
+- **纯前端**：单 HTML 文件，无后端依赖，部署即用
+
+## 🚀 快速开始
+
+**在线体验**：访问 [wyjing333-dev.github.io/promptblocks](https://wyjing333-dev.github.io/promptblocks/)
+
+**本地运行**：
 ```bash
-# 方式1：直接打开
-双击 index.html 即可在浏览器中使用
-
-# 方式2：本地开发
-npx vercel dev
-
-# 方式3：部署到Vercel
-npx vercel --prod
+git clone https://github.com/wyjing333-dev/promptblocks.git
+cd promptblocks
+# 双击 index.html 即可在浏览器中使用
 ```
 
-## 积木分类说明
+## 📊 积木分类
 
 | 分类 | 图标 | 作用 | 积木数 |
 |------|------|------|--------|
-| 角色 | 🎭 | 设定AI身份、专业领域、语气 | 8 |
-| 任务 | 🎯 | 明确要完成的具体动作 | 8 |
-| 上下文 | 📋 | 提供背景信息、受众和目的 | 7 |
-| 约束 | ⚙️ | 长度/风格/禁止项等限制条件 | 7 |
-| 格式 | 📐 | 输出结构和形式要求 | 6 |
-| 示例 | 💡 | Few-shot学习样例 | 4 |
+| 角色 | 🎭 | 设定 AI 身份、专业领域 | 13 |
+| 任务 | 🎯 | 明确要完成的具体动作 | 15 |
+| 上下文 | 📋 | 提供背景信息、受众和目的 | 8 |
+| 约束 | ⚙️ | 长度/风格/禁止项等限制 | 7 |
+| 格式 | 📐 | 输出结构和形式要求 | 7 |
+| 示例 | 💡 | Few-shot 学习样例 | 4 |
+| 行业 | 🏢 | 专业领域的定制积木 | 11 |
+| 决策 | ⚡ | Agent 决策路由与判断 | 7 |
 
-## 技术栈
+## 🧩 使用方式
+
+1. 从左侧积木库点击积木，添加到拼装区
+2. 调整积木顺序，冲突检测自动运行
+3. 右侧实时预览完整 Prompt
+4. 点击「复制 Prompt」直接粘贴到你的 AI 平台
+
+> 💡 不想拼？切到「⚡ 快捷」模式直接打字，或用「🧩 推荐器」描述任务自动推荐积木。
+
+## 🔧 技术栈
 
 - HTML5 + CSS3 + Vanilla JavaScript
 - 无框架依赖，无构建步骤
-- Vercel 静态部署
+- GitHub Pages 静态部署
+
+## 🤝 贡献
+
+欢迎提交新积木！访问 [提交积木入口](https://github.com/wyjing333-dev/promptblocks/issues/new?labels=submit-block&template=submit-block.md&title=提交新积木) 直接提交。
+
+## ⭐ Star History
+
+如果觉得好用，给个 Star ⭐ 支持一下吧！
 
 ## License
 
