@@ -1,5 +1,5 @@
 // PromptBlocks Service Worker - PWA Offline Support
-const CACHE_NAME = 'promptblocks-v2';
+const CACHE_NAME = 'promptblocks-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -31,43 +31,56 @@ self.addEventListener('activate', function(event) {
   self.clients.claim();
 });
 
-// Fetch - cache-first strategy, fallback to network
+// Fetch - network-first for HTML, cache-first for assets
 self.addEventListener('fetch', function(event) {
-  // Skip non-GET requests
   if (event.request.method !== 'GET') return;
   
-  // Skip cross-origin requests
   var url = new URL(event.request.url);
   if (url.origin !== location.origin) return;
   
-  event.respondWith(
-    caches.match(event.request).then(function(cached) {
-      if (cached) {
-        // Return cached and update in background
-        fetch(event.request).then(function(response) {
-          if (response && response.status === 200) {
-            var clone = response.clone();
-            caches.open(CACHE_NAME).then(function(cache) {
-              cache.put(event.request, clone);
-            });
-          }
-        }).catch(function() {});
-        return cached;
-      }
-      // Not in cache, fetch from network
-      return fetch(event.request).then(function(response) {
-        if (!response || response.status !== 200) return response;
-        var clone = response.clone();
-        caches.open(CACHE_NAME).then(function(cache) {
-          cache.put(event.request, clone);
-        });
+  var isHTML = event.request.destination === 'document' || url.pathname.endsWith('.html') || url.pathname === '/' || url.pathname === '';
+  
+  if (isHTML) {
+    // Network-first for HTML: always try network, fall back to cache
+    event.respondWith(
+      fetch(event.request).then(function(response) {
+        if (response && response.status === 200) {
+          var clone = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, clone);
+          });
+        }
         return response;
       }).catch(function() {
-        // Offline fallback
-        if (event.request.destination === 'document') {
-          return caches.match('./index.html');
+        return caches.match(event.request).then(function(cached) {
+          return cached || caches.match('./index.html');
+        });
+      })
+    );
+  } else {
+    // Cache-first for static assets (JS, CSS, JSON, images)
+    event.respondWith(
+      caches.match(event.request).then(function(cached) {
+        if (cached) {
+          fetch(event.request).then(function(response) {
+            if (response && response.status === 200) {
+              var clone = response.clone();
+              caches.open(CACHE_NAME).then(function(cache) {
+                cache.put(event.request, clone);
+              });
+            }
+          }).catch(function() {});
+          return cached;
         }
-      });
-    })
-  );
+        return fetch(event.request).then(function(response) {
+          if (!response || response.status !== 200) return response;
+          var clone = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, clone);
+          });
+          return response;
+        });
+      })
+    );
+  }
 });

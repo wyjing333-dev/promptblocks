@@ -562,6 +562,11 @@ var I18N = {
 function t(key) {
   return (I18N[currentLang] && I18N[currentLang][key]) || key;
 }
+function platName(p) {
+  if (!p) return '';
+  return (currentLang === 'en' && p.nameEn) ? p.nameEn : p.name;
+}
+
 
 function toggleLang() {
   currentLang = currentLang === 'zh' ? 'en' : 'zh';
