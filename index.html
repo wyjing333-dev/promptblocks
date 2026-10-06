@@ -136,6 +136,12 @@
     background: transparent; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: all 0.2s;
   }
   .star-modal-content .star-later:hover { border-color: var(--text-muted); color: var(--text-main); }
+  .star-modal-content .star-never {
+    padding: 6px 16px; border-radius: 20px; border: none;
+    background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer;
+    transition: all 0.2s; opacity: 0.6; margin-top: 4px;
+  }
+  .star-modal-content .star-never:hover { opacity: 1; color: var(--text-muted); }
   .star-modal-content .star-close {
     position: absolute; top: 8px; right: 12px; background: none; border: none; color: var(--text-muted);
     font-size: 20px; cursor: pointer; padding: 4px;
@@ -499,6 +505,7 @@
     <div class="star-actions">
       <a class="star-go" href="https://github.com/wyjing333-dev/promptblocks" target="_blank" onclick="closeStarModal()">⭐ <span data-i18n="goStar">去 Star</span></a>
       <button class="star-later" onclick="closeStarModal()" data-i18n="later">下次再说</button>
+      <button class="star-never" onclick="neverShowStarModal()" data-i18n="neverShow">不再提醒</button>
     </div>
   </div>
 </div>
@@ -546,7 +553,7 @@ var I18N = {
     copied: '已复制到剪贴板！',
     starTitle: '觉得好用？给个Star吧！',
     starDesc: 'PromptBlocks 是开源免费项目，你的 Star 是小猫持续更新的最大动力~',
-    goStar: '去 Star', later: '下次再说',
+    goStar: '去 Star', later: '下次再说', neverShow: '不再提醒',
     langLabel: '🌐 EN',
     conflict: '冲突', removeBlock: '删除', moveUp: '上移', moveDown: '下移',
     quickPlaceholder: '输入你的想法或需求，AI 会实时评分并推荐积木...',
@@ -568,7 +575,7 @@ var I18N = {
     copied: 'Copied to clipboard!',
     starTitle: 'Enjoying it? Give us a Star!',
     starDesc: 'PromptBlocks is a free open-source project. Your Star keeps us going!',
-    goStar: 'Star on GitHub', later: 'Maybe later',
+    goStar: 'Star on GitHub', later: 'Maybe later', neverShow: "Don't show again",
     langLabel: '🌐 中文',
     conflict: 'Conflict', removeBlock: 'Remove', moveUp: 'Up', moveDown: 'Down',
     quickPlaceholder: 'Type your idea or request, AI will score and recommend blocks in real-time...',
@@ -1016,6 +1023,22 @@ function copyPrompt() {
 }
 
 var starShownCount = 0;
+// 访问次数追踪 + 自动弹Star引导
+(function() {
+  var visits = parseInt(localStorage.getItem('pb_visit_count') || '0') + 1;
+  localStorage.setItem('pb_visit_count', visits);
+  var starDismissed = localStorage.getItem('pb_star_dismissed') === '1';
+  // 第3次访问起，且未永久关闭，3秒后自动弹窗
+  if (visits >= 3 && !starDismissed) {
+    setTimeout(function() {
+      var modal = document.getElementById('starModal');
+      if (modal && !modal.classList.contains('show')) {
+        modal.classList.add('show');
+      }
+    }, 3000);
+  }
+})();
+
 function showStarModal() {
   starShownCount++;
   if (starShownCount > 3) return;
@@ -1024,6 +1047,12 @@ function showStarModal() {
 }
 
 function closeStarModal() {
+  var modal = document.getElementById('starModal');
+  if (modal) modal.classList.remove('show');
+}
+
+function neverShowStarModal() {
+  localStorage.setItem('pb_star_dismissed', '1');
   var modal = document.getElementById('starModal');
   if (modal) modal.classList.remove('show');
 }
