@@ -149,17 +149,21 @@
 - 移动端适配：已完成！汉堡菜单+全屏弹窗+44px触控+横向滚动平台栏+积木库折叠+按钮换行，commit 7881f05已push
 
 ## 2026-10-07
-- 网站：正常（80积木/8分类/7平台/10预设，功能完整加载无异常）
+- 网站：正常（82积木/8分类/7平台/10预设，功能完整加载无异常）
 - GitHub：0 stars, 0 forks, 0 issues, 0 watchers
 - 流量：
   - 页面访问(views)：10/6有3次浏览/2个唯一访客（新增）
   - 代码克隆(clones)：305 total（+18 since 10/06）/ 126 unique（+3）
   - 流量持续增长中，10/4大更新效果仍在延续
-- 更新：今日计划新增积木+设计审查P1优化（进行中）
-- GitHub Trending对标：今日热榜分析（进行中）
-- 推广：待发
+- 更新：新增2积木（ADHD友好输出con-adhd-output + 增长黑客role-growth-hacker），80→82，commit c160952已push
+- GitHub Trending对标：2026-10-07日榜分析完成
+  - 今日热榜AI项目：mattpocock/skills(278k⭐+889) / agency-agents(158k⭐+623) / claude-mem(97k⭐+534) / impeccable(78k⭐+616) / i-have-adhd(55k⭐+326)
+  - 已提取2积木：i-have-adhd→con-adhd-output(BLUF结论先行) / agency-agents→role-growth-hacker(数据驱动增长)
+  - 可借鉴方向：claude-mem(MCP Server增加记忆功能) / impeccable(前端设计审查约束积木，已标记) / diagram-design(42种图表类型，可增强task-arch-diagram)
+- 推广：推广内容写好存推广内容_20261007.md（即刻/小红书/推特三版文案）
 - Issue检查：0条未关闭Issue，一切正常
-- 备注：克隆数突破300大关（305），唯一用户126；页面浏览也开始有数据（3次/2人）；Stars仍为0，需持续引导
+- 回归测试：82积木0错误7警告全通过
+- 备注：克隆数突破300大关（305），唯一用户126；页面浏览也开始有数据；Stars仍为0，需持续引导
 
 ---
 
