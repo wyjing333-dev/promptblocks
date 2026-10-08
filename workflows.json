@@ -1,0 +1,259 @@
+[
+  {
+    "id": "wf-competitive-analysis",
+    "name": "竞品分析工作流",
+    "nameEn": "Competitive Analysis Workflow",
+    "icon": "🔍",
+    "description": "从定义问题到输出决策建议的完整竞品分析流程",
+    "agentRole": "researcher",
+    "steps": [
+      {
+        "step": 1,
+        "name": "定义问题",
+        "blockId": "task-requirements-clarify",
+        "input": "用户的分析目标和关注点",
+        "output": "明确的分析目标和范围"
+      },
+      {
+        "step": 2,
+        "name": "制定搜索计划",
+        "blockId": "task-search-plan",
+        "input": "分析目标和关键词",
+        "output": "搜索关键词和平台列表"
+      },
+      {
+        "step": 3,
+        "name": "收集竞品",
+        "blockId": "task-analyze",
+        "input": "搜索计划",
+        "output": "竞品清单和基本信息"
+      },
+      {
+        "step": 4,
+        "name": "可信度评分",
+        "blockId": "task-source-credibility",
+        "input": "竞品信息和数据来源",
+        "output": "可信度评分表"
+      },
+      {
+        "step": 5,
+        "name": "对比分析",
+        "blockId": "task-competitive-analysis",
+        "input": "竞品清单和评分结果",
+        "output": "竞品矩阵表格"
+      },
+      {
+        "step": 6,
+        "name": "事实与推测分离",
+        "blockId": "task-fact-separation",
+        "input": "分析结论",
+        "output": "分类后的结论（事实/推测/待验证）"
+      },
+      {
+        "step": 7,
+        "name": "输出决策建议",
+        "blockId": "task-research-conclusion",
+        "input": "分析数据和分类结论",
+        "output": "研究结论和行动建议"
+      }
+    ]
+  },
+  {
+    "id": "wf-product-requirements",
+    "name": "产品需求工作流",
+    "nameEn": "Product Requirements Workflow",
+    "icon": "📋",
+    "description": "从用户问题到发布计划的完整产品需求流程",
+    "agentRole": "pm",
+    "steps": [
+      {
+        "step": 1,
+        "name": "用户问题定义",
+        "blockId": "task-requirements-clarify",
+        "input": "用户的业务问题和目标",
+        "output": "明确的需求确认单"
+      },
+      {
+        "step": 2,
+        "name": "用户访谈",
+        "blockId": "task-user-interview",
+        "input": "需求确认单和目标用户",
+        "output": "访谈提纲和用户洞察"
+      },
+      {
+        "step": 3,
+        "name": "竞品分析",
+        "blockId": "task-competitive-analysis",
+        "input": "需求范围和竞品清单",
+        "output": "竞品矩阵和差异化机会"
+      },
+      {
+        "step": 4,
+        "name": "需求拆解",
+        "blockId": "task-prd",
+        "input": "用户洞察和竞品分析",
+        "output": "完整PRD文档"
+      },
+      {
+        "step": 5,
+        "name": "优先级排序",
+        "blockId": "dec-priority",
+        "input": "PRD功能列表",
+        "output": "优先级排序结果"
+      },
+      {
+        "step": 6,
+        "name": "验收标准",
+        "blockId": "con-acceptance-criteria",
+        "input": "PRD和优先级",
+        "output": "可验证的验收标准清单"
+      },
+      {
+        "step": 7,
+        "name": "指标设计",
+        "blockId": "task-metric-design",
+        "input": "产品目标和验收标准",
+        "output": "数据指标体系"
+      },
+      {
+        "step": 8,
+        "name": "发布计划",
+        "blockId": "task-release-plan",
+        "input": "PRD和优先级排序",
+        "output": "版本规划和发布计划"
+      }
+    ]
+  },
+  {
+    "id": "wf-content-production",
+    "name": "内容生产工作流",
+    "nameEn": "Content Production Workflow",
+    "icon": "📝",
+    "description": "从选题到发布复盘的完整内容生产流程",
+    "agentRole": "marketer",
+    "steps": [
+      {
+        "step": 1,
+        "name": "目标确定",
+        "blockId": "task-requirements-clarify",
+        "input": "用户的运营目标和受众",
+        "output": "明确的内容目标"
+      },
+      {
+        "step": 2,
+        "name": "选题生成",
+        "blockId": "task-brainstorm",
+        "input": "内容目标和受众画像",
+        "output": "候选选题列表"
+      },
+      {
+        "step": 3,
+        "name": "内容大纲",
+        "blockId": "fmt-outline",
+        "input": "选定的选题",
+        "output": "内容大纲"
+      },
+      {
+        "step": 4,
+        "name": "初稿撰写",
+        "blockId": "task-write-article",
+        "input": "内容大纲和风格要求",
+        "output": "初稿"
+      },
+      {
+        "step": 5,
+        "name": "风格润色",
+        "blockId": "task-rewrite",
+        "input": "初稿和平台要求",
+        "output": "润色后的内容"
+      },
+      {
+        "step": 6,
+        "name": "SEO优化",
+        "blockId": "task-seo-optimize",
+        "input": "最终内容",
+        "output": "SEO优化后的内容"
+      },
+      {
+        "step": 7,
+        "name": "平台适配",
+        "blockId": "task-write-copy",
+        "input": "内容和目标平台",
+        "output": "各平台适配版本"
+      },
+      {
+        "step": 8,
+        "name": "发布复盘",
+        "blockId": "task-conversion-funnel",
+        "input": "发布后的数据",
+        "output": "转化分析和改进建议"
+      }
+    ]
+  },
+  {
+    "id": "wf-software-development",
+    "name": "软件开发工作流",
+    "nameEn": "Software Development Workflow",
+    "icon": "💻",
+    "description": "从需求澄清到代码审查的完整开发流程",
+    "agentRole": "developer",
+    "steps": [
+      {
+        "step": 1,
+        "name": "需求澄清",
+        "blockId": "task-requirements-clarify",
+        "input": "用户的开发需求",
+        "output": "需求确认单"
+      },
+      {
+        "step": 2,
+        "name": "技术方案",
+        "blockId": "task-architecture-design",
+        "input": "需求确认单",
+        "output": "架构设计文档"
+      },
+      {
+        "step": 3,
+        "name": "验收标准",
+        "blockId": "con-acceptance-criteria",
+        "input": "需求和架构",
+        "output": "验收标准清单"
+      },
+      {
+        "step": 4,
+        "name": "代码实现",
+        "blockId": "task-code",
+        "input": "架构设计和验收标准",
+        "output": "代码实现"
+      },
+      {
+        "step": 5,
+        "name": "测试用例",
+        "blockId": "task-test-case",
+        "input": "代码实现和验收标准",
+        "output": "测试用例"
+      },
+      {
+        "step": 6,
+        "name": "代码审查",
+        "blockId": "task-code-review",
+        "input": "代码实现",
+        "output": "审查报告和修复建议"
+      },
+      {
+        "step": 7,
+        "name": "回归测试",
+        "blockId": "task-regression-list",
+        "input": "代码变更和审查结果",
+        "output": "回归测试清单"
+      },
+      {
+        "step": 8,
+        "name": "测试报告",
+        "blockId": "task-test-report",
+        "input": "测试执行结果",
+        "output": "测试报告和发布建议"
+      }
+    ]
+  }
+]
