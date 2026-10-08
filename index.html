@@ -13,7 +13,7 @@
 <meta property="og:description" content="开源免费的AI提示词拼装工具，76+积木模块，支持主流AI平台，免登录直接使用">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://wyjing333-dev.github.io/promptblocks/">
-<title>PromptBlocks - 像搭积木一样拼Prompt</title>
+<title>PromptBlocks - 面向角色的AI工作流平台</title>
 <style>
   :root {
     --color-role: #6366f1;
@@ -191,6 +191,20 @@
   }
   .platform-btn:hover { border-color: #6366f1; color: #a5b4fc; }
   .platform-btn.active { background: rgba(99,102,241,0.15); border-color: #6366f1; color: #a5b4fc; font-weight: 600; }
+  /* Role Filter Bar */
+  .role-bar {
+    padding: 8px 24px; background: var(--bg-card); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .role-bar .rlabel { font-size: 12px; color: var(--text-muted); margin-right: 4px; white-space: nowrap; }
+  .role-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .role-btn {
+    padding: 4px 12px; border-radius: 16px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-size: 12px;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .role-btn:hover { border-color: #ec4899; color: #f9a8d4; }
+  .role-btn.active { background: rgba(236,72,153,0.15); border-color: #ec4899; color: #f9a8d4; font-weight: 600; }
   /* Data Dashboard */
   .dashboard {
     padding: 10px 24px; background: var(--bg-card); border-bottom: 1px solid var(--border);
@@ -404,6 +418,8 @@
     /* Dashboard - compact */
     .dashboard { padding: 8px 12px; gap: 12px; }
     .stat-item .stat-value { font-size: 16px; }
+    .role-bar { padding: 6px 12px; gap: 6px; }
+    .platform-bar { padding: 6px 12px; }
     .stat-item .stat-label { font-size: 10px; }
     .stat-divider { display: none; }
 
@@ -453,7 +469,7 @@
 <body>
 
 <header>
-  <div class="logo">PromptBlocks <span data-i18n="tagline">像搭积木一样拼Prompt</span></div>
+  <div class="logo">PromptBlocks <span data-i18n="tagline">面向角色的AI工作流平台</span></div>
   <button class="menu-toggle" onclick="toggleMobileMenu()" aria-label="菜单">☰</button>
   <div class="presets" id="presets"></div>
   <div class="header-right">
@@ -461,6 +477,7 @@
       <button class="mode-btn active" id="modeAssembly" onclick="setMode('assembly')" aria-label="拼装模式" role="tab" tabindex="0">🧱 <span data-i18n="modeAssembly">拼装</span></button>
       <button class="mode-btn" id="modeQuick" onclick="setMode('quick')" aria-label="快捷模式" role="tab" tabindex="0">⚡ <span data-i18n="modeQuick">快捷</span></button>
     </div>
+    <a class="tool-link" href="workflows.html">🔄 <span data-i18n="workflows">工作流</span></a>
     <a class="tool-link" href="block-recommender.html">🧩 <span data-i18n="recommender">推荐器</span></a>
     <a class="tool-link" href="cases.html">📊 <span data-i18n="cases">效果案例</span></a>
     <a class="tool-link" href="prompt-scorer.html">🔍 <span data-i18n="scorer">评分器</span></a>
@@ -476,6 +493,11 @@
 <div class="platform-bar">
   <span class="plabel" data-i18n="aiPlatform">AI 平台：</span>
   <div class="platform-filters" id="platformFilters"></div>
+</div>
+
+<div class="role-bar" id="roleBar">
+  <span class="rlabel" data-i18n="roleFilter">角色：</span>
+  <div class="role-filters" id="roleFilters"></div>
 </div>
 
 <div class="dashboard" id="dashboard"></div>
@@ -649,9 +671,9 @@ function loadData(callback) {
 var currentLang = localStorage.getItem('pb_lang') || 'zh';
 var I18N = {
   zh: {
-    tagline: '像搭积木一样拼Prompt',
+    tagline: '面向角色的AI工作流平台',
     modeAssembly: '拼装', modeQuick: '快捷',
-    recommender: '推荐器', scorer: '评分器', cases: '效果案例', tutorial: '教程',
+    recommender: '推荐器', scorer: '评分器', cases: '效果案例', tutorial: '教程', workflows: '工作流',
     submitBlock: '提交积木',
     aiPlatform: 'AI 平台：',
     blockLibrary: '积木库',
@@ -671,11 +693,13 @@ var I18N = {
     noConflict: '无冲突', addedBlocks: '个积木'
   },
   en: {
-    tagline: 'Build Prompts Like Lego',
+    tagline: 'Role-Oriented AI Workflow Platform',
     modeAssembly: 'Build', modeQuick: 'Quick',
-    recommender: 'Recommender', scorer: 'Scorer', cases: 'Case Studies', tutorial: 'Tutorial',
+    recommender: 'Recommender', scorer: 'Scorer', cases: 'Case Studies', tutorial: 'Tutorial', workflows: 'Workflows',
     submitBlock: 'Submit Block',
     aiPlatform: 'AI Platform: ',
+    roleFilter: 'Role: ',
+    dashBlocks: 'Blocks', dashRoles: 'Roles', dashWorkflows: 'Workflows', dashCategories: 'Categories', dashPlatforms: 'Platforms', dashPresets: 'Presets',
     blockLibrary: 'Block Library',
     assemblyArea: 'Assembly', blocks: ' blocks', clear: 'Clear',
     generatedPrompt: 'Generated Prompt',
@@ -734,7 +758,20 @@ function pName(p) { return currentLang === 'en' && p.nameEn ? p.nameEn : p.name;
 // ===== Data Loading =====
 var activeCategory = 'role';
 var activePlatform = 'all';
+var activeRole = 'all';
 var assembled = [];
+
+// Role definitions
+var ROLES = [
+  { id: 'all', name: '全部角色', nameEn: 'All Roles', icon: '\u{1f465}' },
+  { id: 'pm', name: '产品经理', nameEn: 'PM', icon: '\u{1f4cb}' },
+  { id: 'researcher', name: '调研员', nameEn: 'Researcher', icon: '\u{1f50d}' },
+  { id: 'developer', name: '程序员', nameEn: 'Developer', icon: '\u{1f4bb}' },
+  { id: 'tester', name: '测试员', nameEn: 'Tester', icon: '\u{1f9ea}' },
+  { id: 'designer', name: '设计师', nameEn: 'Designer', icon: '\u{1f3a8}' },
+  { id: 'marketer', name: '运营官', nameEn: 'Marketer', icon: '\u{1f4e3}' },
+  { id: 'general', name: '通用', nameEn: 'General', icon: '\u{1f527}' }
+];
 var currentMode = 'assembly'; // 'assembly' or 'quick'
 var quickText = '';
 
@@ -742,6 +779,7 @@ var quickText = '';
 function init() {
   renderDashboard();
   renderPlatformFilters();
+  renderRoleFilters();
   renderCategoryTabs();
   renderBlocks();
   renderPresets();
@@ -760,16 +798,25 @@ function renderPresets() {
 
 function renderDashboard() {
   var totalBlocks = 0;
-  CATEGORIES.forEach(function(c) { totalBlocks += c.blocks.length; });
+  var roleSet = {};
+  CATEGORIES.forEach(function(c) { c.blocks.forEach(function(b) {
+    totalBlocks++;
+    if (b.agentRole) roleSet[b.agentRole] = true;
+  }); });
+  var roleCount = Object.keys(roleSet).length;
   var el = document.getElementById('dashboard');
   el.innerHTML =
-    '<div class="stat-item"><div class="stat-value">' + totalBlocks + '</div><div class="stat-label">积木总数</div></div>' +
+    '<div class="stat-item"><div class="stat-value">' + totalBlocks + '</div><div class="stat-label">' + t('dashBlocks') + '</div></div>' +
     '<div class="stat-divider"></div>' +
-    '<div class="stat-item"><div class="stat-value">' + CATEGORIES.length + '</div><div class="stat-label">分类</div></div>' +
+    '<div class="stat-item"><div class="stat-value">' + roleCount + '</div><div class="stat-label">' + t('dashRoles') + '</div></div>' +
     '<div class="stat-divider"></div>' +
-    '<div class="stat-item"><div class="stat-value">' + (PLATFORMS.length - 1) + '</div><div class="stat-label">适配平台</div></div>' +
+    '<div class="stat-item"><div class="stat-value">4</div><div class="stat-label">' + t('dashWorkflows') + '</div></div>' +
     '<div class="stat-divider"></div>' +
-    '<div class="stat-item"><div class="stat-value">' + PRESETS.length + '</div><div class="stat-label">预设模板</div></div>' +
+    '<div class="stat-item"><div class="stat-value">' + CATEGORIES.length + '</div><div class="stat-label">' + t('dashCategories') + '</div></div>' +
+    '<div class="stat-divider"></div>' +
+    '<div class="stat-item"><div class="stat-value">' + (PLATFORMS.length - 1) + '</div><div class="stat-label">' + t('dashPlatforms') + '</div></div>' +
+    '<div class="stat-divider"></div>' +
+    '<div class="stat-item"><div class="stat-value">' + PRESETS.length + '</div><div class="stat-label">' + t('dashPresets') + '</div></div>' +
     '<div class="stat-divider"></div>' +
     '<div class="stat-item"><div class="stat-value" style="font-size:14px">开源</div><div class="stat-label"><a class="stat-link" href="https://github.com/wyjing333-dev/promptblocks" target="_blank">GitHub 项目</a></div></div>';
 }
@@ -784,6 +831,21 @@ function renderPlatformFilters() {
 function setPlatform(pid) {
   activePlatform = pid;
   renderPlatformFilters();
+  renderCategoryTabs();
+  renderBlocks();
+}
+
+function renderRoleFilters() {
+  var el = document.getElementById('roleFilters');
+  if (!el) return;
+  el.innerHTML = ROLES.map(function(r) {
+    return '<button class="role-btn' + (r.id === activeRole ? ' active' : '') + '" onclick="setRole(\'' + r.id + '\')">' + r.icon + ' ' + (currentLang === 'en' && r.nameEn ? r.nameEn : r.name) + '</button>';
+  }).join('');
+}
+
+function setRole(rid) {
+  activeRole = rid;
+  renderRoleFilters();
   renderCategoryTabs();
   renderBlocks();
 }
@@ -831,7 +893,8 @@ function renderBlocks() {
     return '<div class="block-item" role="button" tabindex="0" style="--accent:' + cat.color + '" onclick="addBlock(\'' + cat.id + '\',\'' + b.id + '\')">' +
       '<div class="title">' + bTitle(b) + '</div>' +
       '<div class="desc">' + (b.content || '(无内容)') + '</div>' +
-      '<div class="tags">' + b.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('') + '</div>' +
+      var roleTag = b.agentRole && b.agentRole !== 'general' ? '<span class="tag" style="background:rgba(236,72,153,0.12);color:#f9a8d4;">' + b.agentRole + '</span>' : '';
+      '<div class="tags">' + roleTag + b.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('') + '</div>' +
       '<div class="platforms">' + renderPlatformTags(b.platforms) + '</div>' +
       '<div class="verify-info">✓ ' + b.verified + ' · ' + b.model + '</div>' +
       '</div>';

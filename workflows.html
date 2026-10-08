@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PromptBlocks工作流模板 - 4条角色化AI工作流，从需求到交付的完整流程">
+<title>工作流模板 - PromptBlocks</title>
+<style>
+  :root {
+    --bg-main: #0f0f1a; --bg-card: #1a1a2e; --bg-hover: #222240;
+    --text-main: #e0e0e8; --text-muted: #8888a0; --border: #2a2a3e;
+    --accent: #6366f1; --accent2: #ec4899;
+  }
+  [data-theme="light"] {
+    --bg-main: #f5f5f8; --bg-card: #ffffff; --bg-hover: #f0f0f5;
+    --text-main: #1a1a2e; --text-muted: #6b7280; --border: #e0e0e8;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg-main); color:var(--text-main); min-height:100vh; }
+  a { color:var(--accent); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .header { padding:16px 24px; background:var(--bg-card); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+  .header .logo { font-size:18px; font-weight:700; }
+  .header .logo span { color:var(--text-muted); font-weight:400; font-size:14px; margin-left:8px; }
+  .header .back { margin-left:auto; font-size:14px; }
+  .container { max-width:1100px; margin:0 auto; padding:24px; }
+  .page-title { font-size:28px; font-weight:800; margin-bottom:8px;
+    background:linear-gradient(135deg,#6366f1,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .page-desc { color:var(--text-muted); font-size:15px; margin-bottom:32px; }
+  .wf-card { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; margin-bottom:24px; overflow:hidden; }
+  .wf-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+  .wf-icon { font-size:32px; }
+  .wf-name { font-size:18px; font-weight:700; }
+  .wf-role { font-size:12px; color:var(--text-muted); margin-left:8px; padding:2px 8px; border-radius:4px; background:rgba(99,102,241,0.12); }
+  .wf-desc { font-size:13px; color:var(--text-muted); margin-top:4px; }
+  .wf-steps { padding:16px 24px; }
+  .wf-step { display:flex; align-items:flex-start; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .wf-step:last-child { border-bottom:none; }
+  .step-num { width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+  .step-body { flex:1; }
+  .step-name { font-size:15px; font-weight:600; }
+  .step-meta { font-size:12px; color:var(--text-muted); margin-top:2px; }
+  .step-arrow { color:var(--text-muted); font-size:18px; margin:4px 0 0 14px; }
+  .wf-footer { padding:12px 24px; background:var(--bg-hover); display:flex; gap:12px; align-items:center; }
+  .wf-use { font-size:14px; padding:8px 20px; border-radius:8px; background:var(--accent); color:#fff; border:none; cursor:pointer; font-weight:600; }
+  .wf-use:hover { opacity:0.9; }
+  .footer { text-align:center; padding:24px; color:var(--text-muted); font-size:13px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">PromptBlocks <span>面向角色的AI工作流平台</span></div>
+  <a class="back" href="index.html">← 返回主页</a>
+</div>
+
+<div class="container">
+  <h1 class="page-title">🔄 工作流模板</h1>
+  <p class="page-desc">每条工作流将多个积木按角色串联，从需求到交付一键完成。选择工作流后，系统自动按步骤引导你组装。</p>
+  <div id="workflows"></div>
+</div>
+
+<div class="footer">
+  PromptBlocks · 114个积木 · 6大角色 · 4条工作流 · <a href="https://github.com/wyjing333-dev/promptblocks" target="_blank">GitHub</a>
+</div>
+
+<script>
+fetch('workflows.json').then(r=>r.json()).then(workflows=>{
+  var el=document.getElementById('workflows');
+  el.innerHTML=workflows.map(wf=>(
+    '<div class="wf-card">' +
+    '<div class="wf-header">' +
+      '<div class="wf-icon">'+wf.icon+'</div>' +
+      '<div><div class="wf-name">'+wf.name+' <span class="wf-role">'+(wf.nameEn||'')+'</span></div>' +
+      '<div class="wf-desc">'+wf.description+'</div></div>' +
+    '</div>' +
+    '<div class="wf-steps">' +
+      wf.steps.map(s=>(
+        '<div class="wf-step">' +
+          '<div class="step-num">'+s.step+'</div>' +
+          '<div class="step-body">' +
+            '<div class="step-name">'+s.name+'</div>' +
+            '<div class="step-meta">积木: '+s.blockId+' | 输入: '+(s.input||'')+' | 输出: '+(s.output||'')+'</div>' +
+          '</div>' +
+        '</div>'
+      )).join('<div class="step-arrow">↓</div>') +
+    '</div>' +
+    '<div class="wf-footer">' +
+      '<button class="wf-use" onclick="useWorkflow(\''+wf.id+'\')">使用此工作流</button>' +
+      '<span style="color:var(--text-muted);font-size:13px">'+wf.steps.length+'步</span>' +
+    '</div>' +
+    '</div>'
+  )).join('');
+}).catch(err=>{
+  document.getElementById('workflows').innerHTML='<div style="color:var(--text-muted);padding:40px;text-align:center">加载失败: '+err.message+'，请通过本地服务器打开</div>';
+});
+
+function useWorkflow(id){
+  // Store selected workflow in localStorage, redirect to main page
+  localStorage.setItem('pb_workflow',id);
+  window.location.href='index.html?workflow='+id;
+}
+</script>
+</body>
+</html>
