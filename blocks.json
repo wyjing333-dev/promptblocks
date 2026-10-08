@@ -2046,6 +2046,40 @@
             "task-prd",
             "con-acceptance-criteria"
           ]
+        },
+        {
+          "id": "task-evidence-citation",
+          "title": "证据引用与溯源",
+          "content": "请基于可核验的资料完成任务，并为每个重要结论标注对应证据来源。将结论、来源、发布时间、可信度和支持关系整理清楚；区分直接证据、间接推断与未经证实的信息。无法找到可靠依据时必须明确说明，不得编造链接、作者、数据或引用。最后列出仍需进一步验证的问题。",
+          "tags": [
+            "调研",
+            "来源引用",
+            "事实核查",
+            "可信度"
+          ],
+          "platforms": [
+            "chatgpt",
+            "claude",
+            "stepfun"
+          ],
+          "verified": "2026-10-08",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Evidence Citation and Traceability",
+          "contentEn": "Complete the task using verifiable sources and attach supporting evidence to every important conclusion. Clearly organize each conclusion, its source, publication date, credibility, and the relationship between the evidence and the claim. Distinguish direct evidence, indirect inference, and unverified information. If reliable support cannot be found, say so explicitly and never invent links, authors, data, or citations. End by listing questions that still require verification.",
+          "agentRole": "researcher",
+          "inputs": "任务描述和需要支撑的结论",
+          "prerequisites": "已完成调研和信息收集",
+          "outputFormat": "report",
+          "qualityChecks": [
+            "每个结论是否有来源标注",
+            "是否区分了直接证据与推断",
+            "是否避免编造引用",
+            "未验证问题是否列出"
+          ],
+          "recommendedWith": [
+            "task-source-credibility",
+            "task-fact-separation"
+          ]
         }
       ],
       "nameEn": "Tasks"
@@ -2729,6 +2763,40 @@
           "recommendedWith": [
             "task-requirements-clarify",
             "task-prd"
+          ]
+        },
+        {
+          "id": "con-failure-escalation",
+          "title": "失败处理与升级",
+          "content": "执行任务前先识别可能导致失败的前置条件、权限限制、信息缺口和风险操作。遇到无法完成、结果不确定或多个方案冲突时，不要强行猜测；说明具体原因、已完成部分和影响范围，并给出可选的恢复方案。只有在获得用户确认或补充信息后，才执行高风险、不可逆或可能产生外部影响的操作。",
+          "tags": [
+            "失败处理",
+            "风险控制",
+            "用户确认",
+            "Agent工作流"
+          ],
+          "platforms": [
+            "chatgpt",
+            "claude",
+            "stepfun"
+          ],
+          "verified": "2026-10-08",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Failure Handling and Escalation",
+          "contentEn": "Before executing the task, identify prerequisites, permission limits, missing information, and risky operations that could cause failure. When the task cannot be completed, the result is uncertain, or multiple options conflict, do not guess forcefully. Explain the specific cause, completed parts, and impact scope, then provide recovery options. Perform high-risk, irreversible, or externally impactful actions only after receiving user confirmation or the missing information.",
+          "agentRole": "general",
+          "inputs": "任务描述和执行环境",
+          "prerequisites": "已明确任务目标",
+          "outputFormat": "report",
+          "qualityChecks": [
+            "是否识别了前置风险",
+            "失败时是否说明原因而非猜测",
+            "高风险操作是否需用户确认",
+            "恢复方案是否可行"
+          ],
+          "recommendedWith": [
+            "task-requirements-clarify",
+            "con-acceptance-criteria"
           ]
         }
       ],
