@@ -822,6 +822,23 @@
           "model": "GPT-4o+/Claude3.5/Step3+",
           "titleEn": "Budget Constraint",
           "contentEn": "The current budget is limited. Please prioritize low-cost or free solutions and avoid recommending paid tools or high-cost approaches."
+        },
+        {
+          "id": "ctx-quality-standard",
+          "title": "高质量标准",
+          "content": "本次输出需达到专业级质量标准：信息密度高（每段至少1个有效信息点）、观点鲜明（避免中庸表态）、数据支撑（关键论断附数据或案例）、可执行性（建议具体到操作步骤）。",
+          "tags": [
+            "质量",
+            "专业",
+            "标准"
+          ],
+          "platforms": [
+            "all"
+          ],
+          "verified": "2026-10-08",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "High Quality Standard",
+          "contentEn": "This output must meet professional quality standards: high information density (at least 1 useful point per paragraph), clear viewpoints (avoid wishy-washy statements), data-backed arguments (key claims with data or cases), and actionability (recommendations specific to operational steps)."
         }
       ],
       "nameEn": "Context"
@@ -1004,6 +1021,23 @@
           "model": "GPT-4o+/Claude3.5/Step3+/Gemini2.0",
           "titleEn": "ADHD-Friendly Output",
           "contentEn": "All output follows BLUF (Bottom Line Up Front): the very first sentence gives the conclusion or answer, never buried in paragraphs. Rules: 1. First line is the final conclusion, no \"Let me analyze\" or \"First we need to\" preamble; 2. Key findings in **bold** for scanning; 3. Max 3 logical levels per paragraph, split if exceeded; 4. End every response with a TL;DR line, 10 words or less; 5. If multi-part, start with a one-line table of contents (e.g., 1.Answer 2.Reasoning 3.Plan) before expanding. Core: reader attention is finite, put the most important information first."
+        },
+        {
+          "id": "con-quality-check",
+          "title": "质量自检",
+          "content": "输出前请自行检查以下质量标准：1.是否完整回应了任务要求的所有要点 2.信息是否准确、无事实错误 3.逻辑是否连贯、结构是否清晰 4.语言是否精炼、无冗余 5.格式是否符合指定要求。如发现问题请先修正再输出最终版本。",
+          "tags": [
+            "质量",
+            "自检",
+            "验证"
+          ],
+          "platforms": [
+            "all"
+          ],
+          "verified": "2026-10-08",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Quality Self-Check",
+          "contentEn": "Before outputting, self-check against these quality standards: 1) Have all task requirements been addressed 2) Is the information accurate with no factual errors 3) Is the logic coherent and structure clear 4) Is the language concise without redundancy 5) Does the format match the specified requirements. Fix any issues before delivering the final version."
         }
       ],
       "nameEn": "Constraints"
@@ -1696,6 +1730,24 @@
         "ex-none"
       ],
       "nameEn": "Business Email"
+    },
+    {
+      "id": "preset-prompt-optimizer",
+      "name": "Prompt优化专家",
+      "description": "对用户提供的Prompt进行专业评估和优化",
+      "blocks": [
+        "role-ai-engineer",
+        "task-prompt-optimize",
+        "ctx-quality-standard",
+        "con-quality-check",
+        "fmt-table",
+        "ex-style"
+      ],
+      "platforms": [
+        "chatgpt",
+        "claude",
+        "stepfun"
+      ]
     }
   ]
 }
