@@ -2080,6 +2080,71 @@
             "task-source-credibility",
             "task-fact-separation"
           ]
+        },
+        {
+          "id": "task-skill-export",
+          "title": "技能打包导出",
+          "content": "请将以下Prompt内容打包为标准技能文件，输出为YAML格式，包含以下字段：name（技能名称）、description（技能描述）、version（版本号）、author（作者）、trigger（触发条件）、prompt（完整Prompt内容）、inputs（输入参数定义）、outputs（输出格式定义）、tags（标签列表）。确保输出的技能文件可以直接放入Claude Code、Cursor、Codex等AI编码工具的.agents目录使用。",
+          "tags": [
+            "技能导出",
+            "分发",
+            "YAML",
+            "Agent"
+          ],
+          "platforms": [
+            "all"
+          ],
+          "verified": "2026-10-09",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Skill Package Export",
+          "contentEn": "Please package the following Prompt content into a standard skill file in YAML format, including these fields: name, description, version, author, trigger, prompt (full prompt content), inputs (input parameter definitions), outputs (output format definitions), tags. Ensure the output skill file can be directly placed into the .agents directory of AI coding tools such as Claude Code, Cursor, and Codex.",
+          "agentRole": "developer",
+          "inputs": "已拼装完成的Prompt内容和技能元信息",
+          "prerequisites": "用户已完成Prompt拼装",
+          "outputFormat": "yaml",
+          "qualityChecks": [
+            "YAML格式是否合法可解析",
+            "是否包含所有必需字段",
+            "prompt字段是否完整保留了原始Prompt内容",
+            "inputs和outputs定义是否清晰可执行",
+            "是否适配主流AI Agent工具的技能格式"
+          ],
+          "recommendedWith": [
+            "fmt-template",
+            "con-step-by-step"
+          ]
+        },
+        {
+          "id": "task-competitor-monitor",
+          "content": "请针对以下竞品列表进行动态监控分析：1.收集各竞品最近一周的产品更新、功能变化、定价调整、融资新闻；2.按更新重要性分级（重大更新/常规迭代/小修补）；3.对比分析竞品动态与我们的产品差异，指出我们有哪些功能已被竞品追赶或超越；4.输出竞品动态监控报告，包含变化时间线、差异化分析、应对建议三个部分。重点关注：GitHub仓库的Star/Fork/Issue变化、产品页面功能列表变化、社交媒体声量变化。",
+          "title": "竞品动态监控",
+          "tags": [
+            "竞品分析",
+            "监控",
+            "差异化"
+          ],
+          "platforms": [
+            "all"
+          ],
+          "verified": "2026-10-09",
+          "model": "GPT-4o+/Claude3.5/Step3+",
+          "titleEn": "Competitor Monitoring",
+          "contentEn": "Please conduct a dynamic monitoring analysis for the following competitor list: 1. Collect each competitor's product updates, feature changes, pricing adjustments, and funding news from the past week; 2. Rank updates by importance (major update / routine iteration / minor fix); 3. Compare and analyze the differences between competitor dynamics and our product, identifying features where competitors have caught up or surpassed us; 4. Output a competitor monitoring report with three sections: change timeline, differentiation analysis, and response recommendations. Focus on: GitHub repo Star/Fork/Issue changes, product page feature list changes, social media mention volume changes.",
+          "agentRole": "researcher",
+          "inputs": "竞品名称列表和监控维度",
+          "prerequisites": "用户已确定竞品列表和关注维度",
+          "outputFormat": "markdown",
+          "qualityChecks": [
+            "是否覆盖了所有竞品的最新动态",
+            "更新重要性分级是否合理",
+            "差异化分析是否客观准确",
+            "应对建议是否可执行",
+            "是否有数据来源支撑分析结论"
+          ],
+          "recommendedWith": [
+            "task-search-plan",
+            "task-evidence-citation"
+          ]
         }
       ],
       "nameEn": "Tasks"
