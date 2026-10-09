@@ -166,6 +166,36 @@
 - 设计审查P1完成：积木卡片选中状态（✓勾选标识+边框高亮+flash动画）+updateBlockSelection辅助函数，commit 5a985cb已push
 - 备注：克隆数突破300大关（305），唯一用户126；页面浏览也开始有数据；Stars仍为0，需持续引导
 
+## 2026-10-08
+- 网站：正常（116积木/8分类/7平台/11预设/6角色/4工作流，定位升级为"面向角色的AI工作流平台"）
+- GitHub：0 stars, 0 forks, 0 issues, last updated 2026-10-08T08:51:07Z
+- 流量：views 4次/3人, clones 305次/126人
+- 更新：四阶段全面升级+2轮星舰计划Agent运行
+  - Phase1积木标准化(84积木+6字段) / Phase2角色技能包(+30=114) / Phase3工作流(4条31步) / Phase4质量评分(8维度40分)
+  - 网站定位升级：title/meta/og改、dashboard 4→7指标、角色筛选bar(8角色粉色调)、workflows.html工作流页面
+  - Run1新增2积木(需求澄清+验收标准), Run2新增2积木(证据引用+失败处理), 总计116
+- 推广：星舰计划两轮Agent运行，调研员产出5个对标项目报告
+- Issue检查：0条未关闭Issue，一切正常
+- 备注：10/8蓝屏5次(0x116+c000009a)，B方案确认失败
+
+## 2026-10-09
+- 网站：正常（118积木/8分类/7平台/6角色/4工作流/8维度评分，功能完整加载无异常）
+- GitHub：0 stars, 0 forks, 0 issues, last pushed 2026-10-09, commit f7e2abc
+- 流量：
+  - 页面访问(views)：10次/6人（上次4次/3人，+150%）
+  - 代码克隆(clones)：387次/162人（上次305次/126人，+27%）
+  - 流量持续增长，10/8四阶段升级效果延续
+- 更新：新增2积木（技能打包导出task-skill-export + 竞品动态监控task-competitor-monitor），116→118
+  - 灵感来源：GitHub Trending对标分析(mattpocock/skills 275K星 + agency-agents 158K星 → 技能分发方向)
+  - 回归测试：118积木0错误2警告全通过
+- GitHub Trending对标：2026-10月榜分析完成
+  - 前十项目：superpowers(295K)/mattpocock/skills(275K)/ECC(272K)/agency-agents(158K)/claude-mem(96K)/Agent-Reach(90K)/i-have-adhd(54K)/rea(9.5K)/e2e(6.3K)/OpenDots(3.2K)
+  - 对标结论：PromptBlocks"面向角色的AI工作流平台"定位与趋势高度吻合
+  - 可借鉴3方向：技能打包分发格式/MCP Server增强/Agent记忆层集成
+- 推广：X推特+小红书双版本推广文案已写好（推广内容_20261009.md）
+- Issue检查：0条未关闭Issue，一切正常
+- 备注：流量增长显著（views翻倍，clones+27%），Stars仍为0需持续引导
+
 ---
 
 ## 自动化建议（未来升级）
